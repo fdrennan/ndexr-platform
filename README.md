@@ -26,7 +26,8 @@ docker exec redditor_postgres_1 pg_restore -U airflow -d postgres /postgres.bak
 
 
 
-
+```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker volume prune
+```

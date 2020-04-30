@@ -2,7 +2,7 @@ FROM python:3.7.6
 
 WORKDIR /root
 
-COPY envfiles/airflow.requirements.txt /root/airflow.requirements.txt
+COPYairflow.requirements.txt /root/airflow.requirements.txt
 RUN pip install --no-deps --trusted-host pypi.python.org -r airflow.requirements.txt
 
 RUN echo 'deb http://cloud.r-project.org/bin/linux/debian buster-cran35/' >> /etc/apt/sources.list
