@@ -1,0 +1,6 @@
+*.csv
+*.zip
+.Rbuildignore
+.Renviron
+.Rhistory
+.Rproj.user

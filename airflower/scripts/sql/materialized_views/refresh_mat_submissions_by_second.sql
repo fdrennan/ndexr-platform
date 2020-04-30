@@ -1,0 +1,1 @@
+refresh materialized view public.mat_submissions_by_second;
