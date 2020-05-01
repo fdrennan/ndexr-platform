@@ -5,3 +5,5 @@ data
 .idea
 .Rhistory
 .Rproj.user
+redditor.Rproj
+.gitignore.swp
