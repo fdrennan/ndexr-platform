@@ -9,22 +9,18 @@ args = {
     'email_on_failure': True,
     'email_on_retry': True
 }
-dag = DAG(dag_id='r_installation',
+dag = DAG(dag_id='update_aws_configuration',
           default_args=args,
           schedule_interval=None,
           concurrency=1,
           max_active_runs=1,
           catchup=False)
 
-task_1 = BashOperator(
-    task_id='install_r_venv',
-    bash_command='. /home/scripts/R/shell/r_venv_install',
-    dag=dag
-)
 
-task_2 = BashOperator(
+task_1 = BashOperator(
     task_id='set_up_aws',
     bash_command='. /home/scripts/R/shell/aws_configure',
     dag=dag
 )
-task_1 >> task_2
+
+
