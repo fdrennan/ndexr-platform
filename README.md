@@ -83,6 +83,9 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
 ```
 
+
+This runs the Airflow UI, which is located at `localhost:8080`
+
 ```
   webserver:
     image: rpy
@@ -101,6 +104,35 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
     ports:
       - "8080:8080"
     command: airflow webserver
+```
+
+This hosts the `MongoDB` at the password specified in `./init-mongo.js/init-mongo.js` and looks something like so
+
+
+```
+db.createUser(
+    {
+        user: "fdrennan",
+        pwd: "password",
+        roles: [
+            {
+                role: "admin",
+                db: "admin"
+            }
+        ]
+    }
+);
+```
+
+and coordinate to your `.env` file in the root directory which is driven in the following service.
+
+```
+MONGO_INITDB_DATABASE=admin
+MONGO_INITDB_ROOT_USERNAME=fdrennan
+MONGO_INITDB_ROOT_PASSWORD=password
+```
+
+```
   mongo_db:
     image: 'mongo'
     container_name: 'ndexr_mongo'
@@ -116,6 +148,18 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+```
+
+
+Next we build our PostgreSQL database which has the following environment variables and need to be in the .env file.
+
+```
+AIRFLOW_USER=airflow
+AIRFLOW_PASSWORD=airflow
+AIRFLOW_DB=airflow
+```
+
+```
   postgres:
     image: postgres:9.6
     restart: always
@@ -128,6 +172,11 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
     volumes:
       - postgres:/var/lib/postgresql/data
       - ./data/postgres.bak:/postgres.bak
+```
+
+I dont know WTF this is. I copy paste stuff too, ya know. Need it to work, must work, since it works. :)
+ 
+```
   initdb:
     image: rpy
     restart: always
@@ -139,6 +188,11 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
     command: airflow initdb
+```
+
+This is the React Application that is in the `redditor-ui` folder and is hosted at `localhost:3000`. 
+
+```
   userinterface:
     image: redditorui
     restart: always
@@ -152,6 +206,73 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
       - "3000:3000"
     links:
       - "web:redditapi"
+```
+
+
+This is where all our Airflow dags live. R files are executed with a Bash Executor using the `Rscript` command. If you 
+look in `./airflower/scripts/R/shell` you will see where the bash commands live. Let's take a look at one. This 
+command `cd`'s into the `r_files` foler and runs the `streamall.R` R script. 
+
+
+The command:
+`. ./airflower/scripts/R/shell/streamall`
+
+executes the following. 
+```                                                                                                       
+#!/bin/bash
+
+cd /home/scripts/R/r_files
+/usr/bin/Rscript /home/scripts/R/r_files/streamall.R
+```
+
+You can see the mapping of files in the project to the containers by the following - the left side is the file location
+in the project directory and the ride side is in the container. 
+
+`- ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall`
+
+Anyways, this kicks off the file here at `/home/scripts/R/r_files/streamall.R` which begins to grab Reddit data continuously.
+We see more environment variables we need to have. If you haven't already, go and get [Reddit API credentials](`https://www.reddit.com/wiki/api`).
+
+The `sns_send_message` function is from the `biggr` package, which sends a message to a phone number. This requires
+access to AWS with IAM + admin privileges. 
+
+These are
+```
+AWS_ACCESS=YOUR_ACCESS
+AWS_SECRET=YOUR_SECRET
+AWS_REGION=YOUR_REGION
+```
+
+```
+library(redditor)
+library(biggr)
+
+praw = reticulate::import('praw')
+
+reddit_con = praw$Reddit(client_id=Sys.getenv('REDDIT_CLIENT'),
+                         client_secret=Sys.getenv('REDDIT_AUTH'),
+                         user_agent=Sys.getenv('USER_AGENT'),
+                         username=Sys.getenv('USERNAME'),
+                         password=Sys.getenv('PASSWORD'))
+
+sns_send_message(phone_number=Sys.getenv('MY_PHONE'), message='Running gathering')
+
+# Do something with comments
+parse_comments_wrapper <- function(x) {
+  submission_value <- parse_comments(x)
+  write_csv(x = submission_value, path = 'stream.csv', append = TRUE)
+  print(now(tzone = 'UTC') - submission_value$created_utc)
+}
+
+stream_comments(reddit = reddit_con,
+                subreddit =  'all',
+                callback =  parse_comments_wrapper)
+
+```
+
+
+This one manages the state of our dags.
+```
   scheduler:
     image: rpy
     restart: always
@@ -189,6 +310,13 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
     links:
       - "postgres"
     command: airflow scheduler
+```
+
+Two R APIS that are exactly the same except for the port location. These are load balanced by the `web` container and the `nginx.conf` file.
+
+Again the `- filelocationlocal:filelocationcontainer` syntax explains how this project is connected.
+
+```
   redditapi:
     image: redditorapi
     command: /app/plumber.R
@@ -213,23 +341,87 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
       - ./.env:/app/.Renviron
     links:
       - "postgres"
+```
 
+Where some data is persisted.
+```
 volumes:
   mongodbdata:
   postgres: {}
   airflow-worker-logs:
 ```
 
+
+## THE ENVIRONMENT
+My `.env` file looks something like below
+```
+CHANGE
+AIRFLOW__CORE__FERNET_KEY=lasPsWaLsdfoH65nfZfPnggY6O-SrhlQsYBgFf
+
+AWS_ACCESS=MY_ACCESS
+AWS_SECRET=MY_SECRET
+AWS_REGION=MY_REGION
+
+MONGO_INITDB_ROOT_USERNAME=username # coordinate with init-mongo.js
+MONGO_INITDB_ROOT_PASSWORD=password # coordinate with init-mongo.js
+
+POSTGRES_PASSWORD=password
+
+REDDIT_CLIENT=CLIENT ID
+REDDIT_AUTH=AUTH
+USER_AGENT="datagather by /u/whoeveryouare"
+USERNAME=my_reddit_username
+PASSWORD=my_reddit_password
+
+MY_PHONE=1-254-931-8313
+
+## DONT CHANGE
+POSTGRES_USER=postgres
+POSTGRES_DB=postgres
+POSTGRES_PORT=5432
+POSTGRES_HOST=postgres
+
+AIRFLOW_USER=airflow
+AIRFLOW_PASSWORD=airflow
+AIRFLOW_DB=airflow
+
+
+MONGO_INITDB_DATABASE=admin
+
+REACT_APP_HOST=127.0.0.1
+PORT=3000
+
+RETICULATE_PYTHON=/root/.virtualenvs/redditor/bin/python
+
+```
+
+
+Before we kick it off, we need to run these.
 ```
 docker-compose up -d --build postgres
 docker-compose up -d --build initdb
 ```
+
+Now we can start and if we want to watch then run this
+```
+docker-compose up 
+```
+
+We can detach the process by running the detach command
+```
+docker-compose up -d
+```
+
+We can test by hopping into the containers with the commands - 
 
 ```
 docker exec -it  redditor_scheduler_1  /bin/bash
 docker exec -it  redditor_postgres_1  /bin/bash
 docker exec -it  redditor_userinterface_1  /bin/bash
 ```
+
+# Backing Up Your Date
+
 ```
 psql -U airflow postgres < postgres.bak
 ```
@@ -240,7 +432,7 @@ docker exec redditor_postgres_1 pg_restore -U airflow -d postgres /postgres.bak
 ```
 
 
-
+# Dont run these unless you know what you are doing. Im serious.
 ```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
