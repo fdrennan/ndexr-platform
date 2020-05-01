@@ -1,5 +1,47 @@
 version: '3.4'
 services:
+  web:
+    image: nginx
+    volumes:
+     - ./nginx.conf:/etc/nginx/conf.d/mysite.template
+    ports:
+     - "80:80"
+    environment:
+     - NGINX_HOST=host.docker.internal
+     - NGINX_PORT=80
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+  webserver:
+    image: rpy
+    restart: always
+    depends_on:
+      - initdb
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
+    volumes:
+      - ./airflower/dags:/root/airflow/dags
+      - ./airflower/plugins:/root/airflow/plugins
+      - airflow-worker-logs:/root/airflow/logs
+    ports:
+      - "8080:8080"
+    command: airflow webserver
+  mongo_db:
+    image: 'mongo'
+    container_name: 'ndexr_mongo'
+    restart: always
+    ports:
+      - '27017:27017'
+    expose:
+      - '27017'
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - mongodbdata:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   postgres:
     image: postgres:9.6
     restart: always
@@ -23,23 +65,6 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
     command: airflow initdb
-  webserver:
-    image: rpy
-    restart: always
-    depends_on:
-      - initdb
-    env_file: .env
-    environment:
-      AIRFLOW_HOME: /root/airflow
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
-    volumes:
-      - ./airflower/dags:/root/airflow/dags
-      - ./airflower/plugins:/root/airflow/plugins
-      - airflow-worker-logs:/root/airflow/logs
-    ports:
-      - "8080:8080"
-    command: airflow webserver
   userinterface:
     image: redditorui
     restart: always
@@ -114,31 +139,7 @@ services:
       - ./.env:/app/.Renviron
     links:
       - "postgres"
-  mongo_db:
-    image: 'mongo'
-    container_name: 'ndexr_mongo'
-    restart: always
-    ports:
-      - '27017:27017'
-    expose:
-      - '27017'
-    volumes:
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - mongodbdata:/data/db
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-  web:
-    image: nginx
-    volumes:
-     - ./nginx.conf:/etc/nginx/conf.d/mysite.template
-    ports:
-     - "80:80"
-    environment:
-     - NGINX_HOST=host.docker.internal
-     - NGINX_PORT=80
-    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+
 volumes:
   mongodbdata:
   postgres: {}
