@@ -83,6 +83,7 @@ service + `nginx.conf` file can be used alone for services requiring the same ty
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
 ```
 
+```
   webserver:
     image: rpy
     restart: always
@@ -217,7 +218,7 @@ volumes:
   mongodbdata:
   postgres: {}
   airflow-worker-logs:
-
+```
 
 ```
 docker-compose up -d --build postgres
