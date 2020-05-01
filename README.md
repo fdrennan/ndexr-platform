@@ -1,29 +1,32 @@
 This application is for the gathering, storage, and display of Reddit data. 
-I love large structures - behemoth applications which include a lot of moving parties. 
+I love large structures - behemoth applications which include a lot of moving parts. 
 
 This is one of them.
 
-## A History 
+## A little bit of history
 
-A little bit of history. I worked at a company called Digital First Media. I was hired on as a data optimization engineer. 
+I worked at a company called Digital First Media. I was hired on as a data optimization engineer. 
 The job was primary working on their optimization code for online marketing campaigns. As the guy in-between, I worked
 with highly qualified data engineers on one side of me and extremely competent web developers on the other side.
  
-[Duffy](https://github.com/duffn) was definitely one of the talented ones, who taught me quite a bit. While I was there, 
-one of my complaints was related to how much we were spending for tools we could easily make in house. Of of those choices, 
-was whether to buy RSConnect or not. I found a way to build highly scalable R APIs using docker-compose and NGINX. Duffy 
-was the guy who knew what was needed for a solution, so he gave me quite a bit of guidance in infrastructure. 
+[Duffy](https://github.com/duffn) was definitely one of the talented ones and taught me quite a bit. While I was with 
+the company, one of my complaints was related to how much we were spending for tools we could easily make in house. Of 
+of those choices, was whether to buy RSConnect or not. I found a way to build highly scalable R APIs using 
+docker-compose and NGINX. Duffy was the guy who knew what was needed for a solution, so he gave me quite a bit of 
+guidance in understanding good infrastructure. 
 
-So that's where I learned about building really cool APIs. Well, there are people who consume APIs, and Duffy was doing 
-cool stuff in Data Engineering. So, I gravitated a bit out of the math into the tools Data Engineers used, and became interested 
-in Python, SQL, Airflow etc. These guys spin that stuff daily, and so it's not impossible to learn! I started creating data 
-pipelines, which grew - and became difficult to maintain. I wanted to learn best practices in data engineering - because when things 
-break, it's devastating and a time sink and kept me up nights.  
+So that's where I learned about building really cool APIs so that I could share my output with non R users. Well, there 
+are people who my APIs, and Duffy was doing cool stuff in Data Engineering and was getting the data to me so I could
+build the API. I gravitated a bit out of the math into the tools Data Engineers used, and became interested in Python, 
+SQL, Airflow etc. These guys spin that stuff daily, and so it's not impossible to learn! I started creating data 
+pipelines, which grew - and became difficult to maintain. I wanted to learn best practices in data engineering - because 
+when things break, it's devastating and a time sink and kept me up nights.  
 
-AIRFLOW, is one of the tools for this job. It makes your scheduled jobs smooth like butter, and is highly transparent with 
-the health of your network, and allows for push button runs of your code. This was far superior to cron.
+AIRFLOW, is one of the tools for this job. It makes your scheduled jobs smooth like butter, and is highly transparent 
+with the health of your network, and allows for push button runs of your code. This was far superior to cron.
 
-Well, I learned data engineering stuff and wanted to learn React/Javascript. This is the most recent venture, and I'm still learning. 
+Well, I learned data engineering stuff and wanted to learn React/Javascript. This is the most recent venture, and I'm 
+still learning. 
                                                                                                                           
                                                                                                                           
 ## About This Project
@@ -58,22 +61,24 @@ There are three dockerfiles that are needed: `DockerfileApi`, `DockerfileRpy`, a
 
 `DockerfileApi` is associated with the container needed to run an R [Plumber](https://www.rplumber.io/) API. 
 In the container I take from [trestletech](https://hub.docker.com/r/trestletech/plumber/), I add on some additional 
-Linux binaries and R packages. There are two R packages in this project. One is called [biggr] and the other is called [redditor],
-which are located in `./bigger` and `./redditor-api` respectively. To build the container, run the following:
+Linux binaries and R packages. There are two R packages in this project. One is called [biggr] and the other is called 
+[redditor], which are located in `./bigger` and `./redditor-api` respectively. To build the container, run the 
+following:
 
 ```
 docker build -t redditorapi --file ./DockerfileApi .
 ```
 
-`DockerfileRpy` is a container running both R and Python, This is taken from the `python:3.7.6` container. I install R on top of it, so 
-I can run scheduled jobs. This container runs Airflow, which is set up in `airflower`. Original name, right? 
+`DockerfileRpy` is a container running both R and Python, This is taken from the `python:3.7.6` container. I install R 
+on top of it, so I can run scheduled jobs. This container runs Airflow, which is set up in `airflower`. Original name, 
+right? 
 
 ```
 docker build -t rpy --file ./DockerfileRpy .
 ```
 
-This container contains node, npm, and everything else needed to run the site. The site is a React application using Material UI.
-The project is located at `redditor-ui`
+This container contains node, npm, and everything else needed to run the site. The site is a React application using 
+Material UI. The project is located at `redditor-ui`
 
 ```
 docker build -t redditorui --file ./DockerfileUi .
@@ -258,8 +263,9 @@ in the project directory and the ride side is in the container.
 
 `- ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall`
 
-Anyways, this kicks off the file here at `/home/scripts/R/r_files/streamall.R` which begins to grab Reddit data continuously.
-We see more environment variables we need to have. If you haven't already, go and get [Reddit API credentials](`https://www.reddit.com/wiki/api`).
+Anyways, this kicks off the file here at `/home/scripts/R/r_files/streamall.R` which begins to grab Reddit data 
+continuously. We see more environment variables we need to have. If you haven't already, go and get 
+[Reddit API credentials](`https://www.reddit.com/wiki/api`).
 
 The `sns_send_message` function is from the `biggr` package, which sends a message to a phone number. This requires
 access to AWS with IAM + admin privileges. 
