@@ -1,0 +1,33 @@
+Package: biggr
+Type: Package
+Title: Convenience Functions For AWS R Users
+Version: 1.2.0
+Author: Freddy Drennan
+Maintainer: Freddy Drennan <drennanfreddy@gmail.com>
+Description: Uses the boto3 Python package to access ec2 and s3 in AWS. More features are on the way.
+    The overall goal is to make spinning up AWS databases and servers easy and efficient. This includes 
+    preconfigured servers designed specifically for the R user in mind.
+License: GPL-2
+Encoding: UTF-8
+Depends:
+    reticulate,
+    purrr,
+    dplyr,
+    lubridate, 
+    tibble,
+    plumber,
+    tictoc,
+    ipify,
+    glue,
+    jsonlite,
+    stringr,
+    RPostgres,
+    dbplyr,
+    jose,
+    shiny
+LazyData: true
+RoxygenNote: 7.0.2
+Suggests: 
+    covr,
+    testthat,
+    stringr

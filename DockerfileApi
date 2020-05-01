@@ -17,10 +17,32 @@ RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
 RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('tidyverse')"
 RUN R -e "install.packages('reticulate')"
-RUN R -e 'devtools::install_github("fdrennan/biggr")'
+RUN R -e "install.packages('RPostgres')"
+RUN R -e "install.packages('DBI')"
+RUN R -e "install.packages('glue')"
+RUN R -e "install.packages('fs')"
+RUN R -e "install.packages('dbplyr')"
+RUN R -e "install.packages('rvest')"
+RUN R -e "install.packages('lubridate')"
+RUN R -e "install.packages('tidytext')"
+RUN R -e "install.packages('purrr')"
+RUN R -e "install.packages('jsonlite')"
+RUN R -e "install.packages('tictoc')"
+RUN R -e "install.packages('stringr')"
+RUN R -e "install.packages('httpuv')"
+RUN R -e "install.packages('plumber')"
+RUN R -e "install.packages('ipify')"
+RUN R -e "install.packages('jose')"
+RUN R -e "install.packages('sourcetools')"
+RUN R -e "install.packages('fastmap')"
+
+COPY ./redditor-api /home/redditor-api
+COPY ./biggr /home/biggr
+
+RUN R -e "setwd('/home/redditor-api'); devtools::install()"
+RUN R -e "setwd('/home/biggr'); devtools::install()"
 
 ARG DUMMY=unknow
-RUN R -e 'devtools::install_github("fdrennan/redditor")'
 RUN R -e 'library(reticulate); \
           library(biggr); \
           use_python("/usr/bin/python3", required = TRUE); \

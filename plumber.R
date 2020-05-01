@@ -20,7 +20,6 @@ cors <- function(req, res) {
 
 }
 
-
 #* @serializer unboxedJSON
 #* @param key  Stocks in JSON
 #* @param limit  Stocks in JSON
