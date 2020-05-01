@@ -52,3 +52,11 @@ COPY ./biggr /home/biggr
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 
+ARG DUMMY=unknow
+RUN R -e 'library(reticulate); \
+          library(biggr); \
+          use_python("/usr/bin/python3", required = TRUE); \
+          install_python(envname="redditor")'
+
+COPY ./airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+RUN Rscript /r_venv_install.R
