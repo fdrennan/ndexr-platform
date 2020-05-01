@@ -420,7 +420,7 @@ docker exec -it  redditor_postgres_1  /bin/bash
 docker exec -it  redditor_userinterface_1  /bin/bash
 ```
 
-# Backing Up Your Date
+# Backing Up Your Data
 
 ```
 psql -U airflow postgres < postgres.bak
