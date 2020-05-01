@@ -21,7 +21,7 @@ tryCatch({
   # s3_upload_file(bucket = 'reddit-dumps', from = now_time_zip, to = now_time_zip, make_public = TRUE)
   # file_size <- as.character(fs::file_info(now_time_csv)$size)
   file_delete(now_time_csv)
-  file_delete(now_time_zip)
+  # file_delete(now_time_zip)
 }, error = function(e) {
   file_size <- as.character(fs::file_info(now_time_csv)$size)
   sns_send_message(phone_number = Sys.getenv('MY_PHONE'), message = 'Something went wrong') 

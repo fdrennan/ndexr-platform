@@ -1,28 +1,15 @@
 version: '3.4'
 services:
-  postgres:
-    image: postgres:9.6
-    restart: always
-    environment:
-      - POSTGRES_USER=airflow
-      - POSTGRES_PASSWORD=airflow
-      - POSTGRES_DB=airflow
-    ports:
-      - 5439:5432
+  web:
+    image: nginx
     volumes:
-      - postgres:/var/lib/postgresql/data
-      - ./data/postgres.bak:/postgres.bak
-  initdb:
-    image: rpy
-    restart: always
-    depends_on:
-      - postgres
-    env_file: .env
+     - ./nginx.conf:/etc/nginx/conf.d/mysite.template
+    ports:
+     - "80:80"
     environment:
-      AIRFLOW_HOME: /root/airflow
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
-    command: airflow initdb
+     - NGINX_HOST=host.docker.internal
+     - NGINX_PORT=80
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
   webserver:
     image: rpy
     restart: always
@@ -40,6 +27,44 @@ services:
     ports:
       - "8080:8080"
     command: airflow webserver
+  postgres:
+    image: postgres:9.6
+    restart: always
+    environment:
+      - POSTGRES_USER=${AIRFLOW_USER}
+      - POSTGRES_PASSWORD=${AIRFLOW_PASSWORD}
+      - POSTGRES_DB=${AIRFLOW_DB}
+    ports:
+      - 5439:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./data/postgres.bak:/postgres.bak
+  mongo_db:
+    image: 'mongo'
+    container_name: 'ndexr_mongo'
+    restart: always
+    ports:
+      - '27017:27017'
+    expose:
+      - '27017'
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - mongodbdata:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+  initdb:
+    image: rpy
+    restart: always
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
+    command: airflow initdb
   userinterface:
     image: redditorui
     restart: always
@@ -65,12 +90,30 @@ services:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
     volumes:
       - ./airflower/dags:/root/airflow/dags
-      - ./airflower/scripts:/home/scripts
+      - ./airflower/scripts/sql:/home/scripts/sql
+      - ./airflower/scripts/R/r_files/aws_configure.R:/home/scripts/R/r_files/aws_configure.R
+      - ./airflower/scripts/R/r_files/r_venv_install.R:/home/scripts/R/r_files/r_venv_install.R
+      - ./airflower/scripts/R/r_files/refresh_mat_comments_by_second.R:/home/scripts/R/r_files/refresh_mat_comments_by_second.R
+      - ./airflower/scripts/R/r_files/refresh_mat_stream_authors.R:/home/scripts/R/r_files/refresh_mat_stream_authors.R
+      - ./airflower/scripts/R/r_files/refresh_mat_submissions_by_second.R:/home/scripts/R/r_files/refresh_mat_submissions_by_second.R
+      - ./airflower/scripts/R/r_files/stream_submissions_to_s3.R:/home/scripts/R/r_files/stream_submissions_to_s3.R
+      - ./airflower/scripts/R/r_files/streamall.R:/home/scripts/R/r_files/streamall.R
+      - ./airflower/scripts/R/r_files/streamsubmissions.R:/home/scripts/R/r_files/streamsubmissions.R
+      - ./airflower/scripts/R/r_files/streamtos3.R:/home/scripts/R/r_files/streamtos3.R
+      - ./airflower/scripts/R/shell/aws_configure:/home/scripts/R/shell/aws_configure
+      - ./airflower/scripts/R/shell/refresh_mat_comments_by_second:/home/scripts/R/shell/refresh_mat_comments_by_second
+      - ./airflower/scripts/R/shell/refresh_mat_submissions_by_second:/home/scripts/R/shell/refresh_mat_submissions_by_second
+      - ./airflower/scripts/R/shell/stream_submissions_all:/home/scripts/R/shell/stream_submissions_all
+      - ./airflower/scripts/R/shell/streamtos3:/home/scripts/R/shell/streamtos3
+      - ./airflower/scripts/R/shell/r_venv_install:/home/scripts/R/shell/r_venv_install
+      - ./airflower/scripts/R/shell/refresh_mat_stream_authors:/home/scripts/R/shell/refresh_mat_stream_authors
+      - ./airflower/scripts/R/shell/stream_submission_to_s3:/home/scripts/R/shell/stream_submission_to_s3
+      - ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall
       - ./airflower/plugins:/root/airflow/plugins
+      - ./.env:/home/scripts/R/r_files/.Renviron
       - airflow-worker-logs:/root/airflow/logs
-      - ./envfiles/.Renviron:/home/scripts/R/r_files/.Renviron
     links:
-      - "postgres"
+      - "postgres:mongo_db"
     command: airflow scheduler
   redditapi:
     image: redditorapi
@@ -80,8 +123,8 @@ services:
      - "8000:8000"
     working_dir: /app
     volumes:
-      - ./docker/api/plumber.R:/app/plumber.R
-      - ./envfiles/.Renviron:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./.env:/app/.Renviron
     links:
       - "postgres"
   redditapitwo:
@@ -92,35 +135,11 @@ services:
      - "8001:8000"
     working_dir: /app
     volumes:
-      - ./docker/api/plumber.R:/app/plumber.R
-      - ./envfiles/.Renviron:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./.env:/app/.Renviron
     links:
       - "postgres"
-  mongo_db:
-    image: 'mongo'
-    container_name: 'ndexr_mongo'
-    restart: always
-    ports:
-      - '27017:27017'
-    expose:
-      - '27017'
-    volumes:
-      - ./docker/api/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - mongodbdata:/data/db
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-  web:
-    image: nginx
-    volumes:
-     - ./envfiles/nginx.conf:/etc/nginx/conf.d/mysite.template
-    ports:
-     - "80:80"
-    environment:
-     - NGINX_HOST=host.docker.internal
-     - NGINX_PORT=80
-    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+
 volumes:
   mongodbdata:
   postgres: {}

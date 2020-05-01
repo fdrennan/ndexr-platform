@@ -2,7 +2,7 @@ FROM python:3.7.6
 
 WORKDIR /root
 
-COPY envfiles/airflow.requirements.txt /root/airflow.requirements.txt
+COPY airflow.requirements.txt /root/airflow.requirements.txt
 RUN pip install --no-deps --trusted-host pypi.python.org -r airflow.requirements.txt
 
 RUN echo 'deb http://cloud.r-project.org/bin/linux/debian buster-cran35/' >> /etc/apt/sources.list
@@ -18,11 +18,45 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     default-jdk \
     libcurl4-openssl-dev \
     libxml2-dev \
+    libssl-dev \
+    libsasl2-dev \
     libpq-dev -y
 
 WORKDIR /home/scripts
 
 RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('tidyverse')"
+RUN R -e "install.packages('reticulate')"
+RUN R -e "install.packages('RPostgres')"
+RUN R -e "install.packages('DBI')"
+RUN R -e "install.packages('glue')"
+RUN R -e "install.packages('fs')"
+RUN R -e "install.packages('dbplyr')"
+RUN R -e "install.packages('rvest')"
+RUN R -e "install.packages('lubridate')"
+RUN R -e "install.packages('tidytext')"
+RUN R -e "install.packages('purrr')"
+RUN R -e "install.packages('jsonlite')"
+RUN R -e "install.packages('tictoc')"
+RUN R -e "install.packages('stringr')"
+RUN R -e "install.packages('httpuv')"
+RUN R -e "install.packages('plumber')"
+RUN R -e "install.packages('ipify')"
+RUN R -e "install.packages('jose')"
+RUN R -e "install.packages('sourcetools')"
+RUN R -e "install.packages('fastmap')"
 
+COPY ./redditor-api /home/redditor-api
+COPY ./biggr /home/biggr
 
+RUN R -e "setwd('/home/redditor-api'); devtools::install()"
+RUN R -e "setwd('/home/biggr'); devtools::install()"
+
+ARG DUMMY=unknow
+RUN R -e 'library(reticulate); \
+          library(biggr); \
+          use_python("/usr/bin/python3", required = TRUE); \
+          install_python(envname="redditor")'
+
+COPY ./airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+RUN Rscript /r_venv_install.R
