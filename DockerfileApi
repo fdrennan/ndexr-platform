@@ -37,6 +37,7 @@ RUN R -e "install.packages('ipify')"
 RUN R -e "install.packages('jose')"
 RUN R -e "install.packages('sourcetools')"
 RUN R -e "install.packages('fastmap')"
+RUN R -e "install.packages('mongolite')"
 
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
