@@ -27,6 +27,18 @@ services:
     ports:
       - "8080:8080"
     command: airflow webserver
+  postgres:
+    image: postgres:9.6
+    restart: always
+    environment:
+      - POSTGRES_USER=${AIRFLOW_USER}
+      - POSTGRES_PASSWORD=${AIRFLOW_PASSWORD}
+      - POSTGRES_DB=${AIRFLOW_DB}
+    ports:
+      - 5439:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./data/postgres.bak:/postgres.bak
   mongo_db:
     image: 'mongo'
     container_name: 'ndexr_mongo'
@@ -42,18 +54,6 @@ services:
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-  postgres:
-    image: postgres:9.6
-    restart: always
-    environment:
-      - POSTGRES_USER=${AIRFLOW_USER}
-      - POSTGRES_PASSWORD=${AIRFLOW_PASSWORD}
-      - POSTGRES_DB=${AIRFLOW_DB}
-    ports:
-      - 5439:5432
-    volumes:
-      - postgres:/var/lib/postgresql/data
-      - ./data/postgres.bak:/postgres.bak
   initdb:
     image: rpy
     restart: always
@@ -113,7 +113,7 @@ services:
       - ./.env:/home/scripts/R/r_files/.Renviron
       - airflow-worker-logs:/root/airflow/logs
     links:
-      - "postgres"
+      - "postgres:mongo_db"
     command: airflow scheduler
   redditapi:
     image: redditorapi

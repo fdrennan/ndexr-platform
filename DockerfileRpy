@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     default-jdk \
     libcurl4-openssl-dev \
     libxml2-dev \
+    libssl-dev \
+    libsasl2-dev \
     libpq-dev -y
 
 WORKDIR /home/scripts

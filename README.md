@@ -53,6 +53,8 @@ The project is located at `redditor-ui`
 docker build -t redditorui --file ./DockerfileUi .
 ```
 
+
+
 All of the above gets our containers ready for use. But there's a to unpack in this docker-compose file.
 
 ### LOTS OF SERVICES
@@ -437,4 +439,47 @@ docker exec redditor_postgres_1 pg_restore -U airflow -d postgres /postgres.bak
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker volume prune
+```
+
+
+
+```
+library(mongolite)
+
+mongo_connect <- function(userName, password, collection, database, hostName) {
+  
+  # m is the default mongo_connection value.
+  # i.e., m$find(), m$aggregate()
+  try_connection <- function(userName, password, hostName) {
+    url  <-
+      paste0("mongodb://", userName, ":", password, "@", hostName, ":27017/admin")
+    m  <-
+      try(mongo(collection = collection , db = database, url = url), silent = TRUE)
+    m
+  }
+  
+  m = try_connection(userName, password, hostName[1])
+  
+  if("try-error" %in% class(m)) {
+    m = try_connection(userName, password, hostName[2])
+  }
+  
+  expected_class <-
+    c("mongo", "jeroen", "environment")
+  
+  if(!all(class(m) == expected_class)) {
+    stop("No Connection to Mongo available. Check mongo_connect R function.")
+  }
+  
+  m
+  
+}
+
+m <- 
+  mongo_connect(userName = 'fdrennan', 
+              password = 'thirdday1', 
+              collection = 'data', 
+              database = 'admin', 
+              hostName = '127.0.0.1')
+
 ```
