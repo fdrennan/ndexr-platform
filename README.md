@@ -407,7 +407,7 @@ USER_AGENT="datagather by /u/whoeveryouare"
 USERNAME=my_reddit_username
 PASSWORD=my_reddit_password
 
-MY_PHONE=1-254-931-8313
+MY_PHONE=1-555-555-5555
 
 ## DONT CHANGE
 POSTGRES_USER=postgres
