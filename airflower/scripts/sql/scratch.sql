@@ -22,6 +22,6 @@ order by created_utc desc
 
 
 
-select *
+select count(*)
 from public.streamall
-order by created_utc desc
+-- /var/lib/postgresql/data

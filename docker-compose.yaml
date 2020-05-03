@@ -89,26 +89,9 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
     volumes:
+      - postgres:/backup/postgres:ro
       - ./airflower/dags:/root/airflow/dags
-      - ./airflower/scripts/sql:/home/scripts/sql
-      - ./airflower/scripts/R/r_files/aws_configure.R:/home/scripts/R/r_files/aws_configure.R
-      - ./airflower/scripts/R/r_files/r_venv_install.R:/home/scripts/R/r_files/r_venv_install.R
-      - ./airflower/scripts/R/r_files/refresh_mat_comments_by_second.R:/home/scripts/R/r_files/refresh_mat_comments_by_second.R
-      - ./airflower/scripts/R/r_files/refresh_mat_stream_authors.R:/home/scripts/R/r_files/refresh_mat_stream_authors.R
-      - ./airflower/scripts/R/r_files/refresh_mat_submissions_by_second.R:/home/scripts/R/r_files/refresh_mat_submissions_by_second.R
-      - ./airflower/scripts/R/r_files/stream_submissions_to_s3.R:/home/scripts/R/r_files/stream_submissions_to_s3.R
-      - ./airflower/scripts/R/r_files/streamall.R:/home/scripts/R/r_files/streamall.R
-      - ./airflower/scripts/R/r_files/streamsubmissions.R:/home/scripts/R/r_files/streamsubmissions.R
-      - ./airflower/scripts/R/r_files/streamtos3.R:/home/scripts/R/r_files/streamtos3.R
-      - ./airflower/scripts/R/shell/aws_configure:/home/scripts/R/shell/aws_configure
-      - ./airflower/scripts/R/shell/refresh_mat_comments_by_second:/home/scripts/R/shell/refresh_mat_comments_by_second
-      - ./airflower/scripts/R/shell/refresh_mat_submissions_by_second:/home/scripts/R/shell/refresh_mat_submissions_by_second
-      - ./airflower/scripts/R/shell/stream_submissions_all:/home/scripts/R/shell/stream_submissions_all
-      - ./airflower/scripts/R/shell/streamtos3:/home/scripts/R/shell/streamtos3
-      - ./airflower/scripts/R/shell/r_venv_install:/home/scripts/R/shell/r_venv_install
-      - ./airflower/scripts/R/shell/refresh_mat_stream_authors:/home/scripts/R/shell/refresh_mat_stream_authors
-      - ./airflower/scripts/R/shell/stream_submission_to_s3:/home/scripts/R/shell/stream_submission_to_s3
-      - ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall
+      - ./airflower/scripts:/home/scripts
       - ./airflower/plugins:/root/airflow/plugins
       - ./.env:/home/scripts/R/r_files/.Renviron
       - airflow-worker-logs:/root/airflow/logs

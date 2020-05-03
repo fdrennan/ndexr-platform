@@ -515,3 +515,11 @@ m <-
               hostName = '127.0.0.1')
 
 ```
+
+
+
+docker exec -it   redditor_scheduler_1  /bin/bash
+docker exec -it   redditor_backup_1  /bin/bash
+
+
+pg_dump -h postgres -p 5432 -Fc -o -U airflow postgres > postgres.bak
