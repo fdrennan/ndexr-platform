@@ -520,6 +520,12 @@ m <-
 
 docker exec -it   redditor_scheduler_1  /bin/bash
 docker exec -it   redditor_backup_1  /bin/bash
+docker exec -it   redditor_redditapi_1  /bin/bash
+docker exec -it   redditor_postgres  /bin/bash
+
 
 
 pg_dump -h postgres -p 5432 -Fc -o -U airflow postgres > postgres.bak
+
+wget https://redditor-dumps.s3.us-east-2.amazonaws.com/postgres.tar.gz
+tar -xzvf postgres.tar.gz
