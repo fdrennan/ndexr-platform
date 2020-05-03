@@ -6,17 +6,17 @@ args = {
     'owner': 'Freddy Drennan',
     'start_date': airflow.utils.dates.days_ago(2),
     'email': ['drennanfreddy@gmail.com'],
-    'retries': 100,
+    'retries': 2,
     'email_on_failure': True,
     'email_on_retry': True
 }
-
-dag = DAG(dag_id='stream_submissions_all',
+dag = DAG(dag_id='get_postgres_tar',
           default_args=args,
-          schedule_interval=None,
+          schedule_interval='@daily',
           concurrency=1,
           max_active_runs=1,
           catchup=False)
+
 
 task_1 = BashOperator(
     task_id='set_up_aws',
@@ -26,10 +26,9 @@ task_1 = BashOperator(
 
 
 task_2 = BashOperator(
-    task_id='streamall',
-    bash_command='. /home/scripts/R/shell/stream_submissions_all',
+    task_id='backup_postgres_to_s3',
+    bash_command='. /home/scripts/R/shell/get_postgres_tar',
     dag=dag
 )
 
 task_1 >> task_2
-

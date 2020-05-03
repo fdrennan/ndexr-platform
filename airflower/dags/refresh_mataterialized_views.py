@@ -12,10 +12,11 @@ args = {
 }
 dag = DAG(dag_id='refresh_materialized_views',
           default_args=args,
-          schedule_interval='*/15 * * * *',
+          schedule_interval='@hourly',
           concurrency=1,
           max_active_runs=1,
           catchup=False)
+
 
 
 task_0 = BashOperator(
@@ -43,6 +44,9 @@ task_3 = BashOperator(
     dag=dag
 )
 
+
+
 task_0 >> task_1
 task_1 >> task_2
+# task_1 >> task_4
 task_2 >> task_3
