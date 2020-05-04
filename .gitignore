@@ -11,3 +11,4 @@ postgres_data
 postgres.bak
 *.pem
 postgres.tar.gz
+*.remote
