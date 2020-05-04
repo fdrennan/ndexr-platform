@@ -1,6 +1,6 @@
 FROM trestletech/plumber
 MAINTAINER Docker User <docker@user.org>
-
+ARG DUMMY=unknowndata
 RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
   git-core \
   libssl-dev \
@@ -13,6 +13,7 @@ RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
   python3-pip \
   python3-venv \
   libssl-dev \
+  postgresql-client \
   libsasl2-dev
 
 
@@ -42,10 +43,10 @@ RUN R -e "install.packages('mongolite')"
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
 
+
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 
-ARG DUMMY=unknow
 RUN R -e 'library(reticulate); \
           library(biggr); \
           use_python("/usr/bin/python3", required = TRUE); \

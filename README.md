@@ -471,6 +471,7 @@ docker exec redditor_postgres_1 pg_restore -U airflow -d postgres /postgres.bak
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker volume prune
+docker volume rm  redditor_postgres_data
 ```
 
 
@@ -524,8 +525,20 @@ docker exec -it   redditor_redditapi_1  /bin/bash
 docker exec -it   redditor_postgres  /bin/bash
 
 
+pg_dump -h db -p 5432 -Fc -o -U postgres postgres > postgres.bak
 
-pg_dump -h postgres -p 5432 -Fc -o -U airflow postgres > postgres.bak
 
 wget https://redditor-dumps.s3.us-east-2.amazonaws.com/postgres.tar.gz
 tar -xzvf postgres.tar.gz
+
+
+
+## Restore Database
+Run Gathering Dag
+```
+docker exec -it   redditor_postgres  /bin/bash
+tar -zxvf /data/postgres.tar.gz
+pg_restore -U postgres -d postgres /data/postgres.bak
+```
+
+psql -U postgres postgres < 
