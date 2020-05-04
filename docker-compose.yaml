@@ -72,7 +72,7 @@ services:
       - ./redditor-ui/public:/usr/src/app/public
       - ./redditor-ui/src:/usr/src/app/src
     environment:
-      REACT_APP_HOST: 127.0.0.1
+      REACT_APP_HOST=${REACT_APP_HOST}
     ports:
       - "3000:3000"
     links:
