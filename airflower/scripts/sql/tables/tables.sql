@@ -1,118 +1,3 @@
-CREATE TABLE public.hot_scrapes
-(
-    author varchar,
-    author_fullname varchar,
-    author_patreon_flair varchar,
-    author_premium varchar,
-    body varchar,
-    can_gild varchar,
-    can_mod_post varchar,
-    controversiality varchar,
-    created varchar,
-    created_utc varchar,
-    depth varchar,
-    downs varchar,
-    fullname varchar,
-    id varchar,
-    is_root varchar,
-    is_submitter varchar,
-    link_id varchar,
-    name varchar,
-    no_follow varchar,
-    parent_id varchar,
-    permalink varchar,
-    score varchar,
-    submission varchar,
-    subreddit varchar,
-    subreddit_id varchar,
-    total_awards_received varchar,
-    ups varchar,
-    time_gathered varchar
-);
-
-CREATE TABLE public.posts
-(
-    author                varchar,
-    author_fullname       varchar,
-    author_patreon_flair  varchar,
-    author_premium        varchar,
-    body                  varchar,
-    can_gild              varchar,
-    can_mod_post          varchar,
-    controversiality      varchar,
-    created               varchar,
-    created_utc           varchar,
-    depth                 varchar,
-    downs                 varchar,
-    fullname              varchar,
-    id                    varchar,
-    is_root               varchar,
-    is_submitter          varchar,
-    link_id               varchar,
-    name                  varchar,
-    no_follow             varchar,
-    parent_id             varchar,
-    permalink             varchar,
-    score                 varchar,
-    submission            varchar,
-    subreddit             varchar,
-    subreddit_id          varchar,
-    total_awards_received varchar,
-    ups                   varchar,
-    time_gathered         varchar
-);
-
-
-CREATE TABLE public.user_comments
-(
-    archived varchar,
-    author varchar,
-    author_fullname varchar,
-    author_premium varchar,
-    body varchar,
-    can_guild varchar,
-    can_mod_post varchar,
-    controversality varchar,
-    created varchar,
-    created_utc varchar,
-    downs varchar,
-    edited varchar,
-    fullname varchar,
-    gilded varchar,
-    id varchar,
-    id_from_url varchar,
-    is_root varchar,
-    is_submitter varchar,
-    link_author varchar,
-    link_id varchar,
-    link_permalink varchar,
-    link_title varchar,
-    link_url varchar,
-    locked varchar,
-    "MISSING_COMMENT_MESSAGE" varchar,
-    name varchar,
-    no_follow varchar,
-    num_comments varchar,
-    over_18 varchar,
-    parent_id varchar,
-    permalink varchar,
-    quarantine varchar,
-    score varchar,
-    score_hidden varchar,
-    send_replies varchar,
-    stickied varchar,
-    "STR_FIELD" varchar,
-    submission varchar,
-    subreddit varchar,
-    subreddit_id varchar,
-    subreddit_name_prefixed varchar,
-    subreddit_type varchar,
-    total_awards_received varchar,
-    ups varchar,
-    time_gathered varchar
-);
-
-
 CREATE TABLE public.streamall
 (
     author                varchar,
@@ -144,7 +29,7 @@ CREATE TABLE public.streamall
     ups                   integer,
     time_gathered_utc     timestamptz
 );
-
+-- SPLIT
 CREATE TABLE public.stream_submissions_all
 (
     author                  varchar,
@@ -191,7 +76,3 @@ CREATE TABLE public.stream_submissions_all
     title                   varchar,
     url                     varchar
 );
-
-select *
-from public.stream_submissions_all
-where author='AutoNewspaperAdmin'

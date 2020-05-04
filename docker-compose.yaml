@@ -38,7 +38,6 @@ services:
       - 5439:5432
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./data/postgres.bak:/postgres.bak
   mongo_db:
     image: 'mongo'
     container_name: 'ndexr_mongo'
@@ -89,14 +88,15 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@172.17.0.1:5439/airflow
     volumes:
-      - postgres:/backup/postgres:ro
       - ./airflower/dags:/root/airflow/dags
       - ./airflower/scripts:/home/scripts
       - ./airflower/plugins:/root/airflow/plugins
-      - ./.env:/home/scripts/R/r_files/.Renviron
+      - ./.env:/root/.Renviron
       - airflow-worker-logs:/root/airflow/logs
+      - ./data:/data
     links:
-      - "postgres:mongo_db"
+      - "postgres"
+      - "db"
     command: airflow scheduler
   redditapi:
     image: redditorapi
@@ -109,7 +109,7 @@ services:
       - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
     links:
-      - "postgres"
+      - "db"
   redditapitwo:
     image: redditorapi
     command: /app/plumber.R
@@ -121,9 +121,28 @@ services:
       - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
     links:
-      - "postgres"
+      - "db"
+  db:
+    image: postgres:9.6
+    container_name: "redditor_postgres"
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      - '22'
+      # Opens port 5432 on the container
+      - '5432'
+      # Where our data will be persisted
+    volumes:
+      - redditor_data:/var/lib/postgresql/data
+      - ./data:/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
 
 volumes:
   mongodbdata:
   postgres: {}
+  redditor_data: {}
   airflow-worker-logs:

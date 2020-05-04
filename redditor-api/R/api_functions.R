@@ -8,7 +8,7 @@ find_posts <- function(key, limit = 1000, to_json = FALSE) {
   })
 
   stream_submissions <-
-    tbl(con, in_schema('public', 'stream_submissions')) %>%
+    tbl(con, in_schema('public', 'stream_submissions_all')) %>%
     arrange(desc(created_utc))
 
 

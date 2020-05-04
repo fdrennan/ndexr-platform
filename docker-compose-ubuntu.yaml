@@ -121,8 +121,19 @@ services:
       - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
     links:
-      - "postgres"
-
+      - "postgres:db"
+  db:
+    image: postgres:9.6-alpine
+    container_name: "connectr_postgres"
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      # Opens port 5432 on the container
+      - '5432'
+      # Where our data will be persisted
+    volumes:
+      - ./backup/postgres:/var/lib/postgresql/data
 volumes:
   mongodbdata:
   postgres: {}

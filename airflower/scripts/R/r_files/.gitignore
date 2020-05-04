@@ -1,3 +1,4 @@
+*.csv
 .Renviron
 stream.csv
 .R.Rproj

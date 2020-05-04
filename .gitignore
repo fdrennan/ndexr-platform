@@ -7,3 +7,6 @@ data
 .Rproj.user
 redditor.Rproj
 .gitignore.swp
+postgres_data
+postgres.bak
+postgres.tar.gz

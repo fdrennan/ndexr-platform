@@ -10,6 +10,7 @@ args = {
     'email_on_failure': True,
     'email_on_retry': True
 }
+
 dag = DAG(dag_id='backup_postgres_to_s3',
           default_args=args,
           schedule_interval='@daily',
@@ -24,11 +25,17 @@ task_1 = BashOperator(
     dag=dag
 )
 
-
 task_2 = BashOperator(
+    task_id='backup_postgres_from_container',
+    bash_command='. /home/scripts/shell/backup_postgres',
+    dag=dag
+)
+
+task_3 = BashOperator(
     task_id='backup_postgres_to_s3',
-    bash_command='. /home/scripts/R/shell/create_postgres_tar',
+    bash_command='. /home/scripts/R/shell/backup_postgres_to_s3',
     dag=dag
 )
 
 task_1 >> task_2
+task_2 >> task_3
