@@ -526,8 +526,6 @@ docker exec -it   redditor_postgres  /bin/bash
 
 
 pg_dump -h db -p 5432 -Fc -o -U postgres postgres > postgres.bak
-
-
 wget https://redditor-dumps.s3.us-east-2.amazonaws.com/postgres.tar.gz
 tar -xzvf postgres.tar.gz
 
@@ -538,7 +536,20 @@ Run Gathering Dag
 ```
 docker exec -it   redditor_postgres  /bin/bash
 tar -zxvf /data/postgres.tar.gz
-pg_restore -U postgres -d postgres /data/postgres.bak
+pg_restore -U postgres -d postgres /postgres.bak
 ```
 
 psql -U postgres postgres < 
+
+
+
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt update'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt install apt-transport-https ca-certificates curl software-properties-common'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt update'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt install docker-ce'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo usermod -aG docker ubuntu' 
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileApi .'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileRpy .'
+ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileUi .'
