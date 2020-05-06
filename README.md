@@ -550,7 +550,9 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo add-apt-repository "deb [arch=amd64] h
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt update'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo apt install docker-ce -y'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo usermod -aG docker ubuntu' 
-ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+
+
+ssh -i "redditor.pem" ubuntu@ndexr.com 'sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'sudo chmod +x /usr/local/bin/docker-compose' 
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'git clone https://github.com/fdrennan/ndexr-platform.git'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileApi .'

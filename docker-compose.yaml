@@ -94,6 +94,7 @@ services:
       - ./.env:/root/.Renviron
       - airflow-worker-logs:/root/airflow/logs
       - ./data:/data
+      - ./pem:/pem
     links:
       - "postgres"
       - "db"

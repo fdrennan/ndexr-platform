@@ -12,3 +12,4 @@ postgres.bak
 *.pem
 postgres.tar.gz
 *.remote
+.Renviron
