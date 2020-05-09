@@ -574,6 +574,7 @@ https://www.ssh.com/ssh/tunneling/example
 
 autossh -f -nNT -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
 
-ssh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+ssh -i "ndexr.pem" -R 8010:localhost:80 ec2-user@ndexr.com
+ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com 
 autossh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
-fuser -k 8010/tcp
+ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com
