@@ -558,3 +558,11 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'git clone https://github.com/fdrennan/ndexr
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileApi .'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileRpy .'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileUi .'
+
+
+./ngrok http 8080 > /dev/null 
+export WEBHOOK_URL="$(curl http://192.168.0.52:4040/api/tunnels | jq ".tunnels[0].public_url")"
+
+ssh -i "ndexr.pem" -R 80:localhost:80 ec2-user@ndexr.com
+
+scp ~/ndexr.pem fdrennan@192.168.0.52:/home/fdrennan/ndexr.pem
