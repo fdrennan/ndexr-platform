@@ -563,6 +563,17 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t reddit
 ./ngrok http 8080 > /dev/null 
 export WEBHOOK_URL="$(curl http://192.168.0.52:4040/api/tunnels | jq ".tunnels[0].public_url")"
 
-ssh -i "ndexr.pem" -R 80:localhost:80 ec2-user@ndexr.com
+ssh -i "ndexr.pem" -R 8787:localhost:8787 ec2-user@ndexr.com
+
+# Forward from 8010 to local 3000
+ssh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com
 
 scp ~/ndexr.pem fdrennan@192.168.0.52:/home/fdrennan/ndexr.pem
+https://www.ssh.com/ssh/tunneling/example
+
+
+autossh -f -nNT -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+
+ssh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+autossh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+fuser -k 8010/tcp
