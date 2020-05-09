@@ -20,8 +20,8 @@ user_data = paste( '#!/bin/bash',
                    'git clone https://github.com/fdrennan/ndexr-platform.git',
                    'cd ndexr-platform',
                    'sudo docker build -t redditorapi --file ./DockerfileApi .',
-                   'sudo docker build -t redditorapi --file ./DockerfileRpy .',
-                   'sudo docker build -t redditorapi --file ./DockerfileUi .',
+                   'sudo docker build -t rpy --file ./DockerfileRpy .',
+                   'sudo docker build -t redditorui --file ./DockerfileUi .',
                    sep = "\n")
 
 
