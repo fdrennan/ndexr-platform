@@ -577,4 +577,24 @@ autossh -f -nNT -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com
 ssh -i "ndexr.pem" -R 8010:localhost:80 ec2-user@ndexr.com
 ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com 
 autossh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+
+autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
 ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com
+
+
+ssh -i "ndexr.pem" -L 3000:localhost:3000 ec2-user@ndexr.com -L 5432:localhost:5432 ec2-user@ndexr.com -L 8000:localhost:8000 ec2-user@ndexr.com -L 8001:localhost:8001 ec2-user@ndexr.com
+ssh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
+ssh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
+
+
+autossh -i "ndexr.pem" -R 3000:localhost:80 ec2-user@ndexr.com 
+autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
+
+
+
+autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com
