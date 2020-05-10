@@ -9,7 +9,7 @@ reddit_con = praw$Reddit(client_id=Sys.getenv('REDDIT_CLIENT'),
                          username=Sys.getenv('USERNAME'),
                          password=Sys.getenv('PASSWORD'))
 
-sns_send_message(phone_number=Sys.getenv('MY_PHONE'), message=glue('Running gathering streamall at {getwd()}'))
+# sns_send_message(phone_number=Sys.getenv('MY_PHONE'), message=glue('Running gathering streamall at {getwd()}'))
 
 # Do something with comments
 parse_comments_wrapper <- function(x) {
@@ -21,3 +21,5 @@ parse_comments_wrapper <- function(x) {
 stream_comments(reddit = reddit_con,
                 subreddit =  'all',
                 callback =  parse_comments_wrapper)
+
+stop('Something happened')
