@@ -592,8 +592,6 @@ autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
 
-
-
 autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com

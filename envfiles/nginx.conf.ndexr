@@ -1,0 +1,26 @@
+events {}
+
+http {
+
+    upstream backend {
+        server 192.168.0.52:8000;
+        server 192.168.0.52:8001;
+    }
+
+    upstream website {
+        server 192.168.0.52:3000;
+    }
+
+    server {
+
+        listen 80;
+
+        location / {
+            proxy_pass http://website/;
+        }
+
+        location /api/ {
+            proxy_pass http://backend/;
+        }
+    }
+}

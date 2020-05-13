@@ -36,21 +36,29 @@ con = postgres_connector()
 
 streamall <- tbl(con, in_schema('public', 'streamall'))
 
+# https://cran.r-project.org/web/packages/elasticsearchr/vignettes/quick_start.html
 
-response <- 
+response <-
   streamall %>% 
-  filter(str_detect(str_to_lower(body), 'fuck')) %>% 
+  filter(str_detect(str_to_lower(body), 'weijia')) %>% 
   arrange(desc(created_utc)) %>% 
-  head(100000) %>% 
-  collect %>% 
-  mutate(
-    created_utc = round_date(created_utc, '30 minutes')
-  ) %>% 
-  group_by(created_utc) %>% 
-  count(name = 'n_observations')
+  my_collect()
 
 
-ggplot(response) +
-  aes(x = with_tz(created_utc, tzone = 'MST') + hours(1), y = n_observations) +
-  geom_point(size = 1/10) +
-  geom_col() 
+library(elasticsearchr)
+es <- elastic("http://localhost:9200", "iris", "data")
+elastic("http://localhost:9200", "iris", "data") %index% iris
+# elastic("http://localhost:9200", "iris") %delete% TRUE
+
+for_everything <- query('{
+  "match_all": {}
+}')
+
+elastic("http://localhost:9200", "iris", "data") %search% for_everything
+
+selected_fields <- select_fields('{
+  "includes": ["sepal_length", "species"]
+}')
+
+elastic("http://localhost:9200", "iris", "data") %search% (for_everything + selected_fields)
+
