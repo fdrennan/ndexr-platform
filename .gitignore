@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-.env
+.env*
 postgres.bak
 data
 .idea

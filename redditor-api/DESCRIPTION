@@ -21,6 +21,7 @@ Depends:
     purrr,
     jsonlite,
     tictoc,
-    stringr
+    stringr,
+    elasticsearchr
 Encoding: UTF-8
 LazyData: true

@@ -20,11 +20,12 @@ cors <- function(req, res) {
 
 }
 
+
 #* @serializer unboxedJSON
-#* @param key  Stocks in JSON
+#* @param search_term  Stocks in JSON
 #* @param limit  Stocks in JSON
 #* @get /find_posts
-function(key = 'trump',
+function(search_term = 'trump',
          limit = 5) {
 
   limit = as.numeric(limit)
@@ -38,7 +39,7 @@ function(key = 'trump',
     message = "Success!",
     metaData = list(
       args = list(
-        key = key,
+        search_term = search_term,
         limit = limit
       ),
       runtime = 0
@@ -51,7 +52,7 @@ function(key = 'trump',
     }
     # Run the algorithm
     tic()
-    response$data <- find_posts(key = str_to_lower(key), limit = limit, to_json = TRUE)
+    response$data <- find_posts(search_term = str_to_lower(search_term), limit = limit, to_json = TRUE)
     timer <- toc(quiet = T)
     response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
 
