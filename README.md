@@ -596,3 +596,12 @@ autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com
+
+
+
+# Uploading to Docker
+docker image tag rpy:latest fdrennan/rpy:latest
+docker push fdrennan/rpy:latest
+
+docker image tag redditorapi:latest fdrennan/redditorapi:latest
+docker push fdrennan/redditorapi:latest
