@@ -5,6 +5,7 @@ services:
     container_name: es01
     environment:
       - node.name=es01
+      - xpack.ml.enabled=false
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es02,es03
       - cluster.initial_master_nodes=es01,es02,es03
@@ -25,6 +26,7 @@ services:
     container_name: es02
     environment:
       - node.name=es02
+      - xpack.ml.enabled=false
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es01,es03
       - cluster.initial_master_nodes=es01,es02,es03
@@ -43,6 +45,7 @@ services:
     container_name: es03
     environment:
       - node.name=es03
+      - xpack.ml.enabled=false
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es01,es02
       - cluster.initial_master_nodes=es01,es02,es03
