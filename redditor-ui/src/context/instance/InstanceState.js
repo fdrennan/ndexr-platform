@@ -46,7 +46,7 @@ const InstanceState = props => {
           "Content-Type": "application/json"
         },
         params: {
-          key: key,
+          search_term: key,
           limit: limit
         }
       });
@@ -74,7 +74,7 @@ const InstanceState = props => {
           "Content-Type": "application/json"
         },
         params: {
-          key: key,
+          search_term: key,
           limit: limit
         }
       });

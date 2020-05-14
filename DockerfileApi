@@ -1,7 +1,8 @@
 FROM trestletech/plumber
 MAINTAINER Docker User <docker@user.org>
-ARG DUMMY=unknowndata
+
 RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
+  libc6-dev \
   git-core \
   libssl-dev \
   libcurl4-openssl-dev \
@@ -43,7 +44,7 @@ RUN R -e "install.packages('mongolite')"
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
 
-
+ARG DUMMY=unknowndatass
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 

@@ -1,24 +1,38 @@
 #' @export find_posts
-find_posts <- function(key, limit = 1000, to_json = FALSE) {
+find_posts <- function(search_term = NULL, table_name='stream_submissions_all', limit = 1000, sort_by_time = FALSE, to_json = FALSE) {
+  
+  by_time <- sort_on('{"created_utc": {"order": "desc"}}')
+  
+  elastic_query <- query(glue(
+  '{
+    "bool": {
+      "must": [
+        { "match": { "title":   "--search_term--"        }}
+      ],
+      "filter": [
+        { "range": { "created_utc": { "gte": "2019-05-12T00:00:00" }}}
+      ]
+    }
+  }', .open = '--', .close='--'), size = limit)
+  
+  if(sort_by_time) {
+    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "data") %search% (elastic_query + by_time)
+  } else {
+    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "data") %search% (elastic_query)
+  }
 
-  con = postgres_connector()
-  on.exit({
-    dbDisconnect(conn = con)
-    message('Disconnecting from Postgres')
-  })
-
-  stream_submissions <-
-    tbl(con, in_schema('public', 'stream_submissions_all')) %>%
-    arrange(desc(created_utc))
-
-
-  comments <-
-    stream_submissions %>%
-    filter(
-      str_detect(str_to_lower(title), key) | str_detect(str_to_lower(selftext), key)
-    ) %>%
-    head(limit) %>%
-    collect
+  # stream_submissions <-
+  #   tbl(con, in_schema('public', 'stream_submissions_all')) %>%
+  #   arrange(desc(created_utc))
+  # 
+  # 
+  # comments <-
+  #   stream_submissions %>%
+  #   filter(
+  #     str_detect(str_to_lower(title), key) | str_detect(str_to_lower(selftext), key)
+  #   ) %>%
+  #   head(limit) %>%
+  #   collect
 
   if (to_json) {
     return(toJSON(comments))

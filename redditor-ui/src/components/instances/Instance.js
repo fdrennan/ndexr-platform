@@ -17,7 +17,14 @@ const Instance = () => {
   }, []);
 
   if (instances !== null && instances.length === 0 && !loading) {
-    return <h4>Please add a contact</h4>;
+    return <Grid
+                xs={12}
+                direction="row"
+                justify="space-between"
+                alignItems="flex-start"
+    ><Box m={1} border={1} padding={2}>
+      That search query resulted in nothing
+    </Box></Grid>
   }
 
   if (instances === "false") {
@@ -87,7 +94,7 @@ const Instance = () => {
                       <br />
                       <strong>Selftext:</strong>{" "}
                       {selftext &&
-                        `${selftext.toString().slice(0, 500)}.......`}
+                        `${selftext.toString().slice(0, 5000)}.......`}
                     </Box>
 
                     <a href={url} target="_blank" rel="noopener noreferrer">
