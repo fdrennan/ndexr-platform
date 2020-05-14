@@ -453,7 +453,7 @@ docker exec -it  redditor_scheduler_1  /bin/bash
 docker exec -it  redditor_postgres_1  /bin/bash
 docker exec -it  redditor_userinterface_1  /bin/bash
 ```
-
+dc
 # Backing Up Your Data
 
 ```
@@ -574,10 +574,12 @@ https://www.ssh.com/ssh/tunneling/example
 
 autossh -f -nNT -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
 
+# To Kill a port
+sudo fuser -k -n tcp 3000
+
 ssh -i "ndexr.pem" -R 8010:localhost:80 ec2-user@ndexr.com
 ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com 
-autossh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
-
+autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com 
 autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
 ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com
 
@@ -592,11 +594,15 @@ autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
 
-autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
-autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
+autossh -i "ndexr.pem"  ec2-user@ndexr.com
+autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com 
 autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
 autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com
 
+autossh -f -nNT -i "~/ndexr.pem" -R 3000:localhost:3000 -R 5432:localhost:5432 -R 8000:localhost:8000 -R 8001:localhost:8001  ec2-user@ndexr.com
+
+
+autossh -M 20000 -i "ndexr.pem" -f -N ec2-user@ndexr.com -R 3000:localhost:3000 -C
 
 
 # Uploading to Docker
