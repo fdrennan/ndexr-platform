@@ -2,12 +2,10 @@ import React from "react";
 import Submission from "../submissions/submission";
 import SubmissionForm from "../submissions/SubmissionForm";
 import Navbar from "../layout/Navbar";
-import useStyles from "../../Theme";
 
 import Grid from "@material-ui/core/Grid";
 
 const SearchReddit = () => {
-  const classes = useStyles();
   return (
     <div>
       <Navbar />
@@ -19,7 +17,6 @@ const SearchReddit = () => {
         justify="center"
         container
         component="main"
-        // className={classes.root}
       >
         <SubmissionForm />
         <Submission />

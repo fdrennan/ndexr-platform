@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import InstanceContext from "../../context/instance/instanceContext";
+import InstanceContext from "../../context/instance/submissionContext";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -11,10 +11,10 @@ const SubmissionForm = () => {
 
   const instanceContext = useContext(InstanceContext);
 
-  const { clearCurrentInstance, instance, getInstances } = instanceContext;
+  const { instance, getInstances } = instanceContext;
 
   const [currentInstance, setInstance] = useState({
-    key: "covid",
+    key: "Natural Language Processing",
     limit: "5"
   });
 
@@ -37,11 +37,6 @@ const SubmissionForm = () => {
   const onSubmit = e => {
     e.preventDefault();
     getInstances(currentInstance);
-    clearAll();
-  };
-
-  const clearAll = () => {
-    clearCurrentInstance();
   };
 
   return (
@@ -116,7 +111,6 @@ const SubmissionForm = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            type="submit"
             value={instance ? "Update Contact" : "Start Server"}
           >
             Run Query

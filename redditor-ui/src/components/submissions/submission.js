@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Spinner from "../layout/Spinner";
-import InstanceContext from "../../context/instance/instanceContext";
+import InstanceContext from "../../context/instance/submissionContext";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -17,14 +17,18 @@ const Submission = () => {
   }, []);
 
   if (instances !== null && instances.length === 0 && !loading) {
-    return <Grid
-                xs={12}
-                direction="row"
-                justify="space-between"
-                alignItems="flex-start"
-    ><Box m={1} border={1} padding={2}>
-      That search query resulted in nothing
-    </Box></Grid>
+    return (
+      <Grid
+        xs={12}
+        direction="row"
+        justify="space-between"
+        alignItems="flex-start"
+      >
+        <Box m={1} border={1} padding={2}>
+          That search query resulted in nothing
+        </Box>
+      </Grid>
+    );
   }
 
   if (instances === "false") {
@@ -56,6 +60,7 @@ const Submission = () => {
                 direction="row"
                 justify="space-between"
                 alignItems="flex-start"
+                key={`${author}-${url}-${created_utc}`}
               >
                 <Box m={1} border={1} padding={2}>
                   <Grid

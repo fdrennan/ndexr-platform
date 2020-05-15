@@ -11,8 +11,8 @@ const SecurityGroupForm = () => {
       <Grid xs={12} sm={6}>
         <Box>
           <img
-            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=30000&granularity=1 minutes&timezone=MST&width=6&height=3.5`}
-            alt="Smiley face"
+            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=300000&granularity=1 minutes&timezone=MST&width=6&height=3.5`}
+            alt="Hmm that wasn't supposed to happen"
             height="100%"
             width="100%"
           />
@@ -21,8 +21,8 @@ const SecurityGroupForm = () => {
       <Grid xs={12} sm={6}>
         <Box>
           <img
-            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=30000&granularity=1 minutes&timezone=MST&table=submissions&width=6&height=3.5`}
-            alt="Smiley face"
+            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=300000&granularity=1 minutes&timezone=MST&table=submissions&width=6&height=3.5`}
+            alt="Hmm that wasn't supposed to happen"
             height="100%"
             width="100%"
           />
