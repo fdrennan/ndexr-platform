@@ -50,7 +50,7 @@ const SubmissionForm = () => {
             xs={12}
             direction="row"
             justify="space-between"
-            alignItems="center"
+            // alignItems="center"
           >
             <Box p={1}>
               <Typography>
@@ -72,10 +72,8 @@ const SubmissionForm = () => {
                 fullWidth
                 id="key"
                 label="Search Phrase"
-                // autoComplete="key"
                 autoFocus
                 type="text"
-                // placeholder="Submission Storage: 50"
                 name="key"
                 value={key}
                 onChange={onChange}
@@ -84,7 +82,7 @@ const SubmissionForm = () => {
           </Grid>
           <Grid
             xs={6}
-            direction="row"
+            // direction="row"
             justify="space-between"
             alignItems="center"
           >
@@ -96,7 +94,6 @@ const SubmissionForm = () => {
                 fullWidth
                 id="limit"
                 label="Maximum results - up to 1000"
-                // autoComplete="email"
                 autoFocus
                 type="text"
                 name="limit"
