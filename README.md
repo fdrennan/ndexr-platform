@@ -558,50 +558,14 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'git clone https://github.com/fdrennan/ndexr
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileApi .'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileRpy .'
 ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t redditorapi --file ./DockerfileUi .'
-
-
-./ngrok http 8080 > /dev/null 
-export WEBHOOK_URL="$(curl http://192.168.0.52:4040/api/tunnels | jq ".tunnels[0].public_url")"
-
-ssh -i "ndexr.pem" -R 8787:localhost:8787 ec2-user@ndexr.com
-
-# Forward from 8010 to local 3000
-ssh -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com
-
-scp ~/ndexr.pem fdrennan@192.168.0.52:/home/fdrennan/ndexr.pem
-https://www.ssh.com/ssh/tunneling/example
-
-
-autossh -f -nNT -i "ndexr.pem" -R 8010:localhost:3000 ec2-user@ndexr.com 
+ 
 
 # To Kill a port
 sudo fuser -k -n tcp 3000
 
-ssh -i "ndexr.pem" -R 8010:localhost:80 ec2-user@ndexr.com
-ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com 
-autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com 
-autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
-ssh -i "ndexr.pem" -R 8011:localhost:80 ec2-user@ndexr.com
-
-
-ssh -i "ndexr.pem" -L 3000:localhost:3000 ec2-user@ndexr.com -L 5432:localhost:5432 ec2-user@ndexr.com -L 8000:localhost:8000 ec2-user@ndexr.com -L 8001:localhost:8001 ec2-user@ndexr.com
-ssh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com
-ssh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
-
-
-autossh -i "ndexr.pem" -R 3000:localhost:80 ec2-user@ndexr.com 
-autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
-autossh -i "ndexr.pem" -R 8001:localhost:8001 ec2-user@ndexr.com
-autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com 
-
-autossh -i "ndexr.pem"  ec2-user@ndexr.com
-autossh -i "ndexr.pem" -R 3000:localhost:3000 ec2-user@ndexr.com 
-autossh -i "ndexr.pem" -R 8000:localhost:8000 ec2-user@ndexr.com
-autossh -i "ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com
 
 autossh -f -nNT -i "~/ndexr.pem" -R 3000:localhost:3000 -R 5432:localhost:5432 -R 8000:localhost:8000 -R 8001:localhost:8001  ec2-user@ndexr.com
-
-
+autossh -f -nNT -i "~/ndexr.pem" -R 8999:localhost:8999 ec2-user@ndexr.com
 autossh -M 20000 -i "ndexr.pem" -f -N ec2-user@ndexr.com -R 3000:localhost:3000 -C
 
 
@@ -611,3 +575,6 @@ docker push fdrennan/rpy:latest
 
 docker image tag redditorapi:latest fdrennan/redditorapi:latest
 docker push fdrennan/redditorapi:latest
+
+# Check open ports
+https://gf.dev/port-scanner
