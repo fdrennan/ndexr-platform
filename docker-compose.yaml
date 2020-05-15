@@ -109,8 +109,6 @@ services:
     volumes:
       - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
-    links:
-      - "db"
   redditapitwo:
     image: fdrennan/redditorapi
     command: /app/plumber.R
@@ -121,8 +119,6 @@ services:
     volumes:
       - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
-    links:
-      - "db"
   db:
     image: postgres:9.6
     container_name: "redditor_postgres"

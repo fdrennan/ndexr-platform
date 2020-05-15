@@ -14,9 +14,7 @@ import {
   SET_LOADING
 } from "../types";
 
-// BASE AMI: ami-0f75bb5fd5fa9f972
-const R_HOST = "http://host.docker.internal/";
-const R_PORT = "api";
+
 const InstanceState = props => {
   const initialState = {
     key: null,
@@ -41,7 +39,7 @@ const InstanceState = props => {
     });
 
     try {
-      const res = await axios.get(`http://${process.env.REACT_APP_HOST}/api/find_posts`, {
+      const res = await axios.get(`http://${process.env.API_LOCATION}/api/find_posts`, {
         headers: {
           "Content-Type": "application/json"
         },
@@ -63,50 +61,50 @@ const InstanceState = props => {
     }
   };
 
-  // Add Contact
-  const addInstance = async instance => {
-    console.log("ADD INSTANCES");
-    try {
-      const { key, limit } = instance;
-      console.log(`http://${process.env.REACT_APP_HOST}/api/create_instance`);
-      await axios.get(`http://web/api/find_posts`, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        params: {
-          search_term: key,
-          limit: limit
-        }
-      });
-    } catch (err) {
-      console.log("addInstance");
-      console.error(err);
-    }
-  };
+  // // Add Contact
+  // const addInstance = async instance => {
+  //   console.log("ADD INSTANCES");
+  //   try {
+  //     const { key, limit } = instance;
+  //     console.log(`http://${process.env.API_LOCATION}/api/create_instance`);
+  //     await axios.get(`http://web/api/find_posts`, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       params: {
+  //         search_term: key,
+  //         limit: limit
+  //       }
+  //     });
+  //   } catch (err) {
+  //     console.log("addInstance");
+  //     console.error(err);
+  //   }
+  // };
 
   // Delete Contact
-  const modifyInstance = async (id, modify, instanceType = "") => {
-    try {
-      await axios.get(`http://${process.env.REACT_APP_HOST}/api/instance_modify`, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        params: {
-          user_token: localStorage.token,
-          id,
-          method: modify,
-          instance_type: instanceType
-        }
-      });
-    } catch (err) {
-      console.error(err);
-      console.log("deleteInstance");
-      dispatch({
-        type: INSTANCE_ERROR,
-        payload: err.response.message
-      });
-    }
-  };
+  // const modifyInstance = async (id, modify, instanceType = "") => {
+  //   try {
+  //     await axios.get(`http://${process.env.API_LOCATION}/api/instance_modify`, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       params: {
+  //         user_token: localStorage.token,
+  //         id,
+  //         method: modify,
+  //         instance_type: instanceType
+  //       }
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //     console.log("deleteInstance");
+  //     dispatch({
+  //       type: INSTANCE_ERROR,
+  //       payload: err.response.message
+  //     });
+  //   }
+  // };
 
   // Update Contact
   const updateInstance = async instance => {
