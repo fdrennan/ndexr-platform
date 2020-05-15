@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
+
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -15,9 +15,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ExitToApp from "@material-ui/icons/ExitToApp";
 import Button from "@material-ui/core/Button";
 
 const drawerWidth = 240;
@@ -82,9 +79,9 @@ const Navbar = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
 
-  const { logout, loadUser } = authContext; //   const { isAuthenticated, logout, loadUser } = authContext;
+  // const { logout, loadUser } = authContext; //   const { isAuthenticated, logout, loadUser } = authContext;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -94,14 +91,14 @@ const Navbar = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    loadUser();
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   loadUser();
+  //   eslint-disable-next-line
+  // }, []);
 
-  const onLogout = () => {
-    logout();
-  };
+  // const onLogout = () => {
+  //   logout();
+  // };
 
   const buildServer = props => (
     <Link to="/" {...props}>
@@ -110,7 +107,7 @@ const Navbar = () => {
   );
 
   const securityLink = props => (
-    <Link to="/security" {...props}>
+    <Link to="/dashboard" {...props}>
       Dashboard
     </Link>
   );
@@ -163,18 +160,10 @@ const Navbar = () => {
             <Button component={buildServer} to="/" />
           </ListItem>
           <ListItem>
-            <Button component={securityLink} to="/security" />
+            <Button component={securityLink} to="/dashboard" />
           </ListItem>
         </List>
         <Divider />
-        <List>
-          <ListItem button to="#" onClick={onLogout}>
-            <ListItemIcon>
-              <ExitToApp />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
-        </List>
       </Drawer>
       <main
         className={clsx(classes.content, {

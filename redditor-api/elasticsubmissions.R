@@ -29,33 +29,38 @@ if (db_has_table(con,'elastic_uploaded_submissions')) {
 #elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 #elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 max_counts = nrow(counts)
-es = elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all", "data")
 
-counts %>%
-  split(.$id) %>%
-  map(
-    function(x) {
-      print(x$id/max_counts)
-      response <-
-        stream_submissions_all %>%
-        mutate(
-          year = date_part('year', created_utc),
-          month = date_part('month', created_utc),
-          day = date_part('day', created_utc),
-          hour = date_part('hour', created_utc),
-        ) %>%
-        filter(
-          year == local(x$year),
-          month == local(x$month),
-          day == local(x$day),
-          hour == local(x$hour)
-        ) %>%
-        collect
-      print(response)
-      es %index% response
-      dbWriteTable(conn  = con, name = 'elastic_uploaded_submissions', value = x, append = TRUE)
-    }
-  )
+counts <-
+  counts %>%
+  split(.$id)
+
+
+for (hour_count in counts) {
+  print(hour_count$id/max_counts)
+  response <-
+    stream_submissions_all %>%
+    mutate(
+      year = date_part('year', created_utc),
+      month = date_part('month', created_utc),
+      day = date_part('day', created_utc),
+      hour = date_part('hour', created_utc),
+    ) %>%
+    filter(
+      year == local(hour_count$year),
+      month == local(hour_count$month),
+      day == local(hour_count$day),
+      hour == local(hour_count$hour)
+    ) %>%
+    collect
+  print(response)
+  tryCatch({
+    elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
+    dbWriteTable(conn  = con, name = 'elastic_uploaded_submissions', value = hour_count, append = TRUE)
+   }, error = function(e) {
+    print(e)
+    write.csv(response, 'response.csv')
+  })
+}
 
 #search_term = 'shit is funny'
 #by_time <- sort_on('{"created_utc": {"order": "desc"}}')

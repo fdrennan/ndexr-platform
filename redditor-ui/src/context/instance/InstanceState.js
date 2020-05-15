@@ -27,7 +27,7 @@ const InstanceState = props => {
 
   const [state, dispatch] = useReducer(instanceReducer, initialState);
 
-  // Get Instance
+  // Get Submission
   const getInstances = async instance => {
     console.log("GET INSTANCES");
 
@@ -39,7 +39,7 @@ const InstanceState = props => {
     });
 
     try {
-      const res = await axios.get(`http://${process.env.API_LOCATION}/api/find_posts`, {
+      const res = await axios.get(`http://${process.env.REACT_APP_API_LOCATION}/api/find_posts`, {
         headers: {
           "Content-Type": "application/json"
         },
@@ -60,51 +60,6 @@ const InstanceState = props => {
       console.log("getInstances");
     }
   };
-
-  // // Add Contact
-  // const addInstance = async instance => {
-  //   console.log("ADD INSTANCES");
-  //   try {
-  //     const { key, limit } = instance;
-  //     console.log(`http://${process.env.API_LOCATION}/api/create_instance`);
-  //     await axios.get(`http://web/api/find_posts`, {
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       params: {
-  //         search_term: key,
-  //         limit: limit
-  //       }
-  //     });
-  //   } catch (err) {
-  //     console.log("addInstance");
-  //     console.error(err);
-  //   }
-  // };
-
-  // Delete Contact
-  // const modifyInstance = async (id, modify, instanceType = "") => {
-  //   try {
-  //     await axios.get(`http://${process.env.API_LOCATION}/api/instance_modify`, {
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       params: {
-  //         user_token: localStorage.token,
-  //         id,
-  //         method: modify,
-  //         instance_type: instanceType
-  //       }
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //     console.log("deleteInstance");
-  //     dispatch({
-  //       type: INSTANCE_ERROR,
-  //       payload: err.response.message
-  //     });
-  //   }
-  // };
 
   // Update Contact
   const updateInstance = async instance => {
@@ -133,7 +88,7 @@ const InstanceState = props => {
     }
   };
 
-  // Clear Instance
+  // Clear Submission
   const clearContacts = () => {
     dispatch({ type: CLEAR_INSTANCES });
   };
@@ -148,7 +103,7 @@ const InstanceState = props => {
     dispatch({ type: CLEAR_CURRENT_INSTANCE });
   };
 
-  // Filter Instance
+  // Filter Submission
   const filterInstances = text => {
     dispatch({ type: FILTER_INSTANCES, payload: text });
   };
@@ -165,8 +120,6 @@ const InstanceState = props => {
         instance: state.instance,
         filtered: state.filtered,
         error: state.error,
-        addInstance,
-        modifyInstance,
         setInstance,
         clearCurrentInstance,
         updateInstance,
