@@ -143,7 +143,3 @@ volumes:
   postgres: {}
   redditor_data: {}
   airflow-worker-logs:
-
-networks:
-  elastic:
-    driver: bridge
