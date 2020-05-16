@@ -28,6 +28,26 @@ const SecurityGroupForm = () => {
           />
         </Box>
       </Grid>
+      <Grid xs={12} sm={6}>
+        <Box>
+          <img
+            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=5000&granularity=1 minutes&timezone=MST&width=6&height=3.5`}
+            alt="Hmm that wasn't supposed to happen"
+            height="100%"
+            width="100%"
+          />
+        </Box>
+      </Grid>
+      <Grid xs={12} sm={6}>
+        <Box>
+          <img
+            src={`http://${process.env.REACT_APP_API_LOCATION}/api/comment_plot?limit=5000&granularity=1 minutes&timezone=MST&table=submissions&width=6&height=3.5`}
+            alt="Hmm that wasn't supposed to happen"
+            height="100%"
+            width="100%"
+          />
+        </Box>
+      </Grid>
     </Grid>
   );
 };
