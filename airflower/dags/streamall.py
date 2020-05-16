@@ -1,12 +1,14 @@
 import airflow
 from airflow.operators.bash_operator import BashOperator
 from airflow.models import DAG
+from datetime import timedelta
 
 args = {
     'owner': 'Freddy Drennan',
     'start_date': airflow.utils.dates.days_ago(2),
     'email': ['drennanfreddy@gmail.com'],
     'retries': 100,
+    'retry_delay': timedelta(minutes=1),
     'email_on_failure': True,
     'email_on_retry': True
 }
