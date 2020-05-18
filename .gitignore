@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .env*
 postgres.bak
-data
+airflow/data
 .idea
 .Rhistory
 .Rproj.user

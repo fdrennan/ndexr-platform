@@ -37,7 +37,7 @@ con <- dbConnect(PostgreSQL(),
                  # dbname   = 'linkedin',
                  host     = public_ip,
                  port     = 5432,
-                 user     = "postgres",
+                 user     = "../../../airflow",
                  password = "password")
 
 dbListTables(con)

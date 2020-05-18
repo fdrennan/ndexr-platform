@@ -3,7 +3,7 @@ FROM node:10
 # Create app directory
 WORKDIR /usr/src/app
 
-COPY ./redditor-ui/package.json .
+COPY ./web/redditor-ui/package.json .
 
 RUN yarn
 

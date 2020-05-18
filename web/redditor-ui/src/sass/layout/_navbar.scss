@@ -1,0 +1,17 @@
+@import "../abstracts/variables";
+
+
+.wrapper {
+  display: grid;
+  grid-area: nav;
+  grid-template-columns: 100px 100px;
+  background-color: #fff;
+  color: #444;
+}
+
+.box {
+  background-color: $primary-color;
+  //border-radius: 5px;
+  //padding: 20px;
+  //font-size: 150%;
+}

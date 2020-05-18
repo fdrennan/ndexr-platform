@@ -54,7 +54,7 @@ for (hour_count in counts) {
     collect
   print(response)
   tryCatch({
-    elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
+    elastic(Sys.getenv('XPS_ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
     dbWriteTable(conn  = con, name = 'elastic_uploaded_submissions', value = hour_count, append = TRUE)
    }, error = function(e) {
     print(e)

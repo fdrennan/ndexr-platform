@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/usr/bin/scp /postgres.tar.gz postgres@db:/postgres.tar.gz

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /home/scripts/R/r_files
-/usr/bin/Rscript /home/scripts/R/r_files/stream_submissions_to_s3.R

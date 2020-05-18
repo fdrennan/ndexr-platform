@@ -578,3 +578,7 @@ docker push fdrennan/redditorapi:latest
 
 # Check open ports
 https://gf.dev/port-scanner
+
+# Specify Docker Compose Location
+docker-compose -f /Users/fdrennan/redditor/do.yml up
+
