@@ -16,9 +16,9 @@ find_posts <- function(search_term = NULL, table_name='stream_submissions_all', 
   }', .open = '--', .close='--'), size = limit)
   
   if(sort_by_time) {
-    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "../../postgres/data") %search% (elastic_query + by_time)
+    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "data") %search% (elastic_query + by_time)
   } else {
-    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "../../postgres/data") %search% (elastic_query)
+    comments <- elastic(Sys.getenv('ELASTIC_SEARCH'), table_name, "data") %search% (elastic_query)
   }
 
   # stream_submissions <-

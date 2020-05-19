@@ -1,6 +1,8 @@
 library(redditor)
 library(elasticsearchr)
 
+#elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
+
 con = postgres_connector()
 
 stream_submissions_all <- tbl(con, in_schema('public', 'stream_submissions_all'))
@@ -26,7 +28,7 @@ if (db_has_table(con,'elastic_uploaded_submissions')) {
 }
 
 
-#elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
+
 #elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 max_counts = nrow(counts)
 
@@ -54,7 +56,7 @@ for (hour_count in counts) {
     collect
   print(response)
   tryCatch({
-    elastic(Sys.getenv('XPS_ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
+    elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
     dbWriteTable(conn  = con, name = 'elastic_uploaded_submissions', value = hour_count, append = TRUE)
    }, error = function(e) {
     print(e)
