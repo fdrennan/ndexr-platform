@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   webserver:
-    image: fdrennan/rpy
+    image: rpy
     restart: always
     depends_on:
       - initdb
@@ -29,7 +29,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   initdb:
-    image: fdrennan/rpy
+    image: rpy
     restart: always
     depends_on:
       - postgres
@@ -40,7 +40,7 @@ services:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@172.17.0.1:5439/airflow
     command: airflow initdb
   scheduler:
-    image: fdrennan/rpy
+    image: rpy
     restart: always
     depends_on:
       - webserver
