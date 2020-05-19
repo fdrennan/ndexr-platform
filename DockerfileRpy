@@ -62,5 +62,5 @@ RUN R -e 'library(reticulate); \
           use_python("/usr/bin/python3", required = TRUE); \
           install_python(envname="redditor")'
 
-COPY ./airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
 RUN Rscript /r_venv_install.R
