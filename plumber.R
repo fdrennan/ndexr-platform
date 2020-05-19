@@ -25,7 +25,7 @@ cors <- function(req, res) {
 #* @param search_term  Stocks in JSON
 #* @param limit  Stocks in JSON
 #* @get /find_posts
-function(search_term = 'trump',
+function(search_term = 'Natural Language Processing',
          limit = 5) {
 
   limit = as.numeric(limit)
