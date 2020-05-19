@@ -1,8 +1,6 @@
 library(redditor)
 library(elasticsearchr)
 
-#elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
-
 con = postgres_connector()
 
 stream_submissions_all <- tbl(con, in_schema('public', 'stream_submissions_all'))
@@ -27,7 +25,6 @@ if (db_has_table(con,'elastic_uploaded_submissions')) {
   mutate(id = row_number())
 }
 
-#elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 max_counts = nrow(counts)
 
 counts <-
@@ -61,31 +58,3 @@ for (hour_count in counts) {
     dbWriteTable(conn  = con, name = 'elastic_failed_submissions', value = hour_count, append = TRUE)
   })
 }
-
-#search_term = 'shit is funny'
-#by_time <- sort_on('{"created_utc": {"order": "desc"}}')
-#
-#elastic_query <- query(glue(
-#  '{
-#    "bool": {
-#      "must": [
-#        { "match": { "title":   "--search_term--"        }}
-#      ],
-#      "filter": [
-#        { "range": { "created_utc": { "gte": "2019-05-12T00:00:00" }}}
-#      ]
-#    }
-#  }', .open = '--', .close='--'), size = 30)
-#a <- elastic("http://localhost:9200", "stream_submissions_all", "data") %search% (elastic_query + by_time)
-#a <- elastic("http://localhost:9200", "stream_submissions_all", "data") %search% (elastic_query)
-#
-#
-#sort_on()
-#search_term = 'trump'
-#esq <- query(glue(
-#  '{
-#    "match": {"body": "hello"},
-#    "sort": { "created_utc": "desc" }
-#  }', .open = '--', .close='--'), size = 30)
-#
-#a <- elastic("http://localhost:9200", "stream_submissions_all", "data") %search% esq

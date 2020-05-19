@@ -53,6 +53,7 @@ function(search_term = 'trump',
     # Run the algorithm
     tic()
     response$data <- find_posts(search_term = str_to_lower(search_term), limit = limit, to_json = TRUE)
+    print(response$data)
     timer <- toc(quiet = T)
     response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
 
