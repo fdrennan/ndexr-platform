@@ -29,6 +29,33 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+  redditapithree:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8002:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+  redditapifour:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8003:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+  redditapifive:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8004:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
 
 volumes:
   mongodbdata:
