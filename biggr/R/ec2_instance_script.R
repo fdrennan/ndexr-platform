@@ -1,10 +1,10 @@
 #' ec2_instance_script
-#' @param postgres_password Password for postgres database
+#' @param postgres_password Password for airflow database
 #' @param phone_number Number to sent you a ding. Message is pointless and nondescript
 #' @param null_user Blank file for nothing to load on server.
 #' @return A bash script
 #' @export ec2_instance_script
-ec2_instance_script <- function(postgres_password = 'postgres',
+ec2_instance_script <- function(postgres_password = '../../airflow',
                                 phone_number      = NA,
                                 null_user         = FALSE) {
 
@@ -41,7 +41,7 @@ ec2_instance_script <- function(postgres_password = 'postgres',
                      'sudo apt-get install python3-venv',
                      'wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.1335-amd64.deb',
                      'yes | sudo gdebi rstudio-server-1.2.1335-amd64.deb',
-                     # Load postgres
+                     # Load airflow
                      'sudo apt install postgresql postgresql-contrib -y',
                      'CONF_FILE=$(find / -name "postgresql.conf" | grep main)',
                      'PG_FILE=$(find / -name "pg_hba.conf" | grep main)',

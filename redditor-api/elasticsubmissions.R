@@ -1,6 +1,8 @@
 library(redditor)
 library(elasticsearchr)
 
+#elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
+
 con = postgres_connector()
 
 stream_submissions_all <- tbl(con, in_schema('public', 'stream_submissions_all'))
@@ -25,15 +27,12 @@ if (db_has_table(con,'elastic_uploaded_submissions')) {
   mutate(id = row_number())
 }
 
-
-#elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
 #elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 max_counts = nrow(counts)
 
 counts <-
   counts %>%
   split(.$id)
-
 
 for (hour_count in counts) {
   print(hour_count$id/max_counts)

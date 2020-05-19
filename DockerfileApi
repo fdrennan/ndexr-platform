@@ -41,10 +41,9 @@ RUN R -e "install.packages('sourcetools')"
 RUN R -e "install.packages('fastmap')"
 RUN R -e "install.packages('mongolite')"
 
+ARG DUMMY=unknowndatassss
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
-
-ARG DUMMY=unknowndatass
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 
@@ -53,9 +52,10 @@ RUN R -e 'library(reticulate); \
           use_python("/usr/bin/python3", required = TRUE); \
           install_python(envname="redditor")'
 
-COPY ./airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
 RUN Rscript /r_venv_install.R
 
+COPY ./plumber.R /app/plumber.R
 EXPOSE 8000
 ENTRYPOINT ["R", "-e", "pr <- plumber::plumb(commandArgs()[4]); pr$run(host='0.0.0.0', port=8000)"]
 CMD ["/app/plumber.R"]

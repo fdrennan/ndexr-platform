@@ -1,6 +1,0 @@
-library(fs)
-library(biggr)
-message('Creating tarfile from postgres')
-tar('/backup/postgres.tar.gz', '/backup/postgres', compression = 'gzip', tar="tar")
-message('Sending to S3')
-s3_upload_file(bucket = 'redditor-dumps', from = '/backup/postgres.tar.gz', to = 'postgres.tar.gz')

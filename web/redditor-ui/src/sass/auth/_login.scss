@@ -1,0 +1,33 @@
+.login {
+ background-image: url("./auth/mountains.jpg");
+ background-size: 100%;
+ max-width: 100%;
+ max-height: 99%;
+ height: 100vh;
+ background-repeat: no-repeat;
+}
+
+
+.login-form {
+ background-color: rgba(white, .25);
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ border-radius: 3%;
+ margin: auto;
+ //overflow: hidden;
+ padding: 1rem 2rem;
+ color: darken(#BB846C, 30%);
+ //border-width: 100px;
+ h1 {
+  text-align: center;
+ }
+
+ input {
+  width: 100%;
+  height: 20px;
+  margin-bottom: 3px;
+ }
+}
+

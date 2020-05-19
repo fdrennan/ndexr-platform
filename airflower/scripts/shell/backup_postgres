@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/usr/bin/pg_dump -h db -p $POSTGRES_PORT -Fc -o -U $POSTGRES_USER $POSTGRES_DB > /postgres.bak

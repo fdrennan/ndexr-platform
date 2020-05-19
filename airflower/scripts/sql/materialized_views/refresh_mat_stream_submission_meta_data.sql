@@ -1,1 +1,0 @@
-refresh materialized view public.stream_submission_meta_data;

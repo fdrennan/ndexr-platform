@@ -13,7 +13,7 @@
 rds_instance_create = function(db_instance_identifier = NA,
                                allocated_storage = 10L,
                                database_name = NA,
-                               engine = "postgres",
+                               engine = "../../airflow",
                                storage_type = "gp2",
                                auto_minor_version_upgrade = TRUE,
                                multi_az = FALSE,

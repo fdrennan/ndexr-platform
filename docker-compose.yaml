@@ -37,7 +37,7 @@ services:
     ports:
       - 5439:5432
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - airflow:/var/lib/postgresql/data
   mongo_db:
     image: 'mongo'
     container_name: 'ndexr_mongo'
@@ -96,7 +96,7 @@ services:
       - ./data:/data
       - ./pem:/pem
     links:
-      - "postgres"
+      - "airflow"
       - "db"
     command: airflow scheduler
   redditapi:
@@ -107,7 +107,6 @@ services:
      - "8000:8000"
     working_dir: /app
     volumes:
-      - ./plumber.R:/app/plumber.R
       - ./.env:/app/.Renviron
   redditapitwo:
     image: fdrennan/redditorapi
