@@ -20,7 +20,7 @@ dag = DAG(dag_id='upload_submissions_to_elastic',
 
 
 task_1 = BashOperator(
-    task_id='set_up_aws',
+    task_id='upload_submissions_to_elastic',
     bash_command='. /home/scripts/R/shell/upload_submissions_to_elastic',
     dag=dag
 )
