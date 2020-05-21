@@ -99,7 +99,7 @@ const Submission = () => {
                       <br />
                       <strong>Selftext:</strong>{" "}
                       {selftext &&
-                        `${selftext.toString().slice(0, 5000)}.......`}
+                        `${selftext.toString().slice(0, 1000)}.......`}
                     </Box>
 
                     <a href={url} target="_blank" rel="noopener noreferrer">
