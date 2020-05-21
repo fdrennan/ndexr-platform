@@ -1,40 +1,34 @@
 #' @export postgres_connector
-postgres_connector = function() {
+postgres_connector <- function() {
   n <- 1
-  message('First attempt at connection')
+  message("First attempt at connection")
   repeat {
-    connection <-
-      try({
-        dbConnect(
-          RPostgres::Postgres(),
-          host = Sys.getenv('POSTGRES_HOST'),
-          port = Sys.getenv('POSTGRES_PORT'),
-          user = Sys.getenv('POSTGRES_USER'),
-          password = Sys.getenv('POSTGRES_PASSWORD'),
-          dbname = Sys.getenv('POSTGRES_DB')
-        )
-      })
+    connection <- try({
+      dbConnect(RPostgres::Postgres(),
+        host = Sys.getenv("POSTGRES_HOST"), port = Sys.getenv("POSTGRES_PORT"),
+        user = Sys.getenv("POSTGRES_USER"), password = Sys.getenv("POSTGRES_PASSWORD"), dbname = Sys.getenv("POSTGRES_DB")
+      )
+    })
 
-    if (!inherits(connection, 'try-error')) {
+    if (!inherits(connection, "try-error")) {
       break
     } else {
       if (n > 100) {
-        stop('Database connection failed')
+        stop("Database connection failed")
       }
       n <- n + 1
-      message(glue('Trying to connect: try {n}'))
+      message(glue("Trying to connect: try {n}"))
     }
   }
 
   connection
-
 }
 
 #' @export my_collect
 my_collect <- function(connection) {
   connection %>%
     mutate_if(is.numeric, as.numeric) %>%
-    collect
+    collect()
 }
 
 #' @export str_detect_any
@@ -51,15 +45,7 @@ i_like <- function(string_value, query) {
 send_message <- function(messages = NULL, SLACK_API_KEY = NULL) {
   base_url <- glue("https://hooks.slack.com/services/{SLACK_API_KEY}")
   message(paste0("\n", messages, "\n"))
-  text = paste0('{"text": "', messages , '"}')
-  messages = paste0(
-    'curl -X POST -H \'Content-type: application/json\' --data ','\'',
-    str_squish(text),
-    '\' ', base_url
-  )
+  text <- paste0("{\"text\": \"", messages, "\"}")
+  messages <- paste0("curl -X POST -H 'Content-type: application/json' --data ", "'", str_squish(text), "' ", base_url)
   system(messages)
 }
-
-SLACK_API_KEY = 'TAS9MV5K2/B013YKGCZV0/DGiWHkwihTupyhPaHhnjYa0G'
-current_time <- now(tzone = 'MST') + hours(1)
-send_message(messages = glue('Data updated on {current_time}'), SLACK_API_KEY = SLACK_API_KEY)
