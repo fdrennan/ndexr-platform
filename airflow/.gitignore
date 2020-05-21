@@ -1,2 +1,5 @@
+data
+*.bak
+*.gz
 .env
 .Rprofile

@@ -46,3 +46,20 @@ str_detect_any <- function(string = NULL, pattern = NULL) {
 i_like <- function(string_value, query) {
   str_detect(str_to_lower(string_value), query)
 }
+
+#' @export send_messge
+send_message <- function(messages = NULL, SLACK_API_KEY = NULL) {
+  base_url <- glue("https://hooks.slack.com/services/{SLACK_API_KEY}")
+  message(paste0("\n", messages, "\n"))
+  text = paste0('{"text": "', messages , '"}')
+  messages = paste0(
+    'curl -X POST -H \'Content-type: application/json\' --data ','\'',
+    str_squish(text),
+    '\' ', base_url
+  )
+  system(messages)
+}
+
+SLACK_API_KEY = 'TAS9MV5K2/B013YKGCZV0/DGiWHkwihTupyhPaHhnjYa0G'
+current_time <- now(tzone = 'MST') + hours(1)
+send_message(messages = glue('Data updated on {current_time}'), SLACK_API_KEY = SLACK_API_KEY)

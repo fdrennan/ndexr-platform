@@ -3,12 +3,15 @@ library(elasticsearchr)
 
 #elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
 
+
+dwh_table='stream_submissions_all'
+dwh_verification_table='elastic_uploaded_submissions'
+elastic_search_table="stream_submissions_all"
+
 con = postgres_connector()
-
-stream_submissions_all <- tbl(con, in_schema('public', 'stream_submissions_all'))
-
+response_table <- tbl(con, in_schema('public', dwh_table))
 counts <-
-  stream_submissions_all %>%
+  response_table %>%
   mutate(
     year = date_part('year', created_utc),
     month = date_part('month', created_utc),
@@ -21,8 +24,8 @@ counts <-
   as.data.frame() %>%
   mutate(id = row_number())
 
-if (db_has_table(con,'elastic_uploaded_submissions')) {
-  elastic_uploaded <- collect(tbl(con, in_schema('public', 'elastic_uploaded_submissions')))
+if (db_has_table(con,dwh_verification_table)) {
+  elastic_uploaded <- collect(tbl(con, in_schema('public', dwh_verification_table)))
   counts <- anti_join(counts, select(elastic_uploaded, -id)) %>%
   mutate(id = row_number())
 }
@@ -37,7 +40,7 @@ counts <-
 for (hour_count in counts) {
   print(hour_count$id/max_counts)
   response <-
-    stream_submissions_all %>%
+    response_table %>%
     mutate(
       year = date_part('year', created_utc),
       month = date_part('month', created_utc),
@@ -53,12 +56,11 @@ for (hour_count in counts) {
     collect
   print(response)
   tryCatch({
-    elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all", "data") %index% as.data.frame(response)
-    dbWriteTable(conn  = con, name = 'elastic_uploaded_submissions', value = hour_count, append = TRUE)
+    elastic(Sys.getenv('ELASTIC_SEARCH'), elastic_search_table, "data") %index% as.data.frame(response)
+    dbWriteTable(conn  = con, name = dwh_verification_table, value = hour_count, append = TRUE)
    }, error = function(e) {
-    print(e)
-    write.csv(response, 'response.csv')
-    dbWriteTable(conn  = con, name = 'elastic_failed_submissions', value = hour_count, append = TRUE)
+    message('Oops, something went wrong.')
+    dbWriteTable(conn  = con, name = dwh_verification_table, value = hour_count, append = TRUE)
   })
 }
 

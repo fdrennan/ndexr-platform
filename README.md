@@ -591,3 +591,6 @@ docker rm $(docker ps -a -f status=exited -q)
 docker rmi $(docker images -a -q)
 docker volume prune
 ```
+
+# Install Elastic Search Plugins
+https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-with-docker-container
