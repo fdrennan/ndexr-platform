@@ -50,7 +50,7 @@ RUN R -e "install.packages('jose')"
 RUN R -e "install.packages('sourcetools')"
 RUN R -e "install.packages('fastmap')"
 
-ARG DUMMY=unknowndatasss
+ARG DUMMY=unknowndatassss
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"

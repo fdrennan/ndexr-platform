@@ -49,6 +49,3 @@ send_message <- function(messages = NULL, SLACK_API_KEY = NULL) {
   messages <- paste0("curl -X POST -H 'Content-type: application/json' --data ", "'", str_squish(text), "' ", base_url)
   system(messages)
 }
-
-current_time <- now(tzone = "MST") + hours(1)
-send_message(messages = glue("Data updated on {current_time}"), SLACK_API_KEY = Sys.getenv('SLACK_API_KEY'))
