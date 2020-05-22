@@ -38,7 +38,8 @@ ui <- dashboardPage(
   dashboardHeader(title = "NDEXR"),
   dashboardSidebar(
     # Pass in Date objects
-    numericInput(inputId = "limit_value", label = "N Seconds Ago", value = 30000, min = 100, max = 1000000)
+    numericInput(inputId = "limit_value", label = "N Seconds Ago", value = 30000, min = 100, max = 1000000),
+    textInput(inputId = "search_value", label = "Query Data", value = 'Natural Language Processing', placeholder = 'Natural Language Processing')
   ),
   dashboardBody(
     fluidRow(
@@ -47,13 +48,17 @@ ui <- dashboardPage(
     ),
     # infoBoxes with fill=FALSE
     fluidRow(
-      # A static infoBox
-
       # Dynamic infoBoxes
       infoBoxOutput("progressBox"),
       infoBoxOutput("approvalBox"),
       infoBoxOutput("progressBox2"),
       infoBoxOutput("approvalBox2")
+    ),
+    fluidRow(
+      # A static infoBox
+      
+      # Dynamic infoBoxes
+      tableOutput("search_data")
     ),
 
     # infoBoxes with fill=TRUE
@@ -105,6 +110,16 @@ server <- function(input, output) {
       icon = icon("thumbs-up", lib = "glyphicon"),
       color = "yellow", fill = TRUE
     )
+  })
+  output$search_data <- renderTable({
+    
+    response <- find_posts(search_term = input$search_value, limit = 30) %>% 
+      select(author, subreddit, title, permalink, shortlink) %>% 
+      mutate_all(as.character) %>% 
+      as_tibble
+    
+    response
+    
   })
 }
 
