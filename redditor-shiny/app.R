@@ -38,7 +38,7 @@ ui <- dashboardPage(
   dashboardHeader(title = "NDEXR"),
   dashboardSidebar(
     # Pass in Date objects
-    numericInput(inputId = "limit_value", label = "N Seconds Ago", value = 30000, min = 100, max = 1000000),
+    numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 30000, min = 100, max = 1000000),
     textInput(inputId = "search_value", label = "Query Data", value = 'Natural Language Processing', placeholder = 'Natural Language Processing')
   ),
   dashboardBody(
@@ -114,7 +114,9 @@ server <- function(input, output) {
   output$search_data <- renderTable({
     
     response <- find_posts(search_term = input$search_value, limit = 30) %>% 
-      select(author, subreddit, title, permalink, shortlink) %>% 
+      transmute(created_utc = as_date(created_utc),
+             days_ago = as.numeric(Sys.Date() - created_utc),
+             author, subreddit, title, permalink, shortlink) %>% 
       mutate_all(as.character) %>% 
       as_tibble
     
