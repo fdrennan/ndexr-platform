@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+author: fdrennan
+date: 5/21/20
+output: html_notebook
+---
+
+Type any R code in the chunk, for example:
+```{r}
+library(redditor)
+```
+
+```{r}
+con <- postgres_connector()
+all_tables <- dbListTables(con)
+```
+
+```{r}
+all_tables
+```
+
+```{r}
+response <- map_df(all_tables, function (table_name) {
+  table <- tbl(con, in_schema('public', table_name)) %>%
+    count(name = 'n_observations') %>%
+    mutate_if(is.numeric, as.numeric) %>%
+    collect
+  tibble(table_name = table_name, n_observations = table$n_observations)
+})
+```
+
+```{r}
+print(response)
+```
+
+```{r}
+streamall <- tbl(con, in_schema('public', 'streamall')) %>%
+mutate(time = )
+```
