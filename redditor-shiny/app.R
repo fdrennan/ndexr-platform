@@ -15,11 +15,17 @@ library(future)
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
 
-get_count <- function(table_name = "mat_comments_by_second", min_date = "2020-05-03", max_date = Sys.Date()) {
-  con <- postgres_connector()
-  table_name <- tbl(con, in_schema("public", table_name)) %>% my_collect()
-  on.exit(dbDisconnect(conn = con))
-
+get_count <- function(table_name = "mat_comments_by_second",
+                      min_date = "2020-05-03",
+                      max_date = Sys.Date(), cache = TRUE) {
+  # if (cache & file_exists("table_name.rda")) {
+    # table_name <- read_rds("table_name.rda")
+  # } else {
+    con <- postgres_connector()
+    table_name <- tbl(con, in_schema("public", table_name)) %>% my_collect()
+    on.exit(dbDisconnect(conn = con))
+    # write_rds(table_name, "table_name.rda")
+  # }
   total_sum <- sum(table_name$n_observations)
   total_in_last_hour <- table_name %>%
     filter(created_utc > local(now(tzone = "UTC") - hours(1))) %>%
@@ -37,38 +43,43 @@ get_count <- function(table_name = "mat_comments_by_second", min_date = "2020-05
 ui <- dashboardPage(
   dashboardHeader(title = "NDEXR"),
   dashboardSidebar(
-    # Pass in Date objects
-    numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 30000, min = 100, max = 1000000),
-    textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing")
+    sidebarMenu(
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Search", tabName = "search", icon = icon("th"))
+    )
   ),
   dashboardBody(
-    # infoBoxes with fill=FALSE
-    fluidRow(
-      # Dynamic infoBoxes
-      infoBoxOutput("progressBox", width = 3),
-      infoBoxOutput("approvalBox", width = 3),
-      infoBoxOutput("progressBox2", width = 3),
-      infoBoxOutput("approvalBox2", width = 3),
-    ),
-    fluidRow(
-      # Clicking this will increment the progress amount
-      plotOutput("all_time_comments")
-    ),
-    fluidRow(
-      plotOutput("all_time_submissions")
-    ),
-    fluidRow(
-      # A static infoBox
-
-      # Dynamic infoBoxes
-      tableOutput("search_data")
-    ),
-
-    # infoBoxes with fill=TRUE
-    # fluidRow(
-    #   infoBoxOutput("progressBox2"),
-    #   infoBoxOutput("approvalBox2")
-    # ),
+    tabItems(
+      tabItem(
+        tabName = "dashboard",
+        fluidRow(
+          # Dynamic infoBoxes
+          infoBoxOutput("progressBox", width = 3),
+          infoBoxOutput("approvalBox", width = 3),
+          infoBoxOutput("progressBox2", width = 3),
+          infoBoxOutput("approvalBox2", width = 3),
+        ),
+        fluidRow(
+          numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
+        ),
+        fluidRow(
+          # Clicking this will increment the progress amount
+          plotOutput("all_time_comments")
+        ),
+        fluidRow(
+          plotOutput("all_time_submissions")
+        )
+      ),
+      tabItem(
+        tabName = "search",
+        fluidRow(
+          textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing")
+        ),
+        fluidRow(
+          tableOutput("search_data")
+        )
+      )
+    )
   )
 )
 
@@ -79,18 +90,6 @@ server <- function(input, output) {
   mat_submissions_total <- mat_submissions_by_second$comments_gathered
   mat_comments_last_hour <- mat_comments_by_second$total_in_last_hour
   mat_submissions_last_hour <- mat_submissions_by_second$total_in_last_hour
-
-  output$all_time_comments <- renderPlot({
-    future({
-      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = 'comments')
-    })
-  })
-
-  output$all_time_submissions <- renderPlot({
-    future({
-      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = 'submissions')
-    })
-  })
 
   output$progressBox <- renderInfoBox({
     infoBox(
@@ -122,6 +121,21 @@ server <- function(input, output) {
       color = "yellow", fill = TRUE
     )
   })
+
+
+  output$all_time_comments <- renderPlot({
+    future({
+      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = "comments")
+    })
+  })
+
+  output$all_time_submissions <- renderPlot({
+    future({
+      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = "submissions")
+    })
+  })
+
+
   output$search_data <- renderTable({
     response <- find_posts(search_term = input$search_value, limit = 30) %>%
       transmute(
