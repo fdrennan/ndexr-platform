@@ -16,6 +16,10 @@ all_tables <- dbListTables(con)
 ```
 
 ```{r}
+all_tables
+```
+
+```{r}
 response <- map_df(all_tables, function (table_name) {
   table <- tbl(con, in_schema('public', table_name)) %>%
     count(name = 'n_observations') %>%

@@ -7,7 +7,7 @@ base_dir <- "/Users/fdrennan/redditor/redditor-api"
 
 style_dir(base_dir)
 style_dir(file.path(base_dir, "R"))
-
+style_dir(file.path("/Users/fdrennan/redditor/", 'redditor-shiny'))
 devtools::install(base_dir)
 
 current_time <- now(tzone = "MST") + hours(1)
