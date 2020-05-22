@@ -88,7 +88,7 @@ server <- function(input, output) {
 
   output$all_time_submissions <- renderPlot({
     future({
-      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, 'submissions')
+      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = 'submissions')
     })
   })
 
