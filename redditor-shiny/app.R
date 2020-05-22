@@ -12,7 +12,7 @@ library(shinydashboard)
 library(redditor)
 library(scales)
 library(future)
-
+options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
 
 get_count <- function(table_name = "mat_comments_by_second", min_date = "2020-05-03", max_date = Sys.Date()) {
