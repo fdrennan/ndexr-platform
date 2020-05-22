@@ -2,7 +2,7 @@ library(styler)
 library(lubridate)
 library(glue)
 library(stringr)
-
+library(fs)
 base_dir <- "/Users/fdrennan/redditor/redditor-api"
 
 style_dir(base_dir)

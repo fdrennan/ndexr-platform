@@ -22,7 +22,7 @@ get_count <- function(table_name = "mat_comments_by_second", min_date = "2020-05
 
   total_sum <- sum(table_name$n_observations)
   total_in_last_hour <- table_name %>%
-    filter(created_utc > local(now(tzone = 'UTC') - hours(1))) %>%
+    filter(created_utc > local(now(tzone = "UTC") - hours(1))) %>%
     count() %>%
     pull(n)
 
@@ -39,13 +39,9 @@ ui <- dashboardPage(
   dashboardSidebar(
     # Pass in Date objects
     numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 30000, min = 100, max = 1000000),
-    textInput(inputId = "search_value", label = "Query Data", value = 'Natural Language Processing', placeholder = 'Natural Language Processing')
+    textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing")
   ),
   dashboardBody(
-    fluidRow(
-      # Clicking this will increment the progress amount
-      plotOutput("all_time")
-    ),
     # infoBoxes with fill=FALSE
     fluidRow(
       # Dynamic infoBoxes
@@ -55,8 +51,15 @@ ui <- dashboardPage(
       infoBoxOutput("approvalBox2")
     ),
     fluidRow(
+      # Clicking this will increment the progress amount
+      plotOutput("all_time_comments")
+    ),
+    fluidRow(
+      plotOutput("all_time_submissions")
+    ),
+    fluidRow(
       # A static infoBox
-      
+
       # Dynamic infoBoxes
       tableOutput("search_data")
     ),
@@ -77,8 +80,16 @@ server <- function(input, output) {
   mat_comments_last_hour <- mat_comments_by_second$total_in_last_hour
   mat_submissions_last_hour <- mat_submissions_by_second$total_in_last_hour
 
-  output$all_time <- renderPlot({
-      future({plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1)})
+  output$all_time_comments <- renderPlot({
+    future({
+      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = 'mat_comments_by_second')
+    })
+  })
+
+  output$all_time_submissions <- renderPlot({
+    future({
+      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, 'mat_submissions_by_second')
+    })
   })
 
   output$progressBox <- renderInfoBox({
@@ -112,16 +123,16 @@ server <- function(input, output) {
     )
   })
   output$search_data <- renderTable({
-    
-    response <- find_posts(search_term = input$search_value, limit = 30) %>% 
-      transmute(created_utc = as_date(created_utc),
-             days_ago = as.numeric(Sys.Date() - created_utc),
-             author, subreddit, title, permalink, shortlink) %>% 
-      mutate_all(as.character) %>% 
-      as_tibble
-    
+    response <- find_posts(search_term = input$search_value, limit = 30) %>%
+      transmute(
+        created_utc = as_date(created_utc),
+        days_ago = as.numeric(Sys.Date() - created_utc),
+        author, subreddit, title, permalink, shortlink
+      ) %>%
+      mutate_all(as.character) %>%
+      as_tibble()
+
     response
-    
   })
 }
 
