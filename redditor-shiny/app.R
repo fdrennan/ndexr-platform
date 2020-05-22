@@ -45,10 +45,10 @@ ui <- dashboardPage(
     # infoBoxes with fill=FALSE
     fluidRow(
       # Dynamic infoBoxes
-      infoBoxOutput("progressBox"),
-      infoBoxOutput("approvalBox"),
-      infoBoxOutput("progressBox2"),
-      infoBoxOutput("approvalBox2")
+      infoBoxOutput("progressBox", width = 3),
+      infoBoxOutput("approvalBox", width = 3),
+      infoBoxOutput("progressBox2", width = 3),
+      infoBoxOutput("approvalBox2", width = 3),
     ),
     fluidRow(
       # Clicking this will increment the progress amount
@@ -110,7 +110,7 @@ server <- function(input, output) {
   # Same as above, but with fill=TRUE
   output$progressBox2 <- renderInfoBox({
     infoBox(
-      "Submissions Gathered", mat_submissions_total,
+      "Submissions Gathered - Total", mat_submissions_total,
       icon = icon("list"),
       color = "purple", fill = TRUE
     )
