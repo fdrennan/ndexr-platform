@@ -18,14 +18,14 @@ con <- postgres_connector()
 get_count <- function(table_name = "mat_comments_by_second",
                       min_date = "2020-05-03",
                       max_date = Sys.Date(), cache = TRUE) {
-  # if (cache & file_exists("table_name.rda")) {
-    # table_name <- read_rds("table_name.rda")
-  # } else {
+  if (cache & file_exists("table_name.rda")) {
+    table_name <- read_rds("table_name.rda")
+  } else {
     con <- postgres_connector()
     table_name <- tbl(con, in_schema("public", table_name)) %>% my_collect()
     on.exit(dbDisconnect(conn = con))
-    # write_rds(table_name, "table_name.rda")
-  # }
+    write_rds(table_name, "table_name.rda")
+  }
   total_sum <- sum(table_name$n_observations)
   total_in_last_hour <- table_name %>%
     filter(created_utc > local(now(tzone = "UTC") - hours(1))) %>%
@@ -49,6 +49,10 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
+    # tags$head(tags$style(HTML('
+    #   .box {
+    #       padding: 3px;
+    #   }'))),
     tabItems(
       tabItem(
         tabName = "dashboard",
@@ -73,7 +77,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "search",
         fluidRow(
-          textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing")
+          box(textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing"))
         ),
         fluidRow(
           tableOutput("search_data")

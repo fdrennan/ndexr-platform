@@ -430,3 +430,52 @@ subreddit_profile <- function(subreddit_name = NULL) {
   most_frequented_subreddits %>%
     as.data.frame()
 }
+
+#' @export get_submission
+get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) {
+  subreddit <- subreddit <- reddit$subreddit(name)
+  subreddit <- switch(type, controversial = {
+    subreddit$controversial(limit = limit)
+  }, hot = {
+    subreddit$hot(limit = limit)
+  }, new = {
+    subreddit$new(limit = limit)
+  }, top = {
+    subreddit$top(limit = limit)
+  }, )
+  comments <- iterate(subreddit)
+  meta_data <- map_df(comments, ~ parse_meta(.))
+  meta_data %>%
+    mutate(
+      submission_key = glue("{subreddit_id}_{author}_{name}")
+    ) %>%
+    select(submission_key, created_utc, everything())
+}
+
+gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
+  while (TRUE) {
+    send_message("----------Gathering submissions---------")
+    get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
+    prior <- count_submissions()
+    send_message("Uploading submissions...")
+    dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
+    after <- count_submissions()
+    send_message("Checking submission counts...")
+    new_submissions <- after$n_obs - prior$n_obs
+    downloaded_rows <- nrow(get_all)
+    overlap_ratio <- round(1 - new_submissions / downloaded_rows, 2)
+    if (overlap_ratio < .4) {
+      overlap_ratio <- sleep_time - 2
+      overlap_ratio <- max(2, overlap_ratio)
+      send_message(glue("Updating sleep_time to {sleep_time}"))
+    } else if (overlap_ratio > .6) {
+      overlap_ratio <- sleep_time + 2
+      overlap_ratio <- min(20, overlap_ratio)
+      send_message(glue("Updating sleep_time to {sleep_time}"))
+    }
+    send_message(glue("Downloaded rows: {downloaded_rows}"))
+    send_message(glue("New submissions in table: {new_submissions}"))
+    send_message(glue("Overlap Ratio: {overlap_ratio}"))
+    Sys.sleep(sleep_time)
+  }
+}

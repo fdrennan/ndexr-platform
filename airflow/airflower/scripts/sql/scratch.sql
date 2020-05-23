@@ -19,9 +19,3 @@ from public.streamall
          ) x
 group by created_utc
 order by created_utc desc
-
-
-
-select count(*)
-from public.streamall
--- /var/lib/postgresql/data
