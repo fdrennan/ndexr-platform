@@ -1,0 +1,7 @@
+install.packages('tidyverse')
+install.packages('styler')
+install.packages('lubridate')
+install.packages('glue')
+install.packages('stringr')
+install.packages('fs')
+install.packages('uuid')
