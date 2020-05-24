@@ -144,7 +144,7 @@ server <- function(input, output) {
         query <- 
           '
           with times as (
-              select date_trunc(\'minute\', created_utc::timestamptz) as created_utc
+              select date_trunc(\'hour\', created_utc::timestamptz) as created_utc
               from submissions
           )
           
