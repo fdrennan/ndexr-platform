@@ -3,16 +3,7 @@ library(biggr)
 library(dbx)
 
 praw <- reticulate::import("praw")
-
-reddit_con <- praw$Reddit(
-  client_id = Sys.getenv("REDDIT_CLIENT"),
-  client_secret = Sys.getenv("REDDIT_AUTH"),
-  user_agent = Sys.getenv("USER_AGENT"),
-  username = Sys.getenv("USERNAME"),
-  password = Sys.getenv("PASSWORD")
-)
-
-
+reddit_con <- reddit_connector()
 
 while (TRUE) {
   con <- postgres_connector()
@@ -21,7 +12,7 @@ while (TRUE) {
       gather_submissions(con = con, reddit_con = reddit_con)
     },
     error = function(e) {
-      send_message(glue("{e}"))
+      send_message(glue("{str_sub(as.character(e), 1, 100)}"))
       Sys.sleep(10)
     }
   )

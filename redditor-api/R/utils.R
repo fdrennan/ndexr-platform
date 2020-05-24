@@ -68,3 +68,16 @@ count_submissions <- function() {
   send_message(glue("Number of submissions: {prior$n_obs}"), SLACK_API_KEY = Sys.getenv("SLACK_API_KEY"))
   prior
 }
+
+#' @export reddit_connector
+reddit_connector <- function() {
+  praw <- import("praw")
+  reddit_con <- praw$Reddit(
+    client_id = Sys.getenv("REDDIT_CLIENT"),
+    client_secret = Sys.getenv("REDDIT_AUTH"),
+    user_agent = Sys.getenv("USER_AGENT"),
+    username = Sys.getenv("USERNAME"),
+    password = Sys.getenv("PASSWORD")
+  )
+  reddit_con
+}

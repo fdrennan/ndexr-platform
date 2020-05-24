@@ -458,24 +458,29 @@ gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
     get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
     prior <- count_submissions()
     send_message("Uploading submissions...")
-    dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
+    tryCatch(
+      {
+        dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
+      },
+      error = function(e) {
+        browser()
+      }
+    )
     after <- count_submissions()
     send_message("Checking submission counts...")
     new_submissions <- after$n_obs - prior$n_obs
     downloaded_rows <- nrow(get_all)
     overlap_ratio <- round(1 - new_submissions / downloaded_rows, 2)
     if (overlap_ratio < .4) {
-      overlap_ratio <- sleep_time - 2
-      overlap_ratio <- max(2, overlap_ratio)
+      sleep_time <- sleep_time - 2
+      sleep_time <- max(2, sleep_time)
       send_message(glue("Updating sleep_time to {sleep_time}"))
     } else if (overlap_ratio > .6) {
-      overlap_ratio <- sleep_time + 2
-      overlap_ratio <- min(20, overlap_ratio)
+      sleep_time <- sleep_time + 2
+      sleep_time <- min(20, sleep_time)
       send_message(glue("Updating sleep_time to {sleep_time}"))
     }
-    send_message(glue("Downloaded rows: {downloaded_rows}"))
-    send_message(glue("New submissions in table: {new_submissions}"))
-    send_message(glue("Overlap Ratio: {overlap_ratio}"))
+    send_message(glue("Sleep Time: {sleep_time} -- Downloaded rows: {downloaded_rows} -- New submissions in table: {new_submissions} -- Overlap Ratio: {overlap_ratio}"))
     Sys.sleep(sleep_time)
   }
 }
