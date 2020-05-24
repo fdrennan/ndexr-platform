@@ -2,17 +2,17 @@ library(redditor)
 library(biggr)
 library(dbx)
 
-#praw <- reticulate::import("praw")
-#reddit_con <- reddit_connector()
-con = postgres_connector()
+# praw <- reticulate::import("praw")
+# reddit_con <- reddit_connector()
+con <- postgres_connector()
 
 map(
-  c('submissions', 'stream_submissions_all'),
+  c("submissions", "stream_submissions_all"),
   function(table_name) {
-    print(dput(colnames(tbl(con, in_schema('public', table_name)))))
+    print(dput(colnames(tbl(con, in_schema("public", table_name)))))
   }
 )
-#gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
+# gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
 #  while (TRUE) {
 #    send_message("----------Gathering submissions---------")
 #    get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
@@ -43,9 +43,9 @@ map(
 #    send_message(glue("Sleep Time: {sleep_time} -- Downloaded rows: {downloaded_rows} -- New submissions in table: {new_submissions} -- Overlap Ratio: {overlap_ratio}"))
 #    Sys.sleep(sleep_time)
 #  }
-#}
+# }
 #
-#while (TRUE) {
+# while (TRUE) {
 #  con <- postgres_connector()
 #  tryCatch(
 #    {
@@ -57,4 +57,4 @@ map(
 #    }
 #  )
 #  dbDisconnect(conn = con)
-#}
+# }
