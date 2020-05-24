@@ -137,14 +137,14 @@ server <- function(input, output) {
     future({
       # plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = "submissions")
       # library(redditor)
-      
+
       plot_submissions <- function() {
-        con = postgres_connector()
+        con <- postgres_connector()
         on.exit(dbDisconnect(con))
-        query <- 
-          '
+        query <-
+          "
           with times as (
-              select date_trunc(\'hour\', created_utc::timestamptz) as created_utc
+              select date_trunc('hour', created_utc::timestamptz) as created_utc
               from submissions
           )
           
@@ -152,16 +152,15 @@ server <- function(input, output) {
           select created_utc, count(*)::numeric as n_observations
           from times
           group by created_utc
-          '
-              
-              submissions <- dbGetQuery(con, query)
-              
-              ggplot(submissions) +
-                aes(x = created_utc, y = n_observations) +
-                geom_col()
-        
+          "
+
+        submissions <- dbGetQuery(con, query)
+
+        ggplot(submissions) +
+          aes(x = created_utc, y = n_observations) +
+          geom_col()
       }
-      
+
       plot_submissions()
     })
   })

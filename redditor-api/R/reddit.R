@@ -473,7 +473,7 @@ gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
     overlap_ratio <- round(1 - new_submissions / downloaded_rows, 2)
     if (overlap_ratio < .4) {
       sleep_time <- sleep_time - 2
-      sleep_time <- max(2, sleep_time)
+      sleep_time <- max(0, sleep_time)
       send_message(glue("Updating sleep_time to {sleep_time}"))
     } else if (overlap_ratio > .6) {
       sleep_time <- sleep_time + 2
