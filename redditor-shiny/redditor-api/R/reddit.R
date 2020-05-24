@@ -430,3 +430,57 @@ subreddit_profile <- function(subreddit_name = NULL) {
   most_frequented_subreddits %>%
     as.data.frame()
 }
+
+#' @export get_submission
+get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) {
+  subreddit <- subreddit <- reddit$subreddit(name)
+  subreddit <- switch(type, controversial = {
+    subreddit$controversial(limit = limit)
+  }, hot = {
+    subreddit$hot(limit = limit)
+  }, new = {
+    subreddit$new(limit = limit)
+  }, top = {
+    subreddit$top(limit = limit)
+  }, )
+  comments <- iterate(subreddit)
+  meta_data <- map_df(comments, ~ parse_meta(.))
+  meta_data %>%
+    mutate(
+      submission_key = glue("{subreddit_id}_{author}_{name}")
+    ) %>%
+    select(submission_key, created_utc, everything())
+}
+
+gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
+  while (TRUE) {
+    send_message("----------Gathering submissions---------")
+    get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
+    prior <- count_submissions()
+    send_message("Uploading submissions...")
+    tryCatch(
+      {
+        dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
+      },
+      error = function(e) {
+        browser()
+      }
+    )
+    after <- count_submissions()
+    send_message("Checking submission counts...")
+    new_submissions <- after$n_obs - prior$n_obs
+    downloaded_rows <- nrow(get_all)
+    overlap_ratio <- round(1 - new_submissions / downloaded_rows, 2)
+    if (overlap_ratio < .4) {
+      sleep_time <- sleep_time - 2
+      sleep_time <- max(2, sleep_time)
+      send_message(glue("Updating sleep_time to {sleep_time}"))
+    } else if (overlap_ratio > .6) {
+      sleep_time <- sleep_time + 2
+      sleep_time <- min(20, sleep_time)
+      send_message(glue("Updating sleep_time to {sleep_time}"))
+    }
+    send_message(glue("Sleep Time: {sleep_time} -- Downloaded rows: {downloaded_rows} -- New submissions in table: {new_submissions} -- Overlap Ratio: {overlap_ratio}"))
+    Sys.sleep(sleep_time)
+  }
+}
