@@ -1,1 +1,1 @@
-refresh materialized view public.mat_counts_by_second;
+refresh materialized view public.counts_by_second;
