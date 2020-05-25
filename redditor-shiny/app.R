@@ -61,10 +61,10 @@ server <- function(input, output) {
     data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") 
     data <- 
       data %>% 
-      mutate(
+      transmute(
         created_utc = as_date(created_utc),
         days_ago = as.numeric(Sys.Date() - created_utc),
-        author, subreddit, title, body, permalink, shortlink, url
+        author, subreddit, title, permalink, shortlink, url
       ) %>%
       mutate_all(as.character) %>%
       as_tibble()
