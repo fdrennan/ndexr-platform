@@ -58,11 +58,13 @@ server <- function(input, output) {
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
-    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") %>%
-      transmute(
+    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") 
+    data <- 
+      data %>% 
+      mutate(
         created_utc = as_date(created_utc),
         days_ago = as.numeric(Sys.Date() - created_utc),
-        author, subreddit, title, permalink, shortlink
+        author, subreddit, title, body, permalink, shortlink, url
       ) %>%
       mutate_all(as.character) %>%
       as_tibble()
