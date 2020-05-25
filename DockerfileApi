@@ -50,6 +50,9 @@ RUN R -e "install.packages('DT')"
 RUN R -e "install.packages('scales')"
 RUN R -e "install.packages('openxlsx')"
 
+COPY ./redditor-api /home/redditor-api
+COPY ./biggr /home/biggr
+
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 
 RUN R -e 'library(reticulate); \
@@ -58,8 +61,6 @@ RUN R -e 'library(reticulate); \
           install_python(envname="redditor")'
 
 ARG DUMMY=rando
-COPY ./redditor-api /home/redditor-api
-COPY ./biggr /home/biggr
 RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 
 
