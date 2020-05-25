@@ -71,8 +71,9 @@ function(search_term = "trump",
 }
 
 #* @serializer unboxedJSON
+#* @param table_name A table to grab
 #* @get /get_summary
-function() {
+function(table_name = "meta_statistics") {
   message(glue("Within get_summary {Sys.time()}"))
 
   # Build the response object (list will be serialized as JSON)
@@ -81,14 +82,15 @@ function() {
     data = "",
     message = "Success!",
     metaData = list(
-      runtime = 0
+      runtime = 0,
+      table_name = table_name
     )
   )
 
   response <- tryCatch(
     {
       tic()
-      response$data <- toJSON(get_summary())
+      response$data <- toJSON(get_summary(table_name = table_name))
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
       return(response)

@@ -48,6 +48,7 @@ RUN R -e "install.packages('shiny')"
 RUN R -e "install.packages('future')"
 RUN R -e "install.packages('DT')"
 RUN R -e "install.packages('scales')"
+RUN R -e "install.packages('openxlsx')"
 
 RUN R -e "setwd('/home/biggr'); devtools::install()"
 

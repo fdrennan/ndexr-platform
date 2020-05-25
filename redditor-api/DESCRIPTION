@@ -28,6 +28,7 @@ Depends:
     shinydashboard,
     shiny,
     DT,
-    scales
+    scales,
+    openxlsx
 Encoding: UTF-8
 LazyData: true
