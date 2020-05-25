@@ -23,6 +23,7 @@ Depends:
     tictoc,
     stringr,
     elasticsearchr,
-    dbx
+    dbx,
+    ggthemes
 Encoding: UTF-8
 LazyData: true

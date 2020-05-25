@@ -4,21 +4,17 @@ library(elasticsearchr)
 # elastic(Sys.getenv('ELASTIC_SEARCH'), "streamall") %delete% TRUE
 # elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
 
-# dwh_table='streamall'
-# dwh_verification_table='elastic_uploaded_comments_streamall'
-# dwh_failed_verification_table='elastic_uploaded_comments_streamall_failed'
-# elastic_search_table="streamall"
-
-dwh_table <- "stream_submissions_all"
-dwh_verification_table <- "elastic_uploaded_submissions"
-dwh_failed_verification_table <- "elastic_uploaded_submissions_streamall_failed"
-elastic_search_table <- "stream_submissions_all"
+dwh_table <- "submissions"
+dwh_verification_table <- "submissions_to_elastic_success"
+dwh_failed_verification_table <- "submissions_to_elastic_failed"
+elastic_search_table <- "submissions"
 
 con <- postgres_connector()
 response_table <- tbl(con, in_schema("public", dwh_table))
 counts <-
   response_table %>%
   mutate(
+    created_utc = sql("cast(created_utc as timestamptz)"),
     year = date_part("year", created_utc),
     month = date_part("month", created_utc),
     day = date_part("day", created_utc),
@@ -44,10 +40,13 @@ counts <-
   split(.$id)
 
 for (hour_count in counts) {
-  print(hour_count$id / max_counts)
+  elastic_submission_upload_ratio <- round(hour_count$id / max_counts, 4)
+  send_message(glue("Uploading Submissions to Elastic {elastic_submission_upload_ratio*100}% complete"))
+  print(elastic_submission_upload_ratio)
   response <-
     response_table %>%
     mutate(
+      created_utc = sql("cast(created_utc as timestamptz)"),
       year = date_part("year", created_utc),
       month = date_part("month", created_utc),
       day = date_part("day", created_utc),
