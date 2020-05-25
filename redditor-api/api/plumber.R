@@ -71,11 +71,10 @@ function(search_term = "trump",
 }
 
 #* @serializer unboxedJSON
+#* @param table_name A table to grab
 #* @get /get_summary
-function() {
-  limit <- as.numeric(limit)
-
-  message(glue("Within get_stocks {Sys.time()}"))
+function(table_name = 'meta_statistics') {
+  message(glue("Within get_summary {Sys.time()}"))
 
   # Build the response object (list will be serialized as JSON)
   response <- list(
@@ -83,27 +82,22 @@ function() {
     data = "",
     message = "Success!",
     metaData = list(
-      runtime = 0
+      runtime = 0,
+      table_name = table_name
     )
   )
 
   response <- tryCatch(
     {
-      if (limit > 1000) {
-        stop("You are limited to 1000 posts at a time")
-      }
-      # Run the algorithm
       tic()
-      response$data <- toJSON(get_summary())
+      response$data <- toJSON(get_summary(table_name = table_name))
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
-
       return(response)
     },
     error = function(err) {
       response$statusCode <- 400
       response$message <- paste(err)
-
       return(response)
     }
   )

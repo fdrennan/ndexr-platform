@@ -1,42 +1,14 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
-library(shiny)
-library(shinydashboard)
 library(redditor)
-library(scales)
 library(future)
+library(httr)
+library(jsonlite)
+library(openxlsx)
+
+
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
 
-get_count <- function(table_name = "mat_comments_by_second",
-                      min_date = "2020-05-03",
-                      max_date = Sys.Date(), cache = TRUE) {
-  if (cache & file_exists("table_name.rda")) {
-    table_name <- read_rds("table_name.rda")
-  } else {
-    con <- postgres_connector()
-    table_name <- tbl(con, in_schema("public", table_name)) %>% my_collect()
-    on.exit(dbDisconnect(conn = con))
-    write_rds(table_name, "table_name.rda")
-  }
-  total_sum <- sum(table_name$n_observations)
-  total_in_last_hour <- table_name %>%
-    filter(created_utc > local(now(tzone = "UTC") - hours(1))) %>%
-    count() %>%
-    pull(n)
-
-  comments_gathered <- comma_format()(total_sum)
-  total_in_last_hour <- comma_format()(total_in_last_hour)
-
-  list(comments_gathered = comments_gathered, total_in_last_hour = total_in_last_hour, table_name = table_name)
-}
+# curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 
 
@@ -49,38 +21,33 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
-    # tags$head(tags$style(HTML('
-    #   .box {
-    #       padding: 3px;
-    #   }'))),
     tabItems(
       tabItem(
         tabName = "dashboard",
         fluidRow(
           # Dynamic infoBoxes
-          infoBoxOutput("progressBox", width = 3),
-          infoBoxOutput("approvalBox", width = 3),
-          infoBoxOutput("progressBox2", width = 3),
-          infoBoxOutput("approvalBox2", width = 3),
+          infoBoxOutput("submissionsBox", width = 4),
+          infoBoxOutput("authorsBox", width = 4),
+          infoBoxOutput("subredditsBox", width = 4)
         ),
-        fluidRow(
-          numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
-        ),
-        fluidRow(
-          # Clicking this will increment the progress amount
-          plotOutput("all_time_comments")
-        ),
+        # fluidRow(
+        #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
+        # ),
         fluidRow(
           plotOutput("all_time_submissions")
+        ),
+        fluidRow(
+          plotOutput("submissions_cumulative")
         )
       ),
       tabItem(
         tabName = "search",
         fluidRow(
-          box(textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing"))
+          box(textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing")),
+          downloadButton("downloadData", "Download")
         ),
         fluidRow(
-          tableOutput("search_data")
+          dataTableOutput("search_data")
         )
       )
     )
@@ -88,60 +55,14 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  mat_comments_by_second <- get_count("mat_comments_by_second")
-  mat_submissions_by_second <- get_count("mat_submissions_by_second")
-  mat_comments_total <- mat_comments_by_second$comments_gathered
-  mat_submissions_total <- mat_submissions_by_second$comments_gathered
-  mat_comments_last_hour <- mat_comments_by_second$total_in_last_hour
-  mat_submissions_last_hour <- mat_submissions_by_second$total_in_last_hour
-
-  output$progressBox <- renderInfoBox({
-    infoBox(
-      "Comments Gathered", mat_comments_total,
-      icon = icon("list"),
-      color = "purple"
-    )
-  })
-  output$approvalBox <- renderInfoBox({
-    infoBox(
-      "Comments Gathered - Last Hour", mat_comments_last_hour,
-      icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow"
-    )
-  })
-
-  # Same as above, but with fill=TRUE
-  output$progressBox2 <- renderInfoBox({
-    infoBox(
-      "Submissions Gathered - Total", mat_submissions_total,
-      icon = icon("list"),
-      color = "purple", fill = TRUE
-    )
-  })
-  output$approvalBox2 <- renderInfoBox({
-    infoBox(
-      "Submissions Gathered - Last Hour", mat_submissions_last_hour,
-      icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow", fill = TRUE
-    )
-  })
-
-
-  output$all_time_comments <- renderPlot({
-    future({
-      plot_stream(limit = as.numeric(input$limit_value), timezone = "MST", add_hours = 1, table = "comments")
-    })
-  })
-
-  output$all_time_submissions <- renderPlot({
-    future({
-      plot_submissions()
-    })
-  })
-
-
-  output$search_data <- renderTable({
-    response <- find_posts(search_term = input$search_value, limit = 30) %>%
+  
+  resp <- GET(url = "http://127.0.0.1:7882/get_summary", query = list(table_name = 'meta_statistics'))
+  meta_statistics <- fromJSON(fromJSON(content(resp, 'text'))$data)
+  resp <- GET(url = "http://127.0.0.1:7882/get_summary", query = list(table_name = 'counts_by_second'))
+  counts_by_second <- fromJSON(fromJSON(content(resp, 'text'))$data)
+  
+  elastic_results <- reactive({
+    data = find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") %>%
       transmute(
         created_utc = as_date(created_utc),
         days_ago = as.numeric(Sys.Date() - created_utc),
@@ -149,8 +70,99 @@ server <- function(input, output) {
       ) %>%
       mutate_all(as.character) %>%
       as_tibble()
+    
+    data
+  })
+  
+  output$submissionsBox <- renderInfoBox({
+    infoBox(
+      "Submissions Gathered", comma(filter(as.data.frame(meta_statistics), type == 'submissions')$value),
+      icon = icon("list"),
+      color = "purple"
+    )
+  })
+  
+  output$subredditsBox <- renderInfoBox({
+    infoBox(
+      "Subreddits Discovered", comma(filter(as.data.frame(meta_statistics), type == 'subreddits')$value),
+      icon = icon("list"),
+      color = "purple"
+    )
+  })
 
-    response
+  output$authorsBox <- renderInfoBox({
+    infoBox(
+      "Authors Discovered", comma(filter(as.data.frame(meta_statistics), type == 'authors')$value),
+      icon = icon("list"),
+      color = "purple"
+    )
+  })
+
+
+  output$submissions_cumulative <- renderPlot({
+    
+    cbs <- 
+      counts_by_second %>% 
+      arrange(created_utc) %>% 
+      mutate(created_utc=floor_date(ymd_hms(created_utc), unit='hour'),
+             created_utc=with_tz(created_utc, tzone = "America/Denver"),
+             n_observations=as.numeric(n_observations)) %>% 
+      group_by(created_utc) %>% 
+      summarise(n_observations = sum(n_observations)) %>% 
+      ungroup 
+    
+    cbs$cumsum_amount = cumsum(cbs$n_observations)
+    
+    ggplot(cbs) +
+      aes(x=created_utc, y=cumsum_amount) +
+      geom_line() +
+      xlab('Created At') +
+      ylab('Submissions Accumulated')
+  })
+  
+  output$all_time_submissions <- renderPlot({
+    counts_by_second %>% 
+      head(60*60*6) %>% 
+      mutate(created_utc=floor_date(ymd_hms(created_utc), unit='minutes'),
+             created_utc=with_tz(created_utc, tzone = "America/Denver"),
+             n_observations=as.numeric(n_observations)) %>% 
+      group_by(created_utc) %>% 
+      summarise(n_observations = sum(n_observations)) %>% 
+      ggplot() +
+      aes(x=created_utc, y=n_observations) +
+      geom_line() +
+      xlab('Created At') +
+      ylab('Submissions Gathered')
+  })
+
+
+  
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste('output', ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(elastic_results(), file, row.names = FALSE)
+    }
+  )
+  
+  output$search_data <- renderDataTable({
+    response <- elastic_results()
+
+    datatable(response,
+              
+              extensions = 'Buttons',
+              
+              options = list(
+                paging = TRUE,
+                searching = TRUE,
+                fixedColumns = TRUE,
+                autoWidth = TRUE,
+                ordering = TRUE,
+                dom = 'tB'
+              ),
+              
+              class = "display")
   })
 }
 

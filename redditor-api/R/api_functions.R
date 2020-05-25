@@ -1,5 +1,8 @@
 #' @export find_posts
-find_posts <- function(search_term = NULL, table_name = "stream_submissions_all", limit = 1000, sort_by_time = FALSE,
+find_posts <- function(search_term = NULL,
+                       table_name = "submissions",
+                       limit = 1000,
+                       sort_by_time = FALSE,
                        to_json = FALSE) {
   by_time <- sort_on("{\"created_utc\": {\"order\": \"desc\"}}")
 
@@ -88,48 +91,12 @@ plot_stream <- function(limit = 300, timezone = "UTC", granularity = "1 mins", a
 
 
 #' @export get_summary
-get_summary <- function() {
+get_summary <- function(table_name = "meta_statistics") {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
 
-
-  stream_submission_meta_data <- tbl(con, in_schema("public", "stream_submission_meta_data")) %>%
-    filter(meta %in%
-      "time") %>%
-    mutate(table = "stream_submission_meta_data") %>%
+  table_name <- tbl(con, in_schema("public", table_name)) %>%
     collect()
 
-  streamall_meta_data <- tbl(con, in_schema("public", "streamall_meta_data")) %>%
-    mutate(table = "streamall_meta_data") %>%
-    filter(meta %in% "time") %>%
-    collect()
-
-  streamall_authors <- tbl(con, in_schema("public", "streamall_meta_data")) %>%
-    mutate(table = "streamall_meta_data") %>%
-    filter(meta == "author") %>%
-    mutate(amount = as.numeric(amount)) %>%
-    arrange(desc(amount)) %>%
-    mutate(amount = as.character(amount)) %>%
-    head(30) %>%
-    collect()
-
-  streamall_subreddits <- tbl(con, in_schema("public", "streamall_meta_data")) %>%
-    mutate(table = "streamall_meta_data") %>%
-    filter(meta == "subreddit") %>%
-    mutate(amount = as.numeric(amount)) %>%
-    arrange(desc(amount)) %>%
-    mutate(amount = as.character(amount)) %>%
-    head(30) %>%
-    collect()
-
-
-  binder <- stream_submission_meta_data %>%
-    bind_rows(streamall_meta_data) %>%
-    bind_rows(streamall_authors) %>%
-    bind_rows(streamall_subreddits) %>%
-    group_by(meta) %>%
-    mutate(id = row_number()) %>%
-    nest()
-
-  binder
+  table_name
 }
