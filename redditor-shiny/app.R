@@ -35,9 +35,6 @@ ui <- dashboardPage(
         # ),
         fluidRow(
           plotOutput("all_time_submissions")
-        ),
-        fluidRow(
-          plotOutput("submissions_cumulative")
         )
       ),
       tabItem(
@@ -97,32 +94,8 @@ server <- function(input, output) {
     )
   })
 
-
-  output$submissions_cumulative <- renderPlot({
-    cbs <-
-      counts_by_second %>%
-      arrange(created_utc) %>%
-      mutate(
-        created_utc = floor_date(ymd_hms(created_utc), unit = "hour"),
-        created_utc = with_tz(created_utc, tzone = "America/Denver"),
-        n_observations = as.numeric(n_observations)
-      ) %>%
-      group_by(created_utc) %>%
-      summarise(n_observations = sum(n_observations)) %>%
-      ungroup()
-
-    cbs$cumsum_amount <- cumsum(cbs$n_observations)
-
-    ggplot(cbs) +
-      aes(x = created_utc, y = cumsum_amount) +
-      geom_line() +
-      xlab("Created At") +
-      ylab("Submissions Accumulated")
-  })
-
   output$all_time_submissions <- renderPlot({
     counts_by_second %>%
-      head(60 * 60 * 6) %>%
       mutate(
         created_utc = floor_date(ymd_hms(created_utc), unit = "minutes"),
         created_utc = with_tz(created_utc, tzone = "America/Denver"),
