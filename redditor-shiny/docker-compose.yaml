@@ -14,6 +14,7 @@ services:
     volumes:
       - './logs:/var/log/shiny-server'
       - '.:/srv/shiny-server/'
+      - './.env:/app/.Renviron'
 
 volumes:
   shiny_logs:
