@@ -34,4 +34,5 @@ create materialized view public.counts_by_second as (
     from public.submissions
     group by created_utc::timestamp
     order by created_utc desc
+    limit 60*60*12
 );

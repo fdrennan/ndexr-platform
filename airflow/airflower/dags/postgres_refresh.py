@@ -29,13 +29,13 @@ task_0 = BashOperator(
     dag=dag
 )
 
-task_3 = BashOperator(
+task_1 = BashOperator(
     task_id='refresh_mat_submissions_by_second',
     bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_second',
     dag=dag
 )
 
-task_4 = BashOperator(
+task_2 = BashOperator(
     task_id='refresh_mat_comments_by_second',
     bash_command='. /home/scripts/R/shell/refresh_mat_meta_statistics',
     dag=dag
@@ -45,5 +45,3 @@ task_4 = BashOperator(
 task   >> task_0
 task_0 >> task_1
 task_1 >> task_2
-task_2 >> task_3
-task_3 >> task_4
