@@ -7,7 +7,7 @@ library(openxlsx)
 
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
-
+LENOVO = Sys.getenv('LENOVO')
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 
@@ -55,9 +55,9 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  resp <- GET(url = "http://127.0.0.1:7882/get_summary", query = list(table_name = "meta_statistics"))
+  resp <- GET(url = glue("http://{LENOVO}/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
-  resp <- GET(url = "http://127.0.0.1:7882/get_summary", query = list(table_name = "counts_by_second"))
+  resp <- GET(url = glue("http://{LENOVO}/api/get_summary"), query = list(table_name = "counts_by_second"))
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
