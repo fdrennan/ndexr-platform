@@ -23,7 +23,6 @@ plot_submissions <- function(time_grouping = "hour",
     aes(x = created_utc, y = n_observations) +
     geom_col() +
     # scale_colour_gradient() +
-    theme_solarized() +
     xlab(glue("Created at - {timezone}")) +
     ylab("Number of Submissions") +
     ggtitle(glue("Number of Submissions by the {str_to_sentence(time_grouping)}"))

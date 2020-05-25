@@ -1,10 +1,31 @@
-with times as (
-  select date_trunc('hour', created_utc::timestamptz) as created_utc
-  from submissions
-)
+drop materialized view if exists public.meta_statistics;
+create materialized view public.meta_statistics as (
+    select 'count' as key, 'submissions' as type, count(*) as value
+    from submissions
+    union
+    select 'count' as key, 'subreddits' as type, count(distinct subreddit) as value
+    from submissions
+    union
+    select 'count' as key, 'authors' as type, count(distinct author) as value
+    from submissions
+);
+
+drop materialized view if exists public.counts_by_second;
+create materialized view public.counts_by_second as (
+    select created_utc::timestamp, count(*) as n_observations
+    from public.submissions
+    group by created_utc::timestamp
+    order by created_utc desc
+);
+
+refresh materialized view public.meta_statistics;
 
 
-select created_utc, count(*)::numeric as n_observations
-from times
-where created_utc >= now() - interval '1 days'
-group by created_utc
+
+
+refresh materialized view public.meta_statistics;
+
+
+
+
+

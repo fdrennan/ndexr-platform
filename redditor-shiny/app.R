@@ -1,41 +1,25 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
-library(shiny)
-library(shinydashboard)
 library(redditor)
-library(scales)
 library(future)
+
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
 
-get_count <- function(table_name = "mat_comments_by_second",
+get_count <- function(table_name = "submissions",
                       min_date = "2020-05-03",
                       max_date = Sys.Date(), cache = TRUE) {
-  if (cache & file_exists("table_name.rda")) {
-    table_name <- read_rds("table_name.rda")
-  } else {
-    con <- postgres_connector()
-    table_name <- tbl(con, in_schema("public", table_name)) %>% my_collect()
-    on.exit(dbDisconnect(conn = con))
-    write_rds(table_name, "table_name.rda")
-  }
-  total_sum <- sum(table_name$n_observations)
-  total_in_last_hour <- table_name %>%
-    filter(created_utc > local(now(tzone = "UTC") - hours(1))) %>%
-    count() %>%
-    pull(n)
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
 
-  comments_gathered <- comma_format()(total_sum)
-  total_in_last_hour <- comma_format()(total_in_last_hour)
+  table_name <-
+    tbl(con, in_schema("public", table_name)) %>%
+    count(name = "n_observations") %>%
+    my_collect()
 
-  list(comments_gathered = comments_gathered, total_in_last_hour = total_in_last_hour, table_name = table_name)
+  write_rds(table_name, "table_name.rda")
+
+  total_sum <- table_name$n_observations
+
+  total_sum
 }
 
 
@@ -49,19 +33,12 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
-    # tags$head(tags$style(HTML('
-    #   .box {
-    #       padding: 3px;
-    #   }'))),
     tabItems(
       tabItem(
         tabName = "dashboard",
         fluidRow(
           # Dynamic infoBoxes
-          infoBoxOutput("progressBox", width = 3),
-          infoBoxOutput("approvalBox", width = 3),
-          infoBoxOutput("progressBox2", width = 3),
-          infoBoxOutput("approvalBox2", width = 3),
+          infoBoxOutput("progressBox", width = 12)
         ),
         fluidRow(
           numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
@@ -80,7 +57,7 @@ ui <- dashboardPage(
           box(textInput(inputId = "search_value", label = "Query Data", value = "Natural Language Processing", placeholder = "Natural Language Processing"))
         ),
         fluidRow(
-          tableOutput("search_data")
+          dataTableOutput("search_data")
         )
       )
     )
@@ -88,41 +65,13 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  mat_comments_by_second <- get_count("mat_comments_by_second")
-  mat_submissions_by_second <- get_count("mat_submissions_by_second")
-  mat_comments_total <- mat_comments_by_second$comments_gathered
-  mat_submissions_total <- mat_submissions_by_second$comments_gathered
-  mat_comments_last_hour <- mat_comments_by_second$total_in_last_hour
-  mat_submissions_last_hour <- mat_submissions_by_second$total_in_last_hour
+  submissions_count <- get_count("submissions")
 
   output$progressBox <- renderInfoBox({
     infoBox(
-      "Comments Gathered", mat_comments_total,
+      "Submissions Gathered", submissions_count,
       icon = icon("list"),
       color = "purple"
-    )
-  })
-  output$approvalBox <- renderInfoBox({
-    infoBox(
-      "Comments Gathered - Last Hour", mat_comments_last_hour,
-      icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow"
-    )
-  })
-
-  # Same as above, but with fill=TRUE
-  output$progressBox2 <- renderInfoBox({
-    infoBox(
-      "Submissions Gathered - Total", mat_submissions_total,
-      icon = icon("list"),
-      color = "purple", fill = TRUE
-    )
-  })
-  output$approvalBox2 <- renderInfoBox({
-    infoBox(
-      "Submissions Gathered - Last Hour", mat_submissions_last_hour,
-      icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow", fill = TRUE
     )
   })
 
@@ -140,8 +89,8 @@ server <- function(input, output) {
   })
 
 
-  output$search_data <- renderTable({
-    response <- find_posts(search_term = input$search_value, limit = 30) %>%
+  output$search_data <- renderDataTable({
+    response <- find_posts(search_term = input$search_value, limit = 30, table_name = "submissions") %>%
       transmute(
         created_utc = as_date(created_utc),
         days_ago = as.numeric(Sys.Date() - created_utc),
