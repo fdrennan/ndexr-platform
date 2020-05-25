@@ -29,28 +29,15 @@ task_0 = BashOperator(
     dag=dag
 )
 
-task_1 = BashOperator(
-    task_id='stream_submission_to_s3',
-    bash_command='. /home/scripts/R/shell/stream_submission_to_s3',
-    dag=dag
-)
-
-task_2 = BashOperator(
-    task_id='streamtos3',
-    bash_command='. /home/scripts/R/shell/streamtos3',
-    dag=dag
-)
-
-
 task_3 = BashOperator(
     task_id='refresh_mat_submissions_by_second',
-    bash_command='. /home/scripts/R/shell/refresh_mat_submissions_by_second',
+    bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_second',
     dag=dag
 )
 
 task_4 = BashOperator(
     task_id='refresh_mat_comments_by_second',
-    bash_command='. /home/scripts/R/shell/refresh_mat_comments_by_second',
+    bash_command='. /home/scripts/R/shell/refresh_mat_meta_statistics',
     dag=dag
 )
 

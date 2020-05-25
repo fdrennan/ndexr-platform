@@ -55,9 +55,9 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  resp <- GET(url = glue("http://{LENOVO}/api/get_summary"), query = list(table_name = "meta_statistics"))
+  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
-  resp <- GET(url = glue("http://{LENOVO}/api/get_summary"), query = list(table_name = "counts_by_second"))
+  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_second"))
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
