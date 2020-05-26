@@ -6,12 +6,7 @@ library(dbx)
 # reddit_con <- reddit_connector()
 con <- postgres_connector()
 
-map(
-  c("submissions", "stream_submissions_all"),
-  function(table_name) {
-    print(dput(colnames(tbl(con, in_schema("public", table_name)))))
-  }
-)
+
 # gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
 #  while (TRUE) {
 #    send_message("----------Gathering submissions---------")

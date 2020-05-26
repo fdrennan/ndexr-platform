@@ -7,7 +7,7 @@ library(openxlsx)
 
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
-LENOVO = Sys.getenv('LENOVO')
+LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 
@@ -58,9 +58,9 @@ server <- function(input, output) {
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
-    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") 
-    data <- 
-      data %>% 
+    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions")
+    data <-
+      data %>%
       transmute(
         created_utc = as_date(created_utc),
         days_ago = as.numeric(Sys.Date() - created_utc),
