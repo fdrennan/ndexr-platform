@@ -182,7 +182,21 @@ parse_meta <- function(subreddit_data) {
   meta_data <- as_tibble(t(tibble(map_chr(chosen_columns, function(x) {
     tryCatch(
       {
-        as.character(subreddit_data[[x]])
+        # if(as.character(subreddit_data)=='giy5fv') {
+        #   browser()
+        # }
+        response <- tryCatch(
+          {
+            as.character(subreddit_data[[x]])
+          },
+          error = function(err) {
+            as.character(err)
+          }
+        )
+        if (is.null(response) | length(response) == 0) {
+          return("")
+        }
+        response
       },
       error = function() {
         return("")
@@ -239,15 +253,20 @@ get_url <- function(reddit, url) {
   meta_data <- parse_meta(sub)
 
   comments <-
-    map_df(
+    map(
       # head(iterate(subreddit$hot()),1),
       list(sub),
       function(x) {
-        map_df(x$comments$list(), function(x) {
-          parse_comments(x)
+        response <- map_df(x$comments$list(), function(x) {
+          resp <- parse_comments(x)
+          resp
         })
+
+        response
       }
     )
+
+  comments <- keep(comments, ~ nrow(.) > 0) %>% bind_rows()
 
   list(meta_data = meta_data, comments = comments)
 }
@@ -312,7 +331,6 @@ parse_comments <- function(comment_data, stream = FALSE) {
         "ups"
       )
   }
-
 
   resp <- map_chr(chosen_columns, function(z) {
     resp <-
@@ -433,7 +451,7 @@ subreddit_profile <- function(subreddit_name = NULL) {
 
 #' @export get_submission
 get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) {
-  subreddit <- subreddit <- reddit$subreddit(name)
+  subreddit <- reddit$subreddit(name)
   subreddit <- switch(type, controversial = {
     subreddit$controversial(limit = limit)
   }, hot = {

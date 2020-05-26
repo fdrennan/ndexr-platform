@@ -7,7 +7,7 @@ library(openxlsx)
 
 options(shiny.sanitize.errors = FALSE)
 con <- postgres_connector()
-LENOVO = Sys.getenv('LENOVO')
+LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 
@@ -58,14 +58,14 @@ server <- function(input, output) {
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
-    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions") 
-    data <- 
-      data %>% 
-      transmute(
-        created_utc = as_date(created_utc),
-        days_ago = as.numeric(Sys.Date() - created_utc),
-        author, subreddit, title, permalink, shortlink, url
-      ) %>%
+    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions")
+    data <-
+      data %>%
+      # transmute(
+      #   created_utc = as_date(created_utc),
+      #   days_ago = as.numeric(Sys.Date() - created_utc),
+      #   author, subreddit, title, permalink, shortlink, url
+      # ) %>%
       mutate_all(as.character) %>%
       as_tibble()
 
@@ -127,18 +127,19 @@ server <- function(input, output) {
     response <- elastic_results()
 
     datatable(response,
-      extensions = "Buttons",
-
-      options = list(
-        paging = TRUE,
-        searching = TRUE,
-        fixedColumns = TRUE,
-        autoWidth = TRUE,
-        ordering = TRUE,
-        dom = "tB"
-      ),
-
-      class = "display"
+              extensions = c('Buttons', 'Scroller'),
+              options = list(scrollY = 650,
+                             scrollX = 500,
+                             deferRender = TRUE,
+                             scroller = TRUE,
+                             fixedColumns = TRUE,
+                             # paging = TRUE,
+                             # pageLength = 25,
+                             buttons = list('excel',
+                                            list(extend = 'colvis', targets = 0, visible = FALSE)),
+                             dom = 'lBfrtip',
+                             fixedColumns = TRUE), 
+              rownames = FALSE
     )
   })
 }
