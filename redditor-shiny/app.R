@@ -44,7 +44,7 @@ ui <- dashboardPage(
           downloadButton("downloadData", "Download")
         ),
         fluidRow(
-          dataTableOutput("search_data")
+          column(dataTableOutput("search_data"), width = 12)
         )
       )
     )
@@ -125,7 +125,13 @@ server <- function(input, output) {
 
   output$search_data <- renderDataTable({
     response <- elastic_results()
-
+    response <- response %>% 
+      rename_all(function(x) {
+        x %>% 
+          str_replace_all('_', ' ') %>% 
+          str_to_title
+      })
+    
     datatable(response,
               extensions = c('Buttons', 'Scroller'),
               options = list(scrollY = 650,
@@ -135,7 +141,7 @@ server <- function(input, output) {
                              fixedColumns = TRUE,
                              # paging = TRUE,
                              # pageLength = 25,
-                             buttons = list('excel',
+                             buttons = list( #'excel',
                                             list(extend = 'colvis', targets = 0, visible = FALSE)),
                              dom = 'lBfrtip',
                              fixedColumns = TRUE), 
