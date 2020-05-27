@@ -30,19 +30,19 @@ task_0 = BashOperator(
 )
 
 task_1 = BashOperator(
-    task_id='refresh_mat_submissions_by_second',
+    task_id='refresh_mat_counts_by_secondg',
     bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_second',
     dag=dag
 )
 
 task_2 = BashOperator(
-    task_id='refresh_mat_submissions_by_second',
+    task_id='refresh_mat_counts_by_minute',
     bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_minute',
     dag=dag
 )
 
 task_3 = BashOperator(
-    task_id='refresh_mat_comments_by_second',
+    task_id='refresh_mat_meta_statistics',
     bash_command='. /home/scripts/R/shell/refresh_mat_meta_statistics',
     dag=dag
 )
