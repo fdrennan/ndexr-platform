@@ -13,7 +13,7 @@ LENOVO <- Sys.getenv("LENOVO")
 
 
 ui <- dashboardPage(
-  dashboardHeader(title = "NDEXR"),
+  dashboardHeader(title = "NDEXReddit"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
