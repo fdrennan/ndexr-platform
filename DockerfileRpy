@@ -56,6 +56,9 @@ RUN R -e "install.packages('future')"
 RUN R -e "install.packages('DT')"
 RUN R -e "install.packages('scales')"
 RUN R -e "install.packages('openxlsx')"
+RUN R -e "install.packages('httpuv')"
+RUN R -e "install.packages('spacyr')"
+RUN R -e "install.packages('quanteda')"
 
 ARG DUMMY=unknowndatasssss
 COPY ./redditor-api /home/redditor-api

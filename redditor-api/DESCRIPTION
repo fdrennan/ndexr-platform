@@ -29,6 +29,9 @@ Depends:
     shiny,
     DT,
     scales,
-    openxlsx
+    openxlsx,
+    spacyr,
+    quanteda
 Encoding: UTF-8
 LazyData: true
+

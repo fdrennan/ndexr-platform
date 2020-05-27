@@ -13,7 +13,6 @@ while (TRUE) {
     },
     error = function(e) {
       send_message(glue("{str_sub(as.character(e), 1, 100)}"))
-      Sys.sleep(10)
     }
   )
   dbDisconnect(conn = con)
