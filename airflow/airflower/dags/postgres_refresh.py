@@ -36,7 +36,7 @@ task_1 = BashOperator(
 )
 
 task_2 = BashOperator(
-    task_id='refresh_mat_submissions_by_second',
+    task_id='refresh_mat_counts_by_minute',
     bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_minute',
     dag=dag
 )
