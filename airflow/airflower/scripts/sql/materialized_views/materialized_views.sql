@@ -36,3 +36,12 @@ create materialized view public.counts_by_second as (
     order by created_utc desc
     limit 60*60*12
 );
+
+drop materialized view if exists public.counts_by_minute;
+create materialized view public.counts_by_minute as (
+    select date_trunc('minute', created_utc::timestamp) as created_utc, count(*) as n_observations
+    from public.submissions
+    group by date_trunc('minute', created_utc::timestamp)
+    order by date_trunc('minute', created_utc::timestamp) desc
+    limit 60*12
+);

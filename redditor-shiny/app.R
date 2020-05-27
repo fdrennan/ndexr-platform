@@ -54,7 +54,7 @@ ui <- dashboardPage(
 server <- function(input, output) {
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
-  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_second"))
+  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
@@ -125,27 +125,30 @@ server <- function(input, output) {
 
   output$search_data <- renderDataTable({
     response <- elastic_results()
-    response <- response %>% 
+    response <- response %>%
       rename_all(function(x) {
-        x %>% 
-          str_replace_all('_', ' ') %>% 
-          str_to_title
+        x %>%
+          str_replace_all("_", " ") %>%
+          str_to_title()
       })
-    
+
     datatable(response,
-              extensions = c('Buttons', 'Scroller'),
-              options = list(scrollY = 650,
-                             scrollX = 500,
-                             deferRender = TRUE,
-                             scroller = TRUE,
-                             fixedColumns = TRUE,
-                             # paging = TRUE,
-                             # pageLength = 25,
-                             buttons = list( #'excel',
-                                            list(extend = 'colvis', targets = 0, visible = FALSE)),
-                             dom = 'lBfrtip',
-                             fixedColumns = TRUE), 
-              rownames = FALSE
+      extensions = c("Buttons", "Scroller"),
+      options = list(
+        scrollY = 650,
+        scrollX = 500,
+        deferRender = TRUE,
+        scroller = TRUE,
+        fixedColumns = TRUE,
+        # paging = TRUE,
+        # pageLength = 25,
+        buttons = list( #' excel',
+          list(extend = "colvis", targets = 0, visible = FALSE)
+        ),
+        dom = "lBfrtip",
+        fixedColumns = TRUE
+      ),
+      rownames = FALSE
     )
   })
 }

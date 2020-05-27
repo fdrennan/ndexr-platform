@@ -60,8 +60,9 @@ send_message <- function(messages = NULL, SLACK_API_KEY = NULL, read_env = TRUE)
 count_submissions <- function() {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
+  submissions <- tbl(con, in_schema("public", "submissions"))
   prior <-
-    tbl(con, in_schema("public", "submissions")) %>%
+    submissions %>%
     count(name = "n_obs") %>%
     my_collect()
 
