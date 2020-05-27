@@ -103,8 +103,8 @@ server <- function(input, output) {
         created_utc = with_tz(created_utc, tzone = "America/Denver"),
         n_observations = as.numeric(n_observations)
       ) %>%
-      group_by(created_utc) %>%
-      summarise(n_observations = sum(n_observations)) %>%
+      # group_by(created_utc) %>%
+      # summarise(n_observations = sum(n_observations)) %>%
       ggplot() +
       aes(x = created_utc, y = n_observations) +
       geom_line() +
