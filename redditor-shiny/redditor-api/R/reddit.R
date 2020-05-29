@@ -247,14 +247,13 @@ parse_meta <- function(subreddit_data) {
 }
 
 #' @export get_url
-get_url <- function(reddit, url) {
+get_url <- function(reddit, url, store = TRUE, n_seconds = 3) {
   sub <- reddit$submission(url = url)
 
   meta_data <- parse_meta(sub)
 
   comments <-
     map(
-      # head(iterate(subreddit$hot()),1),
       list(sub),
       function(x) {
         response <- map_df(x$comments$list(), function(x) {
@@ -267,7 +266,33 @@ get_url <- function(reddit, url) {
     )
 
   comments <- keep(comments, ~ nrow(.) > 0) %>% bind_rows()
+  print(comments)
+  if (!is.data.frame(comments) | nrow(comments) == 0) {
+    return(NULL)
+  }
 
+  comments <-
+    comments %>%
+    mutate(comment_key = glue("{author}-{subreddit_id}-{submission}-{id}")) %>%
+    select(comment_key, everything())
+
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  if (store) {
+    tryCatch(
+      {
+        dbxUpsert(con, "comments", comments, where_cols = c("comment_key"))
+        update_comments_to_word()
+        message(glue("Comments Uploaded: {nrow(comments)}"))
+      },
+      error = function(e) {
+        message("Upsert failed")
+      }
+    )
+  }
+
+  Sys.sleep(n_seconds)
   list(meta_data = meta_data, comments = comments)
 }
 
@@ -481,7 +506,7 @@ gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
         dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
       },
       error = function(e) {
-        browser()
+        message("Something went wrong with upsert in gather_submissions")
       }
     )
     after <- count_submissions()

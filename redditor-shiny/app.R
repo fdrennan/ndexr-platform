@@ -90,7 +90,10 @@ server <- function(input, output) {
 
   output$authorsBox <- renderInfoBox({
     infoBox(
-      "Authors Discovered", comma(filter(as.data.frame(meta_statistics), type == "authors")$value),
+      "Authors Discovered", comma(filter(
+        as.data.frame(meta_statistics),
+        type == "authors"
+      )$value),
       icon = icon("list"),
       color = "purple"
     )

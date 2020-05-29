@@ -5,15 +5,18 @@ postgres_connector <- function() {
   repeat {
     connection <- try({
       dbConnect(RPostgres::Postgres(),
-        host = Sys.getenv("POSTGRES_HOST"), port = Sys.getenv("POSTGRES_PORT"),
-        user = Sys.getenv("POSTGRES_USER"), password = Sys.getenv("POSTGRES_PASSWORD"), dbname = Sys.getenv("POSTGRES_DB")
+        host = Sys.getenv("POSTGRES_HOST"),
+        port = Sys.getenv("POSTGRES_PORT"),
+        user = Sys.getenv("POSTGRES_USER"),
+        password = Sys.getenv("POSTGRES_PASSWORD"),
+        dbname = Sys.getenv("POSTGRES_DB")
       )
     })
 
     if (!inherits(connection, "try-error")) {
       break
     } else {
-      if (n > 100) {
+      if (n > 5) {
         stop("Database connection failed")
       }
       n <- n + 1
@@ -57,7 +60,7 @@ send_message <- function(messages = NULL, SLACK_API_KEY = NULL, read_env = TRUE)
 }
 
 #' @export count_submissions
-count_submissions <- function() {
+count_submissions <- function(time_bound = TRUE) {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
   submissions <- tbl(con, in_schema("public", "submissions"))
@@ -81,4 +84,46 @@ reddit_connector <- function() {
     password = Sys.getenv("PASSWORD")
   )
   reddit_con
+}
+
+#' @export update_comments_to_word
+update_comments_to_word <- function() {
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  comments_to_parse <- "
+    select *
+    from public.comments
+    where comment_key not in (select comment_key from public.comments_to_word) and
+          body != ''
+  "
+  comments <- dbGetQuery(conn = con, comments_to_parse) %>%
+    mutate(doc_id = paste0("text", row_number()))
+
+  message(glue("Comments to be parsed: {nrow(comments)}"))
+
+  if (nrow(comments) == 0) {
+    message("Exiting, no comments to parse")
+    return(TRUE)
+  }
+
+  parsedtxt <- spacy_parse(comments$body)
+
+  full_data <- inner_join(parsedtxt, comments, by = "doc_id")
+
+  full_data_selection <-
+    full_data %>%
+    mutate(token_key = glue("{comment_key}-{sentence_id}-{token_id}")) %>%
+    select(token_key, comment_key, submission, author, subreddit, sentence_id, token_id, token, lemma, pos, entity)
+
+  tryCatch(
+    {
+      dbxUpsert(con, "comments_to_word", full_data_selection, where_cols = c("token_key"))
+    },
+    error = function(e) {
+      message(str_sub(as.character(e), 1, 100))
+      message("Something went wrong in comments_to_word upsert")
+    }
+  )
+  return(TRUE)
 }

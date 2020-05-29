@@ -247,27 +247,95 @@ parse_meta <- function(subreddit_data) {
 }
 
 #' @export get_url
-get_url <- function(reddit, url) {
-  sub <- reddit$submission(url = url)
+get_url <- function(reddit, permalink, store = TRUE, n_seconds = 3, dont_update = TRUE) {
 
-  meta_data <- parse_meta(sub)
+  # if(permalink == '/r/politics/comments/gjoyb9/biden_must_let_a_more_progressive_democratic/') {
+  #   browser()
+  # }
+  message(glue('Grabbing on {permalink}'))
+  con = postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  has_value <-
+    tbl(con, in_schema('public', 'comments')) %>%
+    filter(str_detect(str_to_lower(permalink), local(permalink))) %>%
+    count %>%
+    my_collect()
+
+  if (has_value & dont_update) {
+    message('Skipping, already hit once')
+    return(TRUE)
+  }
+
+  url = glue('http://reddit.com{permalink}')
+  sub <- reddit$submission(url = url)
+  meta_data <- tryCatch({
+    parse_meta(sub)
+  }, error = function(e) {
+    message('ERROR')
+    message(as.character(e))
+    message('Grab meta data failed in {permalink}')
+    return(TRUE)
+  })
+
+  if(is.logical(meta_data)) {
+    return(TRUE)
+  }
 
   comments <-
-    map(
-      # head(iterate(subreddit$hot()),1),
-      list(sub),
-      function(x) {
-        response <- map_df(x$comments$list(), function(x) {
-          resp <- parse_comments(x)
-          resp
-        })
-
-        response
-      }
-    )
+    tryCatch({
+      map(
+        list(sub),
+        function(x) {
+          response <- map_df(x$comments$list(), function(x) {
+            resp <- parse_comments(x)
+            resp
+          })
+          response
+        }
+      )
+    }, error = function(e) {
+      message('ERROR')
+      message(as.character(e))
+      message('parse_comments failed in {permalink}')
+      return(TRUE)
+    })
 
   comments <- keep(comments, ~ nrow(.) > 0) %>% bind_rows()
+  print(comments)
+  if (!is.data.frame(comments) | nrow(comments) == 0) {
+    return(NULL)
+  }
 
+  if(length(comments$author[comments$author == '']) > 0) {
+    comments$author[comments$author == ''] <- map_chr(1:length(comments$author[comments$author == '']), ~ UUIDgenerate(.))
+  }
+
+  comments <-
+    comments %>%
+    mutate(comment_key = glue("{author}-{subreddit_id}-{submission}-{id}")) %>%
+    select(comment_key, everything())
+
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  if (store) {
+    tryCatch(
+      {
+        dbxUpsert(con, "comments", comments, where_cols = c("comment_key"))
+        update_comments_to_word()
+        message(glue("Comments Uploaded: {nrow(comments)}"))
+      },
+      error = function(e) {
+        message('ERROR')
+        message(as.character(e))
+        message('update_comments_to_word failed in {permalink}')
+        return(TRUE)
+      }
+    )
+  }
+
+  Sys.sleep(n_seconds)
   list(meta_data = meta_data, comments = comments)
 }
 
@@ -481,7 +549,7 @@ gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
         dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
       },
       error = function(e) {
-        browser()
+        message("Something went wrong with upsert in gather_submissions")
       }
     )
     after <- count_submissions()
