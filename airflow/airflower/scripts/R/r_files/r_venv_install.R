@@ -13,6 +13,6 @@ if (Sys.getenv("RETICULATE_PYTHON") != "") {
     new_glue("echo RETICULATE_PYTHON=${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python >> .Renviron")
   )
 }
-command_to_install_spacy = new_glue('${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python -m spacy download en_core_web_sm')
+command_to_install_spacy <- new_glue("${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python -m spacy download en_core_web_sm")
 print(command_to_install_spacy)
 system(command_to_install_spacy)

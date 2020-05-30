@@ -31,7 +31,8 @@ Depends:
     scales,
     openxlsx,
     spacyr,
-    quanteda
+    quanteda,
+    uuid
 Encoding: UTF-8
 LazyData: true
 

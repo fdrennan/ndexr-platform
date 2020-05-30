@@ -5,15 +5,18 @@ postgres_connector <- function() {
   repeat {
     connection <- try({
       dbConnect(RPostgres::Postgres(),
-        host = Sys.getenv("POSTGRES_HOST"), port = Sys.getenv("POSTGRES_PORT"),
-        user = Sys.getenv("POSTGRES_USER"), password = Sys.getenv("POSTGRES_PASSWORD"), dbname = Sys.getenv("POSTGRES_DB")
+        host = Sys.getenv("POSTGRES_HOST"),
+        port = Sys.getenv("POSTGRES_PORT"),
+        user = Sys.getenv("POSTGRES_USER"),
+        password = Sys.getenv("POSTGRES_PASSWORD"),
+        dbname = Sys.getenv("POSTGRES_DB")
       )
     })
 
     if (!inherits(connection, "try-error")) {
       break
     } else {
-      if (n > 100) {
+      if (n > 5) {
         stop("Database connection failed")
       }
       n <- n + 1
@@ -57,7 +60,7 @@ send_message <- function(messages = NULL, SLACK_API_KEY = NULL, read_env = TRUE)
 }
 
 #' @export count_submissions
-count_submissions <- function() {
+count_submissions <- function(time_bound = TRUE) {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
   submissions <- tbl(con, in_schema("public", "submissions"))

@@ -1,34 +1,45 @@
 library(redditor)
 
+# upload_subreddit(
+#   subreddit_name = 'politics',
+#   n_seconds = 1,
+#   comments_to_word = FALSE,
+#   n_to_pull = 10
+# )
+
+comment_thread <- function(submission) {
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+  comments <- tbl(con, in_schema("public", "comments")) %>%
+    filter(str_detect(submission, local(submission))) %>%
+    collect()
+
+  comments <-
+    comments %>%
+    select(id, parent_id, body, everything()) %>%
+    my_collect()
+
+  comments
+}
+
+submission <- comment_thread(submission = "gmxhj9")
+
+
+submission_parser <-
+  submission %>%
+  select(link_id, parent_id, id)
+
+apply(submission_parser, 2, unique)
+
+# View(submission)
+
+
 # library(dbx)
 # virtualenv_install(envname = 'redditor', packages = 'spacy')
-spacy <- import("spacy")
+# spacy <- import("spacy")
 # py_config()
 # sudo /Users/fdrennan/.virtualenvs/redditor/bin/python -m spacy download en_core_web_sm
-nlp <- spacy$load("en_core_web_sm")
 
-reddit_con <- reddit_connector()
-con <- postgres_connector()
-
-response <-
-  tbl(con, in_schema('public', 'submissions')) %>%
-  filter(subreddit == 'politics') %>%
-  mutate(created_utc = sql('created_utc::timestamptz')) %>%
-  my_collect
-
-# plot_subreddit <- function(df) {
-#   df %>%
-#     mutate(created_utc = floor_date(created_utc, 'hour')) %>%
-#     group_by(created_utc) %>%
-#     count %>%
-#     ggplot() +
-#     aes(x = created_utc, y = n) +
-#     geom_line()
-# }
-#
-# plot_subreddit(response)
-
-reddit_data <- map(response$permalink, ~ get_url(reddit = reddit_con, permalink = ., n_seconds = 10))
 
 
 # # update_comments_to_word()
