@@ -26,7 +26,13 @@ refresh materialized view public.meta_statistics;
 refresh materialized view public.meta_statistics;
 
 -- 12680190
-select count(*)
-from submissions
+select *
+from comments
+where body = '[deleted]'
+
+-- 37985
+-- select count(*) as n_comments from comments
 
 
+delete from public.comments where permalink ilike '%/r/LifeProTips/comments/gtfwe6/lpt_questioning_something_does_not_imply/%'
+delete from public.submissions where permalink ilike '%/r/LifeProTips/comments/gtfwe6/lpt_questioning_something_does_not_imply/%'
