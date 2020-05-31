@@ -25,11 +25,49 @@ comment_thread <- function(submission) {
 submission <- comment_thread(submission = "gmxhj9")
 
 
-submission_parser <-
-  submission %>%
-  select(link_id, parent_id, id)
 
-apply(submission_parser, 2, unique)
+
+create_thread <- function(submission = NULL) {
+
+  submission_parser <-
+    submission %>%
+    select(link_id, parent_id, id, body) %>%
+    mutate(
+      parents = str_sub(parent_id, 4, -1)
+    )
+
+  end_subs <- map_lgl(submission_parser$id, function(x) {
+    !any(str_detect(submission_parser$parent_id, x))
+  })
+
+  end_ids <- submission_parser[end_subs,]$id
+  permalink_id = unique(submission_parser$link_id)
+  map(
+    end_ids,
+    function(x) {
+      vector_list = x
+      continue_running = TRUE
+      while(continue_running) {
+        parent <- filter(submission_parser, str_detect(id, x))$parents
+        if(str_detect(permalink_id, parent)) {
+          continue_running = FALSE
+        } else {
+          x <- unique(filter(submission_parser, str_detect(parents, parent))$parents)
+          vector_list <-
+            append(vector_list, x)
+        }
+      }
+      return(vector_list)
+    }
+  )
+}
+
+threads <- create_thread(submission)
+
+submission %>%
+  filter(
+    id %in% threads[[76]]
+  ) %>% View()
 
 # View(submission)
 

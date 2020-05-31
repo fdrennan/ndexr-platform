@@ -25,7 +25,8 @@ refresh materialized view public.meta_statistics;
 
 refresh materialized view public.meta_statistics;
 
-
-
+-- 12680190
+select count(*)
+from submissions
 
 
