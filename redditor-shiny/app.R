@@ -193,10 +193,8 @@ server <- function(input, output) {
   })
   #
   current_permalink <- reactive({
-    reddit_con <- reddit_connector()
-    response <-
-      build_submission_stack(permalink = input$permalink)
-
+    resp <- GET(url = glue("http://ndexr.com/api/build_submission_stack"), query = list(permalink = input$permalink))
+    response <- fromJSON(fromJSON(content(resp, "text"))$data)
     response
   })
   #
