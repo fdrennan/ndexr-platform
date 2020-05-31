@@ -105,6 +105,41 @@ function(table_name = "meta_statistics") {
   return(response)
 }
 
+#* @serializer unboxedJSON
+#* @param permalink
+#* @get /build_submission_stack
+function(permalink = "meta_statistics") {
+  message(glue("Within get_summary {Sys.time()}"))
+
+  # Build the response object (list will be serialized as JSON)
+  response <- list(
+    statusCode = 200,
+    data = "",
+    message = "Success!",
+    metaData = list(
+      runtime = 0,
+      permalink = permalink
+    )
+  )
+
+  response <- tryCatch(
+    {
+      tic()
+      response$data <- toJSON(build_submission_stack(permalink = permalink))
+      timer <- toc(quiet = T)
+      response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
+      return(response)
+    },
+    error = function(err) {
+      response$statusCode <- 400
+      response$message <- paste(err)
+      return(response)
+    }
+  )
+
+  return(response)
+}
+
 
 #* @serializer contentType list(type='image/png')
 #* @param limit
