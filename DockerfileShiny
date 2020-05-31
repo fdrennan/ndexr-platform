@@ -16,8 +16,6 @@ RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
   postgresql-client \
   libsasl2-dev
 
-RUN R CMD javareconf
-
 RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('tidyverse')"
 RUN R -e "install.packages('reticulate')"
