@@ -13,8 +13,8 @@ services:
       - '3000:3838'
     volumes:
       - './logs:/var/log/shiny-server'
-      - '.:/srv/shiny-server/'
-      - './.env:/app/.Renviron'
+      - './app.R:/srv/shiny-server/'
+      - './.env:/srv/shiny-server/.Renviron'
 
 volumes:
   shiny_logs:

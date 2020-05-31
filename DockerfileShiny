@@ -69,4 +69,3 @@ RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
 ARG DUMMY=randommmmm
 RUN Rscript /r_venv_install.R
-WORKDIR /app/
