@@ -7,6 +7,7 @@ library(openxlsx)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
+print(system('whoami'))
 con <- postgres_connector()
 reddit <- reddit_connector()
 reddit_con <- reddit_connector()
