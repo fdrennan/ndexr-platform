@@ -20,9 +20,9 @@ Once installed, run the following.
 library(biggr)
 install_python() # Only need to once
 configure_aws(
-          aws_access_key_id     = "XXXXXX",
-          aws_secret_access_key = "XXXXXX",
-          default.region        = "XXXXXX"
+          aws_access_key_id     = Sys.getenv('AWS_ACCESS'),
+          aws_secret_access_key = Sys.getenv('AWS_SECRET'),
+          default.region        = Sys.getenv('AWS_REGION')
 )
 ```
 

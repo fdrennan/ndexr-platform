@@ -125,51 +125,52 @@ CREATE TABLE public.submissions
     url                     varchar
 );
 
--- CREATE TABLE public.submissions
--- (
---     submission_key varchar primary key,
---     created_utc             timestamptz,
---     author                  varchar,
---     author_fullname         varchar,
---     author_premium          boolean,
---     author_patreon_flair    boolean,
---     can_gild                boolean,
---     can_mod_post            boolean,
---     clicked                 boolean,
---     comment_limit           integer,
---     created                 integer,
---     downs                   integer,
---     edited                  boolean,
---     fullname                varchar,
---     gilded                  integer,
---     hidden                  boolean,
---     hide_score              boolean,
---     id                      varchar,
---     is_crosspostable        boolean,
---     is_meta                 boolean,
---     is_original_content     boolean,
---     is_reddit_media_domain  boolean,
---     is_robot_indexable      boolean,
---     is_self                 boolean,
---     is_video                boolean,
---     locked                  boolean,
---     media_only              boolean,
---     name                    varchar,
---     no_follow               boolean,
---     over_18                 boolean,
---     permalink               varchar,
---     pinned                  boolean,
---     quarantine              boolean,
---     saved                   boolean,
---     selftext                varchar,
---     shortlink               varchar,
---     subreddit               varchar,
---     subreddit_id            varchar,
---     subreddit_name_prefixed varchar,
---     subreddit_subscribers   integer,
---     subreddit_type          varchar,
---     thumbnail               varchar,
---     title                   varchar,
---     url                     varchar
--- );
-
+-- SPLIT
+-- drop table if exists public.comments
+CREATE TABLE public.comments
+(
+    comment_key varchar primary key,
+    author varchar,
+    author_fullname varchar,
+    author_patreon_flair varchar,
+    author_premium varchar,
+    body varchar,
+    can_gild varchar,
+    can_mod_post varchar,
+    controversiality varchar,
+    created varchar,
+    created_utc varchar,
+    depth varchar,
+    downs varchar,
+    fullname varchar,
+    id varchar,
+    is_root varchar,
+    is_submitter varchar,
+    link_id varchar,
+    name varchar,
+    no_follow varchar,
+    parent_id varchar,
+    permalink varchar,
+    score varchar,
+    submission varchar,
+    subreddit varchar,
+    subreddit_id varchar,
+    total_awards_received varchar,
+    ups varchar,
+    time_gathered_utc varchar
+);
+-- SPLIT
+CREATE TABLE public.comments_to_word
+(
+    token_key varchar primary key,
+    comment_key varchar,
+    submission varchar,
+    author  varchar,
+    subreddit  varchar,
+    sentence_id  varchar,
+    token_id  varchar,
+    token  varchar,
+    lemma  varchar,
+    pos  varchar,
+    entity varchar
+);

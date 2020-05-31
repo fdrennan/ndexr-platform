@@ -247,27 +247,117 @@ parse_meta <- function(subreddit_data) {
 }
 
 #' @export get_url
-get_url <- function(reddit, url) {
-  sub <- reddit$submission(url = url)
+get_url <- function(reddit,
+                    permalink,
+                    store = TRUE,
+                    n_seconds = 3,
+                    dont_update = TRUE,
+                    comments_to_word = TRUE) {
 
-  meta_data <- parse_meta(sub)
+  # if(permalink == '/r/politics/comments/gjoyb9/biden_must_let_a_more_progressive_democratic/') {
+  #   browser()
+  # }
+  message(glue("Grabbing on {permalink} -- {as.character(Sys.time())}"))
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  has_value <-
+    tbl(con, in_schema("public", "comments")) %>%
+    filter(str_detect(str_to_lower(permalink), local(str_to_lower(permalink)))) %>%
+    count() %>%
+    my_collect()
+
+  if (has_value & dont_update) {
+    message("Skipping, already hit once")
+    return(TRUE)
+  }
+
+  url <- glue("http://reddit.com{permalink}")
+  sub <- reddit$submission(url = url)
+  meta_data <- tryCatch(
+    {
+      submission <- parse_meta(sub) %>%
+        mutate(
+          submission_key = glue("{subreddit_id}_{author}_{name}")
+        ) %>%
+        select(submission_key, created_utc, everything())
+      dbxUpsert(con, "submissions", submission, where_cols = c("submission_key"))
+      submission
+    },
+    error = function(e) {
+      message("ERROR")
+      message(as.character(e))
+      message("Grab meta data failed in {permalink}")
+      return(TRUE)
+    }
+  )
+
+  if (is.logical(meta_data)) {
+    return(TRUE)
+  }
 
   comments <-
-    map(
-      # head(iterate(subreddit$hot()),1),
-      list(sub),
-      function(x) {
-        response <- map_df(x$comments$list(), function(x) {
-          resp <- parse_comments(x)
-          resp
-        })
-
-        response
+    tryCatch(
+      {
+        map(
+          list(sub),
+          function(x) {
+            response <- map_df(x$comments$list(), function(x) {
+              resp <- parse_comments(x)
+              resp
+            })
+            response
+          }
+        )
+      },
+      error = function(e) {
+        message("ERROR")
+        message(as.character(e))
+        message("parse_comments failed in {permalink}")
+        return(TRUE)
       }
     )
 
   comments <- keep(comments, ~ nrow(.) > 0) %>% bind_rows()
+  print(glimpse(comments))
+  if (!is.data.frame(comments) | nrow(comments) == 0) {
+    return(NULL)
+  }
 
+  if (length(comments$author[comments$author == ""]) > 0) {
+    comments$author[comments$author == ""] <- map_chr(1:length(comments$author[comments$author == ""]), ~ UUIDgenerate(.))
+  }
+
+  comments <-
+    comments %>%
+    mutate(comment_key = glue("{subreddit_id}-{parent_id}-{id}")) %>%
+    select(comment_key, everything())
+
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  if (store) {
+    tryCatch(
+      {
+        n_comments_before <- dbGetQuery(conn = con, "select count(*) as n_comments from comments")
+        dbxUpsert(con, "comments", comments, where_cols = c("comment_key"))
+        n_comments_after <- dbGetQuery(conn = con, "select count(*) as n_comments from comments")
+        message(glue('Added {as.character(n_comments_after$n_comments - n_comments_before$n_comments)} comments'))
+        if (comments_to_word) {
+          update_comments_to_word()
+        }
+        # message(glue("Comments Uploaded: {nrow(comments)}"))
+      },
+      error = function(e) {
+        message("ERROR")
+        message(as.character(e))
+        message("update_comments_to_word failed in {permalink}")
+        return(TRUE)
+      }
+    )
+  }
+
+  Sys.sleep(n_seconds)
   list(meta_data = meta_data, comments = comments)
 }
 
@@ -470,35 +560,174 @@ get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) 
     select(submission_key, created_utc, everything())
 }
 
-gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 10) {
+#' @export gather_submissions
+gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 3) {
   while (TRUE) {
-    send_message("----------Gathering submissions---------")
     get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
-    prior <- count_submissions()
-    send_message("Uploading submissions...")
     tryCatch(
       {
         dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
       },
       error = function(e) {
-        browser()
+        message("Something went wrong with upsert in gather_submissions, {as.character(Sys.time())}")
       }
     )
-    after <- count_submissions()
-    send_message("Checking submission counts...")
-    new_submissions <- after$n_obs - prior$n_obs
-    downloaded_rows <- nrow(get_all)
-    overlap_ratio <- round(1 - new_submissions / downloaded_rows, 2)
-    if (overlap_ratio < .4) {
-      sleep_time <- sleep_time - 2
-      sleep_time <- max(0, sleep_time)
-      send_message(glue("Updating sleep_time to {sleep_time}"))
-    } else if (overlap_ratio > .6) {
-      sleep_time <- sleep_time + 2
-      sleep_time <- min(20, sleep_time)
-      send_message(glue("Updating sleep_time to {sleep_time}"))
-    }
-    send_message(glue("Sleep Time: {sleep_time} -- Downloaded rows: {downloaded_rows} -- New submissions in table: {new_submissions} -- Overlap Ratio: {overlap_ratio}"))
     Sys.sleep(sleep_time)
   }
 }
+
+#' @export upload_subreddit
+upload_subreddit <- function(subreddit_name = "politics",
+                             n_seconds = 3,
+                             comments_to_word = FALSE,
+                             n_to_pull = 10) {
+  reddit_con <- reddit_connector()
+  con <- postgres_connector()
+
+  submissions <-
+    tbl(con, in_schema("public", "submissions")) %>%
+    filter(subreddit == subreddit_name) %>%
+    mutate(
+      created_utc = sql("created_utc::timestamptz"),
+      submission = id
+    ) %>%
+    filter(created_utc <= local(now(tzone = "UTC") - days(2))) %>%
+    arrange(created_utc)
+  # my_collect
+
+  comments <-
+    tbl(con, in_schema("public", "comments")) %>%
+    transmute(submission, already_run = TRUE) %>%
+    distinct()
+
+  response <-
+    submissions %>%
+    anti_join(comments, by = "submission") %>%
+    # filter(is.na(already_run)) %>%
+    head(n_to_pull) %>%
+    my_collect()
+
+  message(glue("About to run on {nrow(response)} rows"))
+
+  walk(response$permalink, ~ get_url(reddit = reddit_con, permalink = ., n_seconds = n_seconds, comments_to_word = comments_to_word))
+}
+
+#' @export comment_thread
+comment_thread <- function(submission = NULL, permalink = NULL) {
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+
+  if(!is.null(permalink)) {
+    comments <- tbl(con, in_schema("public", "comments")) %>%
+      filter(str_detect(permalink, local(permalink))) %>%
+      collect()
+  } else {
+    comments <- tbl(con, in_schema("public", "comments")) %>%
+      filter(str_detect(submission, local(submission))) %>%
+      collect()
+  }
+
+  comments <-
+    comments %>%
+    select(id, parent_id, body, everything()) %>%
+    my_collect()
+
+  comments
+}
+
+#' @export create_submission_thread
+create_submission_thread <- function(submission = NULL) {
+
+  submission_parser <-
+    submission %>%
+    select(link_id, parent_id, id, body) %>%
+    mutate(
+      parents = str_sub(parent_id, 4, -1)
+    )
+
+  end_subs <- map_lgl(submission_parser$id, function(x) {
+    !any(str_detect(submission_parser$parent_id, x))
+  })
+
+  end_ids <- submission_parser[end_subs,]$id
+  permalink_id = unique(submission_parser$link_id)
+  map(
+    end_ids,
+    function(x) {
+      vector_list = x
+      continue_running = TRUE
+      while(continue_running) {
+        parent <- filter(submission_parser, str_detect(id, x))$parents
+        if(str_detect(permalink_id, parent)) {
+          continue_running = FALSE
+        } else {
+          x <- unique(filter(submission_parser, str_detect(parents, parent))$parents)
+          vector_list <-
+            append(vector_list, x)
+        }
+      }
+      return(rev(vector_list))
+    }
+  )
+}
+
+
+#' @export summarise_thread_stack
+summarise_thread_stack <- function(thread_stack = NULL) {
+  thread_stack %>%
+    group_by(thread_number, author) %>%
+    count(name = 'n_observations') %>%
+    group_by(thread_number) %>%
+    summarise(
+      n_authors = n_distinct(author),
+      n_observations = sum(n_observations)
+    ) %>%
+    mutate(
+      engagement_ratio = n_observations/n_authors
+    )
+}
+
+#' @export create_thread_stack
+create_thread_stack <- function(threads, comments, min_length = 0) {
+  threads <-
+    threads %>%
+    keep(~ length(.) > min_length)
+
+  threads <-
+    threads %>%
+    map2_df(
+      .,
+      1:length(.),
+      function(x, y) {
+        filter(
+          comments,
+          id %in% x
+        ) %>%
+          mutate(thread = y, thread_number = paste0('thread_number_', thread)) %>%
+          select(
+            thread_number, created_utc, body, author, id, parent_id, everything()
+          ) %>%
+          arrange(thread_number, created_utc)
+      }
+    )
+  threads
+}
+
+
+#' @export build_submission_stack
+build_submission_stack <- function(permalink = NULL) {
+  message(permalink)
+  reddit_con <- reddit_connector()
+  get_url(reddit = reddit_con,
+          permalink = permalink,
+          comments_to_word = FALSE,
+          dont_update = TRUE)
+  comments <- comment_thread(permalink = permalink)
+  threads <- create_submission_thread(comments)
+  thread_stack <- create_thread_stack(threads, comments, min_length = 0)
+  thread_stack
+}
+
+
+
+

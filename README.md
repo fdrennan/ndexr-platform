@@ -7,7 +7,7 @@ This is one of them.
 
 I worked at a company called Digital First Media. I was hired on as a data optimization engineer. 
 The job was primary working on their optimization code for online marketing campaigns. As the guy in-between, I worked
-with highly qualified data engineers on one side of me and extremely competent web developers on the other side.
+with qualified data engineers on one side of me and creative web developers on the other side.
  
 [Duffy](https://github.com/duffn) was definitely one of the talented ones and taught me quite a bit. While I was with 
 the company, one of my complaints was related to how much we were spending for tools we could easily make in house. Of 
@@ -51,12 +51,11 @@ The main components are
 7. Oxygen
 8. Oreos
 
-### My Next Steps:
-7. Create user login
-8. Allow user to create labels for Reddit posts to facilitate deep learning projects.
+## Cleaning up for Installation
+If you are developing some part of R code, there are two scripts which you can adapt to your particular filepath
+
 
 ## Copy Pastin'
-
 There are three dockerfiles that are needed: `DockerfileApi`, `DockerfileRpy`, and `DockerfileUi`
 
 `DockerfileApi` is associated with the container needed to run an R [Plumber](https://www.rplumber.io/) API. 
