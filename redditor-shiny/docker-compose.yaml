@@ -12,5 +12,5 @@ services:
     ports:
       - '3000:3838'
     volumes:
-      - './app.R:/srv/shiny-server'
+      - '.:/srv/shiny-server'
       - './.env:/srv/shiny-server/.Renviron'
