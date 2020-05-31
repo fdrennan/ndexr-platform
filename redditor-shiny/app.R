@@ -95,7 +95,6 @@ server <- function(input, output) {
     if(input$removensfw) {
      data <-  data[!as.logical(data$over_18),]
     }
-    browser()
     data <-
       data %>%
       mutate_all(as.character) %>%
