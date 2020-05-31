@@ -63,14 +63,17 @@ RUN R -e "install.packages('quanteda')"
 ARG DUMMY=unknowndatasssss
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
-RUN R -e "setwd('/home/redditor-api'); devtools::install()"
-RUN R -e "setwd('/home/biggr'); devtools::install()"
 
+RUN R -e "setwd('/home/biggr'); devtools::install()"
 
 RUN R -e 'library(reticulate); \
           library(biggr); \
           use_python("/usr/bin/python3", required = TRUE); \
           install_python(envname="redditor")'
+
+ARG DUMMY=rando
+RUN R -e "setwd('/home/redditor-api'); devtools::install()"
+
 
 COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
 RUN Rscript /r_venv_install.R
