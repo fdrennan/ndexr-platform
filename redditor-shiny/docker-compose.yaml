@@ -12,6 +12,7 @@ services:
     ports:
       - '3000:3838'
     volumes:
+      - './logs:/var/log/shiny-server'
       - './shiny-server.conf:/etc/shiny-server/shiny-server.conf'
       - './app.R:/app/app.R'
       - './.env:/app/.Renviron'
