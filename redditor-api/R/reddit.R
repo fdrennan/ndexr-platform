@@ -342,7 +342,7 @@ get_url <- function(reddit,
         n_comments_before <- dbGetQuery(conn = con, "select count(*) as n_comments from comments")
         dbxUpsert(con, "comments", comments, where_cols = c("comment_key"))
         n_comments_after <- dbGetQuery(conn = con, "select count(*) as n_comments from comments")
-        message(glue('Added {as.character(n_comments_after$n_comments - n_comments_before$n_comments)} comments'))
+        message(glue("Added {as.character(n_comments_after$n_comments - n_comments_before$n_comments)} comments"))
         if (comments_to_word) {
           update_comments_to_word()
         }
@@ -617,7 +617,7 @@ comment_thread <- function(submission = NULL, permalink = NULL) {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
 
-  if(!is.null(permalink)) {
+  if (!is.null(permalink)) {
     comments <- tbl(con, in_schema("public", "comments")) %>%
       filter(str_detect(permalink, local(permalink))) %>%
       collect()
@@ -637,7 +637,6 @@ comment_thread <- function(submission = NULL, permalink = NULL) {
 
 #' @export create_submission_thread
 create_submission_thread <- function(submission = NULL) {
-
   submission_parser <-
     submission %>%
     select(link_id, parent_id, id, body) %>%
@@ -649,17 +648,17 @@ create_submission_thread <- function(submission = NULL) {
     !any(str_detect(submission_parser$parent_id, x))
   })
 
-  end_ids <- submission_parser[end_subs,]$id
-  permalink_id = unique(submission_parser$link_id)
+  end_ids <- submission_parser[end_subs, ]$id
+  permalink_id <- unique(submission_parser$link_id)
   map(
     end_ids,
     function(x) {
-      vector_list = x
-      continue_running = TRUE
-      while(continue_running) {
+      vector_list <- x
+      continue_running <- TRUE
+      while (continue_running) {
         parent <- filter(submission_parser, str_detect(id, x))$parents
-        if(str_detect(permalink_id, parent)) {
-          continue_running = FALSE
+        if (str_detect(permalink_id, parent)) {
+          continue_running <- FALSE
         } else {
           x <- unique(filter(submission_parser, str_detect(parents, parent))$parents)
           vector_list <-
@@ -676,14 +675,14 @@ create_submission_thread <- function(submission = NULL) {
 summarise_thread_stack <- function(thread_stack = NULL) {
   thread_stack %>%
     group_by(thread_number, author) %>%
-    count(name = 'n_observations') %>%
+    count(name = "n_observations") %>%
     group_by(thread_number) %>%
     summarise(
       n_authors = n_distinct(author),
       n_observations = sum(n_observations)
     ) %>%
     mutate(
-      engagement_ratio = n_observations/n_authors
+      engagement_ratio = n_observations / n_authors
     )
 }
 
@@ -703,7 +702,7 @@ create_thread_stack <- function(threads, comments, min_length = 0) {
           comments,
           id %in% x
         ) %>%
-          mutate(thread = y, thread_number = paste0('thread_number_', thread)) %>%
+          mutate(thread = y, thread_number = paste0("thread_number_", thread)) %>%
           select(
             thread_number, created_utc, body, author, id, parent_id, everything()
           ) %>%
@@ -718,16 +717,14 @@ create_thread_stack <- function(threads, comments, min_length = 0) {
 build_submission_stack <- function(permalink = NULL) {
   message(permalink)
   reddit_con <- reddit_connector()
-  get_url(reddit = reddit_con,
-          permalink = permalink,
-          comments_to_word = FALSE,
-          dont_update = TRUE)
+  get_url(
+    reddit = reddit_con,
+    permalink = permalink,
+    comments_to_word = FALSE,
+    dont_update = TRUE
+  )
   comments <- comment_thread(permalink = permalink)
   threads <- create_submission_thread(comments)
   thread_stack <- create_thread_stack(threads, comments, min_length = 0)
   thread_stack
 }
-
-
-
-

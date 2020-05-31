@@ -3,7 +3,7 @@ library(redditor)
 reddit_con <- reddit_connector()
 
 response <-
-  build_submission_stack(permalink = '/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/')
+  build_submission_stack(permalink = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")
 
 summarise_thread_stack(response) %>%
   arrange(desc(engagement_ratio))

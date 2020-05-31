@@ -7,7 +7,7 @@ library(openxlsx)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
-print(system('whoami'))
+print(system("whoami"))
 # con <- postgres_connector()
 # reddit <- reddit_connector()
 # reddit_con <- reddit_connector()
@@ -16,22 +16,22 @@ LENOVO <- Sys.getenv("LENOVO")
 
 build_datatable <- function(the_datatable) {
   datatable(the_datatable,
-            extensions = c("Buttons", "Scroller"),
-            options = list(
-              scrollY = 650,
-              scrollX = 500,
-              deferRender = TRUE,
-              scroller = TRUE,
-              fixedColumns = TRUE,
-              # paging = TRUE,
-              # pageLength = 25,
-              buttons = list( #' excel',
-                list(extend = "colvis", targets = 0, visible = FALSE)
-              ),
-              dom = "lBfrtip",
-              fixedColumns = TRUE
-            ),
-            rownames = FALSE
+    extensions = c("Buttons", "Scroller"),
+    options = list(
+      scrollY = 650,
+      scrollX = 500,
+      deferRender = TRUE,
+      scroller = TRUE,
+      fixedColumns = TRUE,
+      # paging = TRUE,
+      # pageLength = 25,
+      buttons = list( #' excel',
+        list(extend = "colvis", targets = 0, visible = FALSE)
+      ),
+      dom = "lBfrtip",
+      fixedColumns = TRUE
+    ),
+    rownames = FALSE
   )
 }
 
@@ -65,22 +65,25 @@ ui <- dashboardPage(
         tabName = "search",
         fluidRow(
           checkboxInput("removensfw", "Remove NSFW", TRUE),
-          textInput(inputId = "search_value", label = "Query Data", 
-                           value = "Natural Language Processing", 
-                           placeholder = "Natural Language Processing"),
-          downloadButton("downloadData", "Download"), width=12
+          textInput(
+            inputId = "search_value", label = "Query Data",
+            value = "Natural Language Processing",
+            placeholder = "Natural Language Processing"
+          ),
+          downloadButton("downloadData", "Download"),
+          width = 12
         ),
         fluidRow(
           column(dataTableOutput("search_data"), width = 12)
         ),
         fluidRow(
-          column(uiOutput("imageOutput"), width=12)
+          column(uiOutput("imageOutput"), width = 12)
         )
       ),
       tabItem(
         tabName = "permalink",
         fluidRow(
-          textInput(inputId = 'permalink', label = 'Permalink', value = '/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/'),
+          textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"),
           column(dataTableOutput("permalink_summary"), width = 12),
           column(dataTableOutput("permalink_data"), width = 12)
         )
@@ -97,8 +100,8 @@ server <- function(input, output) {
 
   elastic_results <- reactive({
     data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions")
-    if(input$removensfw) {
-     data <-  data[!as.logical(data$over_18),]
+    if (input$removensfw) {
+      data <- data[!as.logical(data$over_18), ]
     }
     data <-
       data %>%
@@ -173,50 +176,46 @@ server <- function(input, output) {
 
     build_datatable(response)
   })
-  
+
   output$imageOutput <- renderUI({
-    
     images_to_show <- elastic_results()$url
-    print(images_to_show[!str_detect(images_to_show, 'www.reddit.com')])
-    images_to_show <- images_to_show[!str_detect(images_to_show, 'www.reddit.com')]
-    
+    print(images_to_show[!str_detect(images_to_show, "www.reddit.com")])
+    images_to_show <- images_to_show[!str_detect(images_to_show, "www.reddit.com")]
+
     map(unique(images_to_show), ~ box(tags$a(
-      href=., 
-      tags$img(src=., 
-               title="Example Image Link", 
-               width="100%")
+      href = .,
+      tags$img(
+        src = .,
+        title = "Example Image Link",
+        width = "100%"
+      )
     ), width = 3))
   })
-  # 
-  # current_permalink <- reactive({
-  #   reddit_con <- reddit_connector()
-  #   response <-
-  #     build_submission_stack(permalink = input$permalink)
-  #   
-  #   response
-  # })
-  # 
-  # 
-  # 
-  # output$permalink_summary <- renderDataTable({
-  #   
-  #   summarise_thread_stack(current_permalink()) %>%
-  #     arrange(desc(engagement_ratio)) 
-  #   # build_datatable
-  # })
-  # 
-  # 
-  # output$permalink_data <- renderDataTable({
-  #   
-  #   response <- 
-  #     current_permalink() %>% 
-  #     select(thread_number, created_utc, author, body, everything())
-  #   
-  #   build_datatable(response)
-  # })
-  
-  
-  
+  #
+  current_permalink <- reactive({
+    reddit_con <- reddit_connector()
+    response <-
+      build_submission_stack(permalink = input$permalink)
+
+    response
+  })
+  #
+  #
+  #
+  output$permalink_summary <- renderDataTable({
+    summarise_thread_stack(current_permalink()) %>%
+      arrange(desc(engagement_ratio))
+    # build_datatable
+  })
+  #
+  #
+  output$permalink_data <- renderDataTable({
+    response <-
+      current_permalink() %>%
+      select(thread_number, created_utc, author, body, everything())
+
+    build_datatable(response)
+  })
 }
 
 shinyApp(ui, server)
