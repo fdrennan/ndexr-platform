@@ -63,13 +63,16 @@ ui <- dashboardPage(
         tabName = "search",
         fluidRow(
           checkboxInput("removensfw", "Remove NSFW", TRUE),
-          column(box(textInput(inputId = "search_value", label = "Query Data", 
-                                value = "Natural Language Processing", placeholder = "Natural Language Processing")), width = 6),
-          column(downloadButton("downloadData", "Download"), width=6),
-          column(uiOutput("imageOutput"), width=12)
+          textInput(inputId = "search_value", label = "Query Data", 
+                           value = "Natural Language Processing", 
+                           placeholder = "Natural Language Processing"),
+          downloadButton("downloadData", "Download"), width=12
         ),
         fluidRow(
           column(dataTableOutput("search_data"), width = 12)
+        ),
+        fluidRow(
+          column(uiOutput("imageOutput"), width=12)
         )
       ),
       tabItem(
@@ -175,13 +178,12 @@ server <- function(input, output) {
     print(images_to_show[!str_detect(images_to_show, 'www.reddit.com')])
     images_to_show <- images_to_show[!str_detect(images_to_show, 'www.reddit.com')]
     
-    map(images_to_show, ~ tags$a(
-            href=., 
-            tags$img(src=., 
-                     title="Example Image Link", 
-                     width="100px",
-                     height="100px")
-          ))
+    map(unique(images_to_show), ~ box(tags$a(
+      href=., 
+      tags$img(src=., 
+               title="Example Image Link", 
+               width="100%")
+    ), width = 3))
   })
   
   current_permalink <- reactive({
