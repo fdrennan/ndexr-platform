@@ -13,5 +13,5 @@ services:
       - '3000:3838'
     volumes:
       - './shiny-server.conf:/etc/shiny-server/shiny-server.conf'
-      - './app.R:/home/app.R'
-      - './.env:/home/.Renviron'
+      - './app.R:/app/app.R'
+      - './.env:/app/.Renviron'
