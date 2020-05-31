@@ -47,3 +47,5 @@ ARG DUMMY=rando
 WORKDIR /app/
 COPY ./redditor-api /app/redditor-api
 RUN R -e "setwd('/app/redditor-api'); devtools::install()"
+COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+RUN Rscript /r_venv_install.R
