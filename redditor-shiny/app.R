@@ -8,9 +8,9 @@ library(openxlsx)
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
 print(system('whoami'))
-con <- postgres_connector()
-reddit <- reddit_connector()
-reddit_con <- reddit_connector()
+# con <- postgres_connector()
+# reddit <- reddit_connector()
+# reddit_con <- reddit_connector()
 LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
@@ -187,33 +187,33 @@ server <- function(input, output) {
                width="100%")
     ), width = 3))
   })
-  
-  current_permalink <- reactive({
-    reddit_con <- reddit_connector()
-    response <-
-      build_submission_stack(permalink = input$permalink)
-    
-    response
-  })
-  
-
-  
-  output$permalink_summary <- renderDataTable({
-    
-    summarise_thread_stack(current_permalink()) %>%
-      arrange(desc(engagement_ratio)) 
-    # build_datatable
-  })
-  
-  
-  output$permalink_data <- renderDataTable({
-    
-    response <- 
-      current_permalink() %>% 
-      select(thread_number, created_utc, author, body, everything())
-    
-    build_datatable(response)
-  })
+  # 
+  # current_permalink <- reactive({
+  #   reddit_con <- reddit_connector()
+  #   response <-
+  #     build_submission_stack(permalink = input$permalink)
+  #   
+  #   response
+  # })
+  # 
+  # 
+  # 
+  # output$permalink_summary <- renderDataTable({
+  #   
+  #   summarise_thread_stack(current_permalink()) %>%
+  #     arrange(desc(engagement_ratio)) 
+  #   # build_datatable
+  # })
+  # 
+  # 
+  # output$permalink_data <- renderDataTable({
+  #   
+  #   response <- 
+  #     current_permalink() %>% 
+  #     select(thread_number, created_utc, author, body, everything())
+  #   
+  #   build_datatable(response)
+  # })
   
   
   
