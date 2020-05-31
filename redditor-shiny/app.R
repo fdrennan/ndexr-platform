@@ -6,9 +6,10 @@ library(openxlsx)
 
 
 options(shiny.sanitize.errors = FALSE)
+print(py_config())
 con <- postgres_connector()
 reddit <- reddit_connector()
-# reddit_con <- reddit_connector()
+reddit_con <- reddit_connector()
 LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
