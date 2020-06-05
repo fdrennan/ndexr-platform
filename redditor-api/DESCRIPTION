@@ -28,7 +28,6 @@ Depends:
     shinydashboard,
     shiny,
     DT,
-    scales,
     openxlsx,
     spacyr,
     quanteda,
