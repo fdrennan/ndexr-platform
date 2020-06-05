@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libsasl2-dev \
     postgresql-client \
+    libudunits2-dev \
     libpq-dev -y
 
 WORKDIR /home/scripts
