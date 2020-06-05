@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsasl2-dev \
     postgresql-client \
     libudunits2-dev \
+    libgdal-dev \
     libpq-dev -y
 
 WORKDIR /home/scripts
