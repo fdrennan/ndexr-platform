@@ -2,25 +2,38 @@ library(redditor)
 
 reddit_con <- reddit_connector()
 
-response <-
-  build_submission_stack(permalink = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")
+# response <-
+  # build_submission_stack(permalink = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")
 
-summarise_thread_stack(response) %>%
-  arrange(desc(engagement_ratio))
+comment_gather_on <- function(key = 'george floyd') {
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+  gf <-
+    submissions <- tbl(con, in_schema('public', 'submissions')) %>%
+    filter(sql('created_utc::timestamptz') <= local(Sys.Date() - 3)) %>%
+    filter(str_detect(str_to_lower(selftext), key)) %>%
+    my_collect()
 
-# response %>%
-#   mutate(created_utc = with_tz(floor_date(ymd_hms(created_utc), 'hour'), 'MST')+1) %>%
-#   group_by(thread_number, created_utc) %>%
-#   summarise(n_observations = n())  %>%
-#   group_by(thread_number) %>%
-#   mutate(n_obs = n()) %>%
-#   filter(n_obs > 1) %>%
-#   ggplot() +
-#   aes(x = created_utc, y = n_observations) %>%
-#   geom_line() +
-#   theme(legend.position = "none") +
-#   facet_wrap(~ thread_number)
+  walk(gf$permalink, build_submission_stack)
+}
+
+comment_gather_on()
+
+# summarise_thread_stack(response) %>%
+  # arrange(desc(engagement_ratio))
 
 
-# response %>%
-#   filter(thread_number=='thread_number_34')
+# plot_submission_query(submission_query = 'protests') +
+  # ggtitle('Reddit posts mentioning protests')
+
+
+
+#
+
+#
+
+
+
+
+# %>%
+

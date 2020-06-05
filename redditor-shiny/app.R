@@ -64,7 +64,9 @@ ui <- dashboardPage(
       tabItem(
         tabName = "search",
         fluidRow(
+          # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
           checkboxInput("removensfw", "Remove NSFW", TRUE),
+          numericInput(inputId = 'limit', label = 'Limit', value = 200, min = 0, max = 20000),
           textInput(
             inputId = "search_value", label = "Query Data",
             value = "Natural Language Processing",
@@ -99,7 +101,7 @@ server <- function(input, output) {
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   elastic_results <- reactive({
-    data <- find_posts(search_term = input$search_value, limit = 100, table_name = "submissions")
+    data <- find_posts(search_term = input$search_value, limit = input$limit, table_name = "submissions")
     if (input$removensfw) {
       data <- data[!as.logical(data$over_18), ]
     }
@@ -194,7 +196,7 @@ server <- function(input, output) {
   #
   current_permalink <- reactive({
     resp <- GET(url = glue("http://ndexr.com/api/build_submission_stack"), query = list(permalink = input$permalink))
-    response <- fromJSON(fromJSON(content(resp, "text"))$data)
+    response <- fromJSON(fromJSON(content(x = resp, as ="text"))$data)
     response
   })
   #

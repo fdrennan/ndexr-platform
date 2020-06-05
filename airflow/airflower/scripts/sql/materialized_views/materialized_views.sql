@@ -43,5 +43,5 @@ create materialized view public.counts_by_minute as (
     from public.submissions
     group by date_trunc('minute', created_utc::timestamp)
     order by date_trunc('minute', created_utc::timestamp) desc
-    limit 60*12
+    limit 60*48*2
 );
