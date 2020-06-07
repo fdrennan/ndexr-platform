@@ -728,3 +728,16 @@ build_submission_stack <- function(permalink = NULL) {
   thread_stack <- create_thread_stack(threads, comments, min_length = 0)
   thread_stack
 }
+
+#' @export comment_gather_on
+comment_gather_on <- function(key = "george floyd") {
+  con <- postgres_connector()
+  on.exit(dbDisconnect(conn = con))
+  gf <-
+    submissions <- tbl(con, in_schema("public", "submissions")) %>%
+    filter(sql("created_utc::timestamptz") <= local(Sys.Date() - 3)) %>%
+    filter(str_detect(str_to_lower(selftext), key)) %>%
+    my_collect()
+
+  walk(gf$permalink, build_submission_stack)
+}

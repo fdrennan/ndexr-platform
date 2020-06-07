@@ -26,14 +26,19 @@ comment_gather_on()
 # plot_submission_query(submission_query = 'protests') +
   # ggtitle('Reddit posts mentioning protests')
 
-
+# con = postgres_connector()
+# resp <-
+  # dbGet
 
 #
 
 #
 
 
-
+# fn <- 
+  # read_html('https://en.wikipedia.org/wiki/List_of_fake_news_websites') %>% 
+  # html_table(fill = T) %>% 
+  
 
 # %>%
 

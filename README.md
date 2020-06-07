@@ -561,7 +561,7 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t reddit
 sudo fuser -k -n tcp 3000
 
 
-autossh -f -nNT -i "~/ndexr.pem" -R 3000:localhost:3000 -R 5432:localhost:5432 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004  ec2-user@ndexr.com
+autossh -f -nNT -i "~/ndexr.pem" -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004  ec2-user@ndexr.com
 autossh -f -nNT -i "~/ndexr.pem" -R 8999:localhost:8999 ec2-user@ndexr.com
 autossh -M 20000 -i "ndexr.pem" -f -N ec2-user@ndexr.com -R 3000:localhost:3000 -C
 
