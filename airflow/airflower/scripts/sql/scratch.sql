@@ -1,12 +1,16 @@
-select author, count(*) as n_obs
-from (
-    select *
-    from public.comments
-    where body ilike '%riot%'
-    ) x
-group by author
-order by n_obs desc
-limit 100
+select *
+from public.submissions
+where created_utc::timestamptz <= now() - interval '3 days'
+-- order by random()
+limit 10
 
-select count(*)
+
+select subreddit_id, *
 from public.comments
+
+
+select distinct submission_key, s.author, s.subreddit, s.created_utc, over_18, selftext, shortlink,
+                thumbnail, title, url
+from public.submissions s
+lt join public.comments c on s.fullname=c.link_id
+where s.fullname = 't3_gtu6e5'
