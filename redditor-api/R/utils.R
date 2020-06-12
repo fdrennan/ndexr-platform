@@ -129,7 +129,7 @@ update_comments_to_word <- function() {
 }
 
 #' @export backup_submissions_to_s3
-backup_submissions_to_s3 <- function() {
+backup_submissions_to_s3 <- function(keep_days = 2) {
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
   message("Looking for days to store")
@@ -138,7 +138,7 @@ backup_submissions_to_s3 <- function() {
     mutate(
       date_created = sql("date_trunc('days', created_utc::timestamptz)")
     ) %>%
-    filter(date_created <= local(now(tzone = "UTC") - days(1)))
+    filter(date_created <= local(now(tzone = "UTC") - days(keep_days)))
 
   message("...")
   submission_times <-
@@ -169,6 +169,7 @@ backup_submissions_to_s3 <- function() {
     function(query_time) {
       message("----------------------------------------------------")
       message(glue("Building {query_time}"))
+      send_message(glue("Saving to S3: {query_time}"))
       submission_hour <-
         submissions %>%
         filter(
