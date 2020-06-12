@@ -136,3 +136,8 @@ parse_comments_wrapper <- function(x) {
 stream_comments(reddit_con, 'all', parse_comments_wrapper)
 
 ```
+
+
+```
+
+```

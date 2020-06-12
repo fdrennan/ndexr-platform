@@ -35,20 +35,20 @@ plot_submission_query <- function(submission_query,
                                   from = Sys.Date() - 1,
                                   to = Sys.Date() + 1) {
   con <- postgres_connector()
-  on.exit(dbDisconnect(conn=con))
-  tbl(con, in_schema('public', 'submissions')) %>%
+  on.exit(dbDisconnect(conn = con))
+  tbl(con, in_schema("public", "submissions")) %>%
     filter(between(created_utc, from, to)) %>%
     filter(str_detect(str_to_lower(selftext), submission_query)) %>%
     group_by(created_utc) %>%
-    count(name = 'n_obs') %>%
-    mutate(created_utc = sql('created_utc::timestamptz')) %>%
-    my_collect %>%
-    ungroup %>%
+    count(name = "n_obs") %>%
+    mutate(created_utc = sql("created_utc::timestamptz")) %>%
+    my_collect() %>%
+    ungroup() %>%
     mutate(
-      created_utc = floor_date(created_utc, 'hour')
+      created_utc = floor_date(created_utc, "hour")
     ) %>%
     group_by(created_utc) %>%
-    count(name = 'n_observations') %>%
+    count(name = "n_observations") %>%
     ggplot() +
     aes(x = created_utc, y = n_observations) +
     geom_line()

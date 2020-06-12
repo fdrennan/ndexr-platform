@@ -1,30 +1,30 @@
 ## load packages
-#library(tigris)
-#library(leaflet)
-#library(tidyverse)
+# library(tigris)
+# library(leaflet)
+# library(tidyverse)
 #
 ## cache zip boundaries that are download via tigris package
-#options(tigris_use_cache = TRUE)
+# options(tigris_use_cache = TRUE)
 #
 ## get zip boundaries that start with 282
 #
 ## get 2016 zip level income data from irs
-#irs <- read_csv("https://www.irs.gov/pub/irs-soi/16zpallnoagi.csv")
-#con <- postgres_connector()
-#police_shootings <- tbl(con, in_schema('public', 'police_shootings')) %>% my_collect
+# irs <- read_csv("https://www.irs.gov/pub/irs-soi/16zpallnoagi.csv")
+# con <- postgres_connector()
+# police_shootings <- tbl(con, in_schema('public', 'police_shootings')) %>% my_collect
 #
 #
-#irs <-
+# irs <-
 #  police_shootings %>%
 #  group_by(zipcode) %>%
 #  count(name = 'n_deaths') %>%
 #  ungroup
 #
-#char_zips <- zctas(cb = TRUE, starts_with = unique(str_sub(irs$zipcode, 1, 3)))
+# char_zips <- zctas(cb = TRUE, starts_with = unique(str_sub(irs$zipcode, 1, 3)))
 ## all colnames to lowercase
-#colnames(irs) <- tolower(colnames(irs))
+# colnames(irs) <- tolower(colnames(irs))
 #
-#irs <-
+# irs <-
 #  irs %>%
 #  select(zipcode, mean_income = n_deaths)
 #
@@ -44,7 +44,7 @@
 #
 #
 ## join zip boundaries and income data
-#char_zips <- geo_join(char_zips,
+# char_zips <- geo_join(char_zips,
 #                      irs_sub,
 #                      by_sp = "GEOID10",
 #                      by_df = "zipcode",
@@ -52,15 +52,15 @@
 #
 #
 ## create color palette
-#pal <- colorNumeric(
+# pal <- colorNumeric(
 #  palette = "Greens",
 #  domain = char_zips@data$mean_income)
 #
 ## create labels for zipcodes
-#labels <- char_zips@data$mean_income
+# labels <- char_zips@data$mean_income
 #
 #
-#char_zips %>%
+# char_zips %>%
 #  leaflet %>%
 #  # add base map
 #  addProviderTiles("CartoDB") %>%
