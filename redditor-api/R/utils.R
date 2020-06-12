@@ -130,27 +130,38 @@ update_comments_to_word <- function() {
 
 #' @export backup_submissions_to_s3
 backup_submissions_to_s3 <- function() {
+  
   con <- postgres_connector()
   on.exit(dbDisconnect(conn = con))
-  
+  message('Looking for days to store')
   submissions <- 
     tbl(con, in_schema('public', 'submissions')) %>% 
     mutate(
-      time_hour = sql("date_trunc('hours', created_utc::timestamptz)")
+      date_created = sql("date_trunc('days', created_utc::timestamptz)")
     ) %>% 
-    filter(time_hour <= local(now(tzone = 'UTC') - hours(3)))
+    filter(date_created <= local(now(tzone = 'UTC') - days(1)))
   
+  message('...')
   submission_times <- 
     submissions  %>% 
-    distinct(time_hour) %>% 
+    distinct(date_created) %>% 
     collect
   
-  query_time <- submission_times$time_hour[[1]]
-  file_names <- paste0(str_replace(as.character(submission_times$time_hour), ' ', '_'), '.csv')
+  message('...')
+  dates_gathered <- as.character(with_tz(submission_times$date_created, tzone = 'UTC'))
+  file_names <- paste0(dates_gathered, '.csv')
   
+  message('...')
   
-  files_to_create <- submission_times$time_hour[!file_names %in% s3_list_objects(bucket_name = Sys.getenv("REDDITOR_S3_TABLE"))$key]
+  existing_files <- tryCatch({
+    s3_list_objects(bucket_name = Sys.getenv("REDDITOR_S3_TABLE"))$key
+  }, error = function(err) {
+    message('Nothing in s3')
+    return('Nothing there')
+  })
   
+  files_to_create <- dates_gathered[!dates_gathered %in% str_remove(existing_files, "\\.tar\\.gz")]
+  message('...')
   walk(
     files_to_create,
     function(query_time) {
@@ -159,15 +170,28 @@ backup_submissions_to_s3 <- function() {
       submission_hour <- 
         submissions %>% 
         filter(
-          time_hour == query_time
+          date_created == query_time
         ) %>% 
         my_collect
-      temp_file_location <- tempfile()
-      message(temp_file_location)
+      message(glue('Rows: {nrow(submission_hour)}'))
+      file_location <- tempdir()
+      file_name <- paste0(query_time, '.csv')
+      zip_name <- paste0(query_time, '.tar.gz')
+      temp_file_location <- file.path(file_location, file_name)
       write_csv(submission_hour, temp_file_location)
-      file_name <- paste0(str_replace(as.character(query_time), ' ', '_'), '.csv')
-      message(file_name)
-      s3_upload_file(bucket = Sys.getenv("REDDITOR_S3_TABLE"), from = temp_file_location, to = file_name)
+      temp_zip_location <- file.path(file_location, zip_name)
+      tar(temp_zip_location, temp_file_location, compression = 'gzip', tar="tar")
+      message(glue('Uploading... {file_name}'))
+      response <- s3_upload_file(bucket = Sys.getenv("REDDITOR_S3_TABLE"), from = temp_zip_location, to = zip_name, make_public = TRUE)
+      if(str_detect(response, 'https')) {
+        message(glue('Deleting {temp_file_location}'))  
+        file_delete(temp_file_location)
+        message(glue('Deleting {temp_zip_location}'))  
+        file_delete(temp_zip_location)
+        delete_statement <- glue("delete from submissions where date_trunc('days', created_utc::timestamptz) = '{query_time}'")
+        message(delete_statement)
+        dbExecute(conn = con, statement = delete_statement)
+      }
     }
   )
 }
