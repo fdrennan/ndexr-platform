@@ -15,12 +15,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     littler \
     git-core \
     libssl-dev \
+    libssh2-1-dev \
     default-jdk \
     libcurl4-openssl-dev \
     libxml2-dev \
     libssl-dev \
     libsasl2-dev \
     postgresql-client \
+    libudunits2-dev \
+    libgdal-dev \
     libpq-dev -y
 
 WORKDIR /home/scripts
@@ -59,6 +62,9 @@ RUN R -e "install.packages('openxlsx')"
 RUN R -e "install.packages('httpuv')"
 RUN R -e "install.packages('spacyr')"
 RUN R -e "install.packages('quanteda')"
+ARG DUMMY=unknowndatasssss
+RUN R -e "devtools::install_github('walkerke/tigris')"
+RUN R -e "install.packages('leaflet')"
 
 ARG DUMMY=unknowndatasssss
 COPY ./redditor-api /home/redditor-api
