@@ -9,6 +9,7 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
   redditapitwo:
     image: redditorapi
     command: /app/plumber.R
@@ -18,6 +19,7 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
   redditapithree:
     image: redditorapi
     command: /app/plumber.R
@@ -27,6 +29,7 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
   redditapifour:
     image: redditorapi
     command: /app/plumber.R
@@ -36,6 +39,7 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
   redditapifive:
     image: redditorapi
     command: /app/plumber.R
@@ -45,6 +49,7 @@ services:
     working_dir: /app
     volumes:
       - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
 
 volumes:
   mongodbdata:
