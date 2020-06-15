@@ -163,7 +163,7 @@ function() {
       runtime = 0
     )
   )
-  browser()
+  
   response <- tryCatch(
     {
       tic()
