@@ -4,6 +4,10 @@ library(plumber)
 library(redditor)
 library(biggr)
 
+message('Configuring AWS')
+message(Sys.getenv("AWS_ACCESS"))
+message(Sys.getenv("AWS_SECRET"))
+message(Sys.getenv("AWS_REGION"))
 configure_aws(
   aws_access_key_id = Sys.getenv("AWS_ACCESS"),
   aws_secret_access_key = Sys.getenv("AWS_SECRET"),
