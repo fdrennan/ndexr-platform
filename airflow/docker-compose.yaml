@@ -58,7 +58,7 @@ services:
       - ./data:/data
     command: airflow scheduler
   db:
-    image: postgres:9.6
+    image: postgres
     container_name: "redditor_postgres"
     restart: always
     ports:
