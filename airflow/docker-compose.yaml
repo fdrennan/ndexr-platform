@@ -69,9 +69,7 @@ services:
       - '5432'
       # Where our data will be persisted
     volumes:
-      - redditor_data:/var/lib/postgresql/data
-      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - redditor_volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -79,5 +77,5 @@ services:
 
 volumes:
   postgres: {}
-  redditor_data: {}
+  redditor_volume: {}
   airflow-worker-logs:
