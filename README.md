@@ -559,11 +559,21 @@ ssh -i "ndexr.pem" ubuntu@ndexr.com 'cd ndexr-platform && docker build -t reddit
 
 # To Kill a port
 sudo fuser -k -n tcp 3000
+sudo fuser -k -n tcp 8000
+sudo fuser -k -n tcp 8001
+sudo fuser -k -n tcp 8002
+sudo fuser -k -n tcp 8003
+sudo fuser -k -n tcp 8004
+sudo fuser -k -n tcp 8005
 
+rm -rf ~/.ssh/known_hosts
+sudo pkill -3 autossh
+nohup autossh -M 33201 -N -f -i "~/ndexr.pem" -R -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004  ec2-user@ndexr.com &
 
-autossh -f -nNT -i "~/ndexr.pem" -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004  ec2-user@ndexr.com
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 9200:localhost:9200 ec2-user@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+autossh -f -nNT -i /home/fdrennan/ndexr.pem 9200:localhost:9200 ec2-user@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 autossh -f -nNT -i "~/ndexr.pem" -R 5432:localhost:5432 ec2-user@ndexr.com
-
+autossh  -f -nNT  -i /home/fdrennan/ndexr.pem -R 9200:localhost:9200 ec2-user@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 autossh -M 20000 -i "ndexr.pem" -f -N ec2-user@ndexr.com -R 3000:localhost:3000 -C
 
 
