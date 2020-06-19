@@ -531,7 +531,7 @@ tar -xzvf postgres.tar.gz
 ## Restore Database
 Run Gathering Dag
 ```
-docker exec -it   redditor_postgres  /bin/bash
+docker exec -it   redditor_postgres  /bin/bash 
 tar -zxvf /data/postgres.tar.gz
 pg_restore --clean --verbose -U postgres -d postgres /postgres.bak
 ```
@@ -591,6 +591,7 @@ GatewayPorts yes
 ### Prod
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 9200:localhost:9200 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8787:localhost:8787 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 ### TESTING
 autossh -i /home/fdrennan/ndexr.pem -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o ExitOnForwardFailure=yes
 

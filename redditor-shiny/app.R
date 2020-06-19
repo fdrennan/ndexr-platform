@@ -11,7 +11,7 @@ print(system("whoami"))
 # con <- postgres_connector()
 # reddit <- reddit_connector()
 # reddit_con <- reddit_connector()
-LENOVO <- Sys.getenv("LENOVO")
+#LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 build_datatable <- function(the_datatable) {
@@ -95,6 +95,7 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
+  browser()
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
