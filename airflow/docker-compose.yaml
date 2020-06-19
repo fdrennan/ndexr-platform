@@ -58,7 +58,7 @@ services:
       - ./data:/data
     command: airflow scheduler
   db:
-    image: postgres:9.6
+    image: postgres
     container_name: "redditor_postgres"
     restart: always
     ports:
@@ -69,7 +69,7 @@ services:
       - '5432'
       # Where our data will be persisted
     volumes:
-      - redditor_data:/var/lib/postgresql/data
+      - redditor_volume:/var/lib/postgresql/data
       - ./data:/data
       - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     environment:
@@ -79,5 +79,5 @@ services:
 
 volumes:
   postgres: {}
-  redditor_data: {}
+  redditor_volume: {}
   airflow-worker-logs:

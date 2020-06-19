@@ -199,16 +199,13 @@ server <- function(input, output) {
     response <- fromJSON(fromJSON(content(x = resp, as = "text"))$data)
     response
   })
-  #
-  #
-  #
+
   output$permalink_summary <- renderDataTable({
     summarise_thread_stack(current_permalink()) %>%
       arrange(desc(engagement_ratio))
     # build_datatable
   })
-  #
-  #
+
   output$permalink_data <- renderDataTable({
     response <-
       current_permalink() %>%
