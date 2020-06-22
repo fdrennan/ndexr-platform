@@ -528,6 +528,8 @@ tar -xzvf postgres.tar.gz
 
 
 
+
+docker exec -it   airflow_scheduler_1  /bin/bash
 ## Restore Database
 Run Gathering Dag
 ```
