@@ -26,7 +26,7 @@ task_1 = BashOperator(
 )
 
 task_2 = BashOperator(
-    task_id='backup_postgres_from_container',
+    task_id='backup_postgres',
     bash_command='. /home/scripts/shell/backup_postgres',
     dag=dag
 )
