@@ -3,6 +3,18 @@
 library(plumber)
 library(redditor)
 library(biggr)
+
+message("Configuring AWS")
+message(Sys.getenv("AWS_ACCESS"))
+message(Sys.getenv("AWS_SECRET"))
+message(Sys.getenv("AWS_REGION"))
+configure_aws(
+  aws_access_key_id = Sys.getenv("AWS_ACCESS"),
+  aws_secret_access_key = Sys.getenv("AWS_SECRET"),
+  default.region = Sys.getenv("AWS_REGION")
+)
+
+
 #* @filter cors
 cors <- function(req, res) {
   message(glue("Within filter {Sys.time()}"))
@@ -145,7 +157,7 @@ function(permalink = "meta_statistics") {
 #* @get /get_submission_files
 function() {
   message(glue("Within get_summary {Sys.time()}"))
-  
+
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -155,12 +167,12 @@ function() {
       runtime = 0
     )
   )
-  
+
   response <- tryCatch(
     {
       tic()
-      resp <-  s3_list_objects('redditor-submissions')
-      files <- glue('https://redditor-submissions.s3.us-east-2.amazonaws.com/{resp$key}')
+      resp <- s3_list_objects("redditor-submissions")
+      files <- glue("https://redditor-submissions.s3.us-east-2.amazonaws.com/{resp$key}")
       response$data <- toJSON(files)
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
@@ -172,7 +184,7 @@ function() {
       return(response)
     }
   )
-  
+
   return(response)
 }
 
