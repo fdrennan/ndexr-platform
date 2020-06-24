@@ -169,6 +169,7 @@ backup_submissions_to_s3 <- function(keep_days = 2) {
     function(query_time) {
       message("----------------------------------------------------")
       message(glue("Building {query_time}"))
+      send_message(glue("Saving to S3: {query_time}"))
       submission_hour <-
         submissions %>%
         filter(
