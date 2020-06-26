@@ -3,7 +3,7 @@ library(future)
 library(httr)
 library(jsonlite)
 library(openxlsx)
-
+library(scales)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -11,7 +11,7 @@ print(system("whoami"))
 # con <- postgres_connector()
 # reddit <- reddit_connector()
 # reddit_con <- reddit_connector()
-LENOVO <- Sys.getenv("LENOVO")
+# LENOVO <- Sys.getenv("LENOVO")
 # curl -X GET "http://127.0.0.1:9798/get_summary" -H  "accept: application/json"
 
 build_datatable <- function(the_datatable) {
@@ -41,7 +41,24 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Search", tabName = "search", icon = icon("th")),
-      menuItem("Permalink", tabName = "permalink", icon = icon("th"))
+      menuItem("Permalink", tabName = "permalink", icon = icon("th")),
+      tags$a(
+        href = 'http://ndexr.com:8787',
+        tags$image(
+          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+          title = "Rstudio Server",
+          width = "100%"
+        )
+      ),
+      tags$div(),
+      tags$a(
+        href = 'http://ndexr.com:8080',
+        tags$image(
+          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+          title = "Airflow",
+          width = "100%"
+        )
+      )
     )
   ),
   dashboardBody(
@@ -95,6 +112,7 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
+  
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))

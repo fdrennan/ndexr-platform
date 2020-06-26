@@ -37,21 +37,21 @@ library(forecast)
 # walk2(files, resp$key, ~ download.file(url = .x, destfile = .y))
 
 con <- postgres_connector()
-submissions <- tbl(con, in_schema('public', 'submissions'))
+submissions <- tbl(con, in_schema("public", "submissions"))
 
-if(!file.exists('response.csv')) {
+if (!file.exists("response.csv")) {
   response <-
     submissions %>%
-    my_collect
+    my_collect()
 
-  write_csv(response, 'response.csv')
+  write_csv(response, "response.csv")
 } else {
-  response <- read_csv('response.csv')
+  response <- read_csv("response.csv")
 }
 
 
 
-if(!file.exists('summary_data.csv')) {
+if (!file.exists("summary_data.csv")) {
   summary_data <-
     response %>%
     group_by(author) %>%
@@ -60,20 +60,22 @@ if(!file.exists('summary_data.csv')) {
       n_post = n(),
       n_urls = n_distinct(url)
     ) %>%
-    my_collect
-  write_csv(summary_data, 'summary_data.csv')
+    my_collect()
+  write_csv(summary_data, "summary_data.csv")
 } else {
-  summary_data <- read_csv('summary_data.csv')
+  summary_data <- read_csv("summary_data.csv")
 }
 
 
 summary_data %>%
-  head
+  head()
 
 authors <-
   summary_data %>%
-  mutate(spread = n_urls/n_subreddits,
-         diff = n_subreddits - n_post) %>%
+  mutate(
+    spread = n_urls / n_subreddits,
+    diff = n_subreddits - n_post
+  ) %>%
   filter(
     # diff < -100,
     n_urls > 150,
@@ -87,20 +89,20 @@ authors <-
 response_summary <-
   response %>%
   filter(author %in% authors) %>%
-  mutate(created_utc = floor_date(ymd_hms(created_utc), '5 minutes')) %>%
+  mutate(created_utc = floor_date(ymd_hms(created_utc), "5 minutes")) %>%
   group_by(author, created_utc) %>%
   # filter(str_detect(author, 'wunder')) %>%
   summarise(n_obs = n())
 
 ggplot(response_summary) +
-  aes(x=ymd_hms(created_utc), y = log(n_obs)) +
+  aes(x = ymd_hms(created_utc), y = log(n_obs)) +
   geom_col() +
   facet_grid(author ~ .)
 
 
 # tsibbles <-
-  response_summary %>%
-  ungroup %>%
+response_summary %>%
+  ungroup() %>%
   split(.$author) %>%
   map(function(x) {
     ggAcf(as_tsibble(select(x, created_utc, n_obs)), lag = 5)
