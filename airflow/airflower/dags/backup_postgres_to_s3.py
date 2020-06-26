@@ -31,6 +31,7 @@ task_2 = BashOperator(
     dag=dag
 )
 
+
 task_3 = BashOperator(
     task_id='transfer_submission_from_s3_to_postgres',
     bash_command='. /home/scripts/R/shell/transfer_submission_from_s3_to_postgres',
