@@ -3,7 +3,7 @@ library(future)
 library(httr)
 library(jsonlite)
 library(openxlsx)
-
+library(scales)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -41,7 +41,24 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Search", tabName = "search", icon = icon("th")),
-      menuItem("Permalink", tabName = "permalink", icon = icon("th"))
+      menuItem("Permalink", tabName = "permalink", icon = icon("th")),
+      tags$a(
+        href = 'http://ndexr.com:8787',
+        tags$image(
+          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+          title = "Rstudio Server",
+          width = "100%"
+        )
+      ),
+      tags$div(),
+      tags$a(
+        href = 'http://ndexr.com:8080',
+        tags$image(
+          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+          title = "Airflow",
+          width = "100%"
+        )
+      )
     )
   ),
   dashboardBody(
@@ -95,7 +112,7 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-  browser()
+  
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
