@@ -1,5 +1,29 @@
 #' @export postgres_connector
-postgres_connector <- function() {
+postgres_connector <- function(POSTGRES_HOST = NULL,
+                               POSTGRES_PORT = NULL,
+                               POSTGRES_USER = NULL,
+                               POSTGRES_PASSWORD = NULL,
+                               POSTGRES_DB = NULL) {
+  if (is.null(POSTGRES_HOST)) {
+    POSTGRES_HOST <- Sys.getenv("POSTGRES_HOST")
+  }
+
+  if (is.null(POSTGRES_PORT)) {
+    POSTGRES_PORT <- Sys.getenv("POSTGRES_PORT")
+  }
+
+  if (is.null(POSTGRES_USER)) {
+    POSTGRES_USER <- Sys.getenv("POSTGRES_USER")
+  }
+
+  if (is.null(POSTGRES_PASSWORD)) {
+    POSTGRES_PASSWORD <- Sys.getenv("POSTGRES_PASSWORD")
+  }
+
+  if (is.null(POSTGRES_DB)) {
+    POSTGRES_DB <- Sys.getenv("POSTGRES_DB")
+  }
+
   n <- 1
   message("First attempt at connection")
   repeat {
@@ -197,4 +221,73 @@ backup_submissions_to_s3 <- function(keep_days = 2) {
       }
     }
   )
+}
+
+#' @export s3_submissions_to_postgres
+s3_submissions_to_postgres <- function() {
+  system("rm -rf *.tar.gz")
+  con <- postgres_connector()
+  split_path <- function(path) {
+    rev(setdiff(strsplit(path, "/|\\\\")[[1]], ""))
+  }
+
+  file_locations <- fromJSON(fromJSON("http://ndexr.com/api/get_submission_files")$data)
+
+  data_tibble <-
+    tibble(file_path = file_locations) %>%
+    mutate(
+      associated_gzip = str_remove(file_path, "https://redditor-submissions.s3.us-east-2.amazonaws.com/"),
+      associated_date = str_remove(associated_gzip, ".tar.gz")
+    )
+
+
+  timestamps <-
+    tbl(con, "submissions") %>%
+    mutate(
+      associated_date = sql("date_trunc('day', created_utc::timestamptz)::date::varchar")
+    ) %>%
+    distinct(associated_date) %>%
+    collect()
+
+  data_tibble <-
+    data_tibble %>%
+    anti_join(timestamps)
+
+  if (nrow(data_tibble) == 0) {
+    return(TRUE)
+  }
+
+  file_locations <- data_tibble$file_path
+  gzip_files <- map_chr(file_locations, ~ split_path(.)[[1]])
+
+  walk2(
+    file_locations,
+    gzip_files,
+    ~ download.file(url = .x, destfile = .y)
+  )
+
+  tar_files <- dir_ls()[str_detect(dir_ls(), "tar")]
+
+  upsert_data <- function(file_location) {
+    tryCatch(
+      {
+        dir_delete("tmp")
+      },
+      error = function(err) {
+        message("No temp folder to remove")
+      }
+    )
+    print(file_location)
+    untar(file_location)
+    dir_paths <- dir_ls("tmp", recurse = T)
+    dir_file <- dir_paths[str_detect(dir_paths, "csv")]
+    print(dir_file)
+    submission <- read.csv(dir_file) %>% select(-date_created)
+    print("Upsert Submission")
+    dbxUpsert(con, "submissions", submission, where_cols = c("submission_key"), batch_size = 100)
+    print(dir_file)
+  }
+
+  try(dir_delete("tmp"))
+  walk(tar_files, ~ upsert_data(.))
 }
