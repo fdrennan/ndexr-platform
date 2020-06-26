@@ -226,7 +226,7 @@ backup_submissions_to_s3 <- function(keep_days = 2) {
 #' @export s3_submissions_to_postgres
 s3_submissions_to_postgres <- function(con = NULL) {
   system("rm -rf *.tar.gz")
-  #con <- postgres_connector()
+  # con <- postgres_connector()
   split_path <- function(path) {
     rev(setdiff(strsplit(path, "/|\\\\")[[1]], ""))
   }
