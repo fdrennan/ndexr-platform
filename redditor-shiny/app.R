@@ -52,7 +52,6 @@ ui <- dashboardPage(
           )
         ), width = 11
       ),
-      tags$div(),
       box(
         tags$a(
           href = 'http://ndexr.com:8080',
@@ -63,13 +62,32 @@ ui <- dashboardPage(
           )
         ), width = 11
       ),
-      tags$div(),
       box(
         tags$a(
           href = 'http://ndexr.com:8081',
           tags$image(
             src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
-            title = "Airflow",
+            title = "PG Admin",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      box(
+        tags$a(
+          href = 'http://ndexr.com/api/get_submission_files',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
+            title = "Plumber",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      box(
+        tags$a(
+          href = 'http://ndexr.com/elastic',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
+            title = "Elastic Search",
             width = "100%"
           )
         ), width = 11
@@ -97,12 +115,14 @@ ui <- dashboardPage(
         tabName = "search",
         fluidRow(
           # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
-          checkboxInput("removensfw", "Remove NSFW", TRUE),
-          numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000),
-          textInput(
-            inputId = "search_value", label = "Query Data",
-            value = "Natural Language Processing",
-            placeholder = "Natural Language Processing"
+          box(
+            checkboxInput("removensfw", "Remove NSFW", TRUE),
+            numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000),
+            textInput(
+              inputId = "search_value", label = "Query Data",
+              value = "Natural Language Processing",
+              placeholder = "Natural Language Processing"
+            )
           ),
           downloadButton("downloadData", "Download"),
           width = 12
@@ -115,9 +135,9 @@ ui <- dashboardPage(
         )
       ),
       tabItem(
-        tabName = "permalink",
+        tabName = "ink",
         fluidRow(
-          textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"),
+          box(textInput(inputId = "ink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")),
           column(dataTableOutput("permalink_summary"), width = 12),
           column(dataTableOutput("permalink_data"), width = 12)
         )
