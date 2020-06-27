@@ -83,7 +83,7 @@ Material UI. The project is located at `redditor-ui`
 docker build -t redditorui --file ./DockerfileUi .
 ```
 
-All of the above gets our containers ready for use. But there's a to unpack in this docker-compose file.
+All of the above gets our containers ready for use. But there's a lot to unpack in this docker-compose file.
 
 ### LOTS OF SERVICES
 
