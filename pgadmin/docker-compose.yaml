@@ -1,0 +1,18 @@
+version: '3.5'
+ 
+services:  
+  pgadmin:
+    env_file: .env
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:4.16
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+       - pgadmin:/root/.pgadmin
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    
+volumes:
+    pgadmin:

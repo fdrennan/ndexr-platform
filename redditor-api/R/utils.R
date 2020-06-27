@@ -250,8 +250,7 @@ s3_submissions_to_postgres <- function(con = NULL) {
     collect()
 
   data_tibble <-
-    data_tibble %>%
-    anti_join(timestamps)
+    data_tibble %>%  anti_join(timestamps, by = 'associated_date')
 
   if (nrow(data_tibble) == 0) {
     return(TRUE)

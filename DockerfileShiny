@@ -14,6 +14,7 @@ RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
   python3-venv \
   libssl-dev \
   postgresql-client \
+  libudunits2-dev \
   libsasl2-dev
 
 RUN R -e "install.packages('devtools')"
@@ -50,6 +51,11 @@ RUN R -e "install.packages('openxlsx')"
 RUN R -e "install.packages('httpuv')"
 RUN R -e "install.packages('spacyr')"
 RUN R -e "install.packages('quanteda')"
+ARG DUMMY=unknowndatasssss
+RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \ 
+  libgdal-dev
+RUN R -e "devtools::install_github('walkerke/tigris')"
+RUN R -e "install.packages('leaflet')"
 
 ARG DUMMY=random
 COPY ./redditor-api /home/redditor-api
