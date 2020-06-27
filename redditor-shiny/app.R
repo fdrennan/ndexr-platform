@@ -50,7 +50,7 @@ ui <- dashboardPage(
             title = "Rstudio Server",
             width = "100%"
           )
-        ), width = 12
+        ), width = 11
       ),
       box(
         tags$a(
@@ -60,7 +60,7 @@ ui <- dashboardPage(
             title = "Airflow",
             width = "100%"
           )
-        ), width = 12
+        ), width = 11
       ),
       box(
         tags$a(
@@ -70,7 +70,7 @@ ui <- dashboardPage(
             title = "PG Admin",
             width = "100%"
           )
-        ), width = 12
+        ), width = 11
       ),
       box(
         tags$a(
@@ -80,7 +80,7 @@ ui <- dashboardPage(
             title = "Plumber",
             width = "100%"
           )
-        ), width = 12
+        ), width = 11
       ),
       box(
         tags$a(
@@ -90,7 +90,7 @@ ui <- dashboardPage(
             title = "Elastic Search",
             width = "100%"
           )
-        ), width = 12
+        ), width = 11
       )
     )
   ),
