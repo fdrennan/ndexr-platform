@@ -52,6 +52,8 @@ RUN R -e "install.packages('httpuv')"
 RUN R -e "install.packages('spacyr')"
 RUN R -e "install.packages('quanteda')"
 ARG DUMMY=unknowndatasssss
+RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \ 
+  libgdal-dev
 RUN R -e "devtools::install_github('walkerke/tigris')"
 RUN R -e "install.packages('leaflet')"
 
