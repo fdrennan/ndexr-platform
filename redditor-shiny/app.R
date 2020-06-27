@@ -42,22 +42,37 @@ ui <- dashboardPage(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Search", tabName = "search", icon = icon("th")),
       menuItem("Permalink", tabName = "permalink", icon = icon("th")),
-      tags$a(
-        href = 'http://ndexr.com:8787',
-        tags$image(
-          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
-          title = "Rstudio Server",
-          width = "100%"
-        )
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8787',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+            title = "Rstudio Server",
+            width = "100%"
+          )
+        ), width = 11
       ),
       tags$div(),
-      tags$a(
-        href = 'http://ndexr.com:8080',
-        tags$image(
-          src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
-          title = "Airflow",
-          width = "100%"
-        )
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8080',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+            title = "Airflow",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      tags$div(),
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8081',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
+            title = "Airflow",
+            width = "100%"
+          )
+        ), width = 11
       )
     )
   ),
