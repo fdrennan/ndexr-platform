@@ -1,1 +1,1 @@
-docker build -t redditorapp --file ./Dockerfile .
+docker build -t redditorapp --file ./DockerfileShiny .
