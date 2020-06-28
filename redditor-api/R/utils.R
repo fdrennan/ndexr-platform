@@ -29,11 +29,11 @@ postgres_connector <- function(POSTGRES_HOST = NULL,
   repeat {
     connection <- try({
       dbConnect(RPostgres::Postgres(),
-        host = Sys.getenv("POSTGRES_HOST"),
-        port = Sys.getenv("POSTGRES_PORT"),
-        user = Sys.getenv("POSTGRES_USER"),
-        password = Sys.getenv("POSTGRES_PASSWORD"),
-        dbname = Sys.getenv("POSTGRES_DB")
+        host = POSTGRES_HOST,
+        port = POSTGRES_PORT,
+        user = POSTGRES_USER,
+        password = POSTGRES_PASSWORD,
+        dbname = POSTGRES_DB
       )
     })
 
@@ -250,7 +250,7 @@ s3_submissions_to_postgres <- function(con = NULL) {
     collect()
 
   data_tibble <-
-    data_tibble %>%  anti_join(timestamps, by = 'associated_date')
+    data_tibble %>% anti_join(timestamps, by = 'associated_date')
 
   if (nrow(data_tibble) == 0) {
     return(TRUE)
