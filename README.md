@@ -629,3 +629,8 @@ docker volume prune
 
 # Install Elastic Search Plugins
 https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-with-docker-container
+
+# Add user
+sudo adduser newuser
+usermod -aG sudo newuser
+
