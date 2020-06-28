@@ -2,6 +2,27 @@
 
 `redditor` is a wrapper for the `praw` library in Python, so we need to do some configuration to get R working with reticulate. Listen, reticulate can be a headache. So, if you have issues, please let me know. We can both update the documentation as well as get you up and running. 
 
+# Installing in RServer
+
+```
+install.packages(c('devtools', 'roxygen2',
+                   'tidyverse','reticulate',
+                   'RPostgres','DBI','dbplyr',
+                   'rvest','lubridate','tidytext',
+                   'tictoc','elasticsearchr','dbx',
+                   'ggthemes','shinydashboard',
+                   'shiny','openxlsx','spacyr',
+                   'quanteda','uuid'))
+
+# Build the R package and load
+library(redditor)
+
+reticulate::install_miniconda()
+
+conda_install(packages = c("praw", "spacy"))
+spacy_download_langmodel(envname = 'r-reticulate')
+```
+
 # AFTER RUNNING THE CODE BELOW WITH YOUR ASSOCIATED ENVIRONMENT VARIABLES, RESTART YOUR R SESSION
 ```
 library(redditor)
