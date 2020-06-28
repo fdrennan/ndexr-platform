@@ -265,7 +265,7 @@ s3_submissions_to_postgres <- function(con = NULL) {
     ~ download.file(url = .x, destfile = .y)
   )
 
-  tar_files <- dir_ls()[str_detect(dir_ls(), "tar")]
+  tar_files <- dir_ls()[str_detect(dir_ls(), "tar.gz")]
 
   upsert_data <- function(file_location) {
     tryCatch(
