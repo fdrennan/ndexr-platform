@@ -1,3 +1,5 @@
+# install.packages(c('reticulate', 'RPostgres', 'tidytext', 'tictoc', 'elasticsearchr', 'dbx', 'ggthemes', 'shinydashboard', 'shiny', 'DT', 'openxlsx', 'spacyr', 'quanteda', 'uuid'))
+
 library(redditor)
 
 reddit_con <- reddit_connector()
