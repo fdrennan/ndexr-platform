@@ -2,7 +2,7 @@ library(redditor)
 library(biggr)
 
 refresh <- function() {
-  con <- postgres_connector()
+  con <- postgres_connector(POSTGRES_PORT = 5433)
   on.exit(dbDisconnect(con))
   dbExecute(
     conn = con,
