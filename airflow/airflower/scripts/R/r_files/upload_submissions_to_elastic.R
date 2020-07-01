@@ -25,7 +25,7 @@ counts <-
   arrange(year, month, day, hour) %>%
   as.data.frame() %>%
   mutate(id = row_number())
-
+send_message(glue("Before: {nrow(counts}}"))
 if (db_has_table(con, dwh_verification_table)) {
   elastic_uploaded <- collect(tbl(con, in_schema("public", dwh_verification_table)))
   counts <- anti_join(counts, select(elastic_uploaded, -id)) %>%
@@ -34,7 +34,7 @@ if (db_has_table(con, dwh_verification_table)) {
 
 # elastic("http://localhost:9200", "stream_submissions_all") %delete% TRUE
 max_counts <- nrow(counts)
-
+send_message(glue("After: {max_counts}"))
 counts <-
   counts %>%
   split(.$id)
@@ -42,6 +42,7 @@ counts <-
 for (hour_count in counts) {
   elastic_submission_upload_ratio <- round(hour_count$id / max_counts, 4)
   send_message(glue("Uploading Submissions to Elastic {elastic_submission_upload_ratio*100}% complete"))
+  send_message(glue("{(hour_count$year}-{hour_count$month}-{hour_count$day} hour_count$hour"))
   print(elastic_submission_upload_ratio)
   response <-
     response_table %>%
@@ -62,15 +63,15 @@ for (hour_count in counts) {
   print(response)
   tryCatch(
     {
-      message('Uploading to Elastic')
+      send_message('Uploading to Elastic')
       elastic(Sys.getenv("ELASTIC_SEARCH"), elastic_search_table, "data") %index% as.data.frame(response)
-      message('Writing to table')
+      send_message('Writing to table')
       dbWriteTable(conn = con, name = dwh_verification_table, value = hour_count, append = TRUE)
-      message('Complete')
+      send_message('Complete')
     },
     error = function(e) {
-      message(e)
-      message("Oops, something went wrong.")
+      send_message(e)
+      send_message("Oops, something went wrong.")
       dbWriteTable(conn = con, name = dwh_failed_verification_table, value = hour_count, append = TRUE)
     }
   )
