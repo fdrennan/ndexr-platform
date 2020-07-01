@@ -2,11 +2,11 @@ library(redditor)
 library(biggr)
 
 refresh <- function() {
-  con <- postgres_connector()
+  con <- postgres_connector(POSTGRES_PORT = 5433)
   on.exit(dbDisconnect(con))
   dbExecute(
     conn = con,
-    statement = read_file("../../sql/materialized_vrefresh_urls_count_by_day.sql")
+    statement = read_file("../../sql/materialized_views/refresh_urls_count_by_day.sql")
   )
 }
 
