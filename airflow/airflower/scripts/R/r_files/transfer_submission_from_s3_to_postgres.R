@@ -1,5 +1,5 @@
 library(redditor)
 con <- postgres_connector(POSTGRES_PORT = 5433)
-send_message("Transferrind submissions from s3 to postgres")
+send_message("Transferring submissions from s3 to postgres")
 s3_submissions_to_postgres(con = con)
 send_message("submissions from s3 to postgres complete")

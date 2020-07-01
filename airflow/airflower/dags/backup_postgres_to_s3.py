@@ -38,5 +38,12 @@ task_3 = BashOperator(
     dag=dag
 )
 
+task_4 = BashOperator(
+    task_id='refresh_mat_submission_summary',
+    bash_command='. /home/scripts/R/shell/refresh_mat_submission_summary',
+    dag=dag
+)
+
 task_1 >> task_2
 task_2 >> task_3
+task_3 >> task_4

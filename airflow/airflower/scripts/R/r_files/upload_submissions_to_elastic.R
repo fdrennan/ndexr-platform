@@ -1,7 +1,7 @@
 library(redditor)
 library(elasticsearchr)
 
-# elastic(Sys.getenv('ELASTIC_SEARCH'), "streamall") %delete% TRUE
+ #elastic(Sys.getenv('ELASTIC_SEARCH'), "submissions") %delete% TRUE
 # elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
 
 dwh_table <- "submissions"
@@ -9,7 +9,7 @@ dwh_verification_table <- "submissions_to_elastic_success"
 dwh_failed_verification_table <- "submissions_to_elastic_failed"
 elastic_search_table <- "submissions"
 
-con <- postgres_connector()
+con <- postgres_connector(POSTGRES_PORT = 5433)
 response_table <- tbl(con, in_schema("public", dwh_table))
 counts <-
   response_table %>%
@@ -42,6 +42,7 @@ counts <-
 for (hour_count in counts) {
   elastic_submission_upload_ratio <- round(hour_count$id / max_counts, 4)
   send_message(glue("Uploading Submissions to Elastic {elastic_submission_upload_ratio*100}% complete"))
+  send_message(glue("{hour_count$year}-{hour_count$month}-{hour_count$day} {hour_count$hour}"))
   print(elastic_submission_upload_ratio)
   response <-
     response_table %>%
@@ -62,11 +63,15 @@ for (hour_count in counts) {
   print(response)
   tryCatch(
     {
+      send_message('Uploading to Elastic')
       elastic(Sys.getenv("ELASTIC_SEARCH"), elastic_search_table, "data") %index% as.data.frame(response)
+      send_message('Writing to table')
       dbWriteTable(conn = con, name = dwh_verification_table, value = hour_count, append = TRUE)
+      send_message('Complete')
     },
     error = function(e) {
-      message("Oops, something went wrong.")
+      send_message(e)
+      send_message("Oops, something went wrong.")
       dbWriteTable(conn = con, name = dwh_failed_verification_table, value = hour_count, append = TRUE)
     }
   )

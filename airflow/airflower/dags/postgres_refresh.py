@@ -50,5 +50,5 @@ task_3 = BashOperator(
 
 task   >> task_0
 task_0 >> task_1
-task_1 >> task_2
-task_2 >> task_3
+task_0 >> task_2
+task_0 >> task_3

@@ -2,51 +2,28 @@
 
 `redditor` is a wrapper for the `praw` library in Python, so we need to do some configuration to get R working with reticulate. Listen, reticulate can be a headache. So, if you have issues, please let me know. We can both update the documentation as well as get you up and running. 
 
-# AFTER RUNNING THE CODE BELOW WITH YOUR ASSOCIATED ENVIRONMENT VARIABLES, RESTART YOUR R SESSION
+# Installing in RServer
+
 ```
+install.packages(c('devtools', 'roxygen2',
+                   'tidyverse','reticulate',
+                   'RPostgres','DBI','dbplyr',
+                   'rvest','lubridate','tidytext',
+                   'tictoc','elasticsearchr','dbx',
+                   'ggthemes','shinydashboard',
+                   'shiny','openxlsx','spacyr',
+                   'quanteda','uuid'))
+
+# Build the R package and load
 library(redditor)
 
-# Using glue to paste strings together, however bash uses brackets by default, so we'll create a new delimiter.
-new_glue <- function(string) {
-  glue(string, .open = "--", .close = "--")
-}
+reticulate::install_miniconda()
 
-# Name of the virtualenv we want to use. I'm using the package name
-VIRTUALENV_NAME <- 'redditor'
-
-# All the reddit auth stuff.
-# Visit https://www.reddit.com/prefs/apps to get credentials
-reddit_auth <-
-  list(
-    REDDIT_CLIENT = 'YOUR_REDDIT_CLIENT_ID',
-    REDDIT_AUTH = 'YOUR_REDDIT_AUTH',
-    USER_AGENT = 'YOUR_USER_AGENT',
-    USERNAME = 'REDDIT_USERNAME',
-    PASSWORD = 'REDDIT_PASSWORD'
-  )
-
-walk2(
-  names(reddit_auth),
-  reddit_auth,
-  function(reddit_auth_name, reddit_auth_value) {
-    system(glue('echo {reddit_auth_name}={reddit_auth_value} >> .Renviron'))
-  }
-)
-
-# Create your virtualenv
-virtualenv_install(envname = VIRTUALENV_NAME, packages = 'praw')
-
-# Get the path to your virtual environment, if the following returns a path to your virtualenv, then you're in good shape.
-# What you need is the path to your virtualenv to be an environment variable in .Renviron in the working directory.
-system('ls ${HOME}/.virtualenvs/')
-
-# Add RETICULATE_PYTHON to the directory's .Renviron
-system(
-  new_glue('echo RETICULATE_PYTHON=${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python >> .Renviron')
-)
-
+conda_install(packages = c("praw", "spacy"))
+spacy_download_langmodel(envname = 'r-reticulate')
 ```
 
+# AFTER RUNNING THE CODE BELOW WITH YOUR ASSOCIATED ENVIRONMENT VARIABLES, RESTART YOUR R SESSION
 
 # RUNNING THE SOFTWARE
 

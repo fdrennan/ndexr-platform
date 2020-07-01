@@ -83,7 +83,7 @@ Material UI. The project is located at `redditor-ui`
 docker build -t redditorui --file ./DockerfileUi .
 ```
 
-All of the above gets our containers ready for use. But there's a to unpack in this docker-compose file.
+All of the above gets our containers ready for use. But there's a lot to unpack in this docker-compose file.
 
 ### LOTS OF SERVICES
 
@@ -629,3 +629,8 @@ docker volume prune
 
 # Install Elastic Search Plugins
 https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-with-docker-container
+
+# Add user
+sudo adduser newuser
+usermod -aG sudo newuser
+

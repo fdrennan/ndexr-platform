@@ -1,9 +1,11 @@
-library(redditor)
-library(biggr)
-library(fpp3)
-library(forecast)
+# install.packages(c('reticulate', 'RPostgres', 'tidytext', 'tictoc', 'elasticsearchr', 'dbx', 'ggthemes', 'shinydashboard', 'shiny', 'DT', 'openxlsx', 'spacyr', 'quanteda', 'uuid'))
 
-# reddit_con <- reddit_connector()
+library(redditor)
+
+reddit_con <- reddit_connector()
+
+response <- get_submission(reddit = reddit_con, name = 'all', type = 'new', limit = 10)
+
 # connection <- postgres_connector()
 # submissions <- tbl(connection, in_schema('public', 'submissions'))
 # response <-
@@ -17,7 +19,7 @@ library(forecast)
 
 # configure_aws(aws_access_key_id = Sys.getenv("AWS_ACCESS"), aws_secret_access_key = Sys.getenv("AWS_SECRET"), default.region = Sys.getenv("AWS_REGION"))
 # response <-
-# build_submission_stack(permalink = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")
+
 # comment_gather_on <- function(key = 'protest') {
 #   con <- postgres_connector()
 #   on.exit(dbDisconnect(conn = con))
