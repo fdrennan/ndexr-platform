@@ -42,7 +42,16 @@ ui <- dashboardPage(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Search", tabName = "search", icon = icon("th")),
       menuItem("Permalink", tabName = "permalink", icon = icon("th")),
-      
+      box(
+        tags$a(
+          href = 'https://github.com/fdrennan/ndexr-platform',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/github.png',
+            title = "Get the Repo",
+            width = "100%"
+          )
+        ), width = 11
+      ),
       box(
         tags$a(
           href = 'https://join.slack.com/t/ndexr/shared_invite/zt-fhxk2scl-Y9BeA~JZUoTiDLVk~6degQ',
