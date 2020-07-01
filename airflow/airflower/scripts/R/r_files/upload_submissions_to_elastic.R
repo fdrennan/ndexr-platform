@@ -1,7 +1,7 @@
 library(redditor)
 library(elasticsearchr)
 
- #elastic(Sys.getenv('ELASTIC_SEARCH'), "submissions") %delete% TRUE
+# elastic(Sys.getenv('ELASTIC_SEARCH'), "submissions") %delete% TRUE
 # elastic(Sys.getenv('ELASTIC_SEARCH'), "stream_submissions_all") %delete% TRUE
 
 dwh_table <- "submissions"

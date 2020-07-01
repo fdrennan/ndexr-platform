@@ -1,5 +1,4 @@
 library(redditor)
-library(biggr)
 
 refresh <- function() {
   con <- postgres_connector()
