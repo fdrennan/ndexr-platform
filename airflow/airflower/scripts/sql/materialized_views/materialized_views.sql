@@ -97,3 +97,13 @@ create materialized view submission_summary as (
     group by author
     order by author
 );
+
+-- SPLIT
+drop materialized view if exists public.urls_count_by_day;
+-- SPLIT
+create materialized view public.urls_count_by_day as (
+    select date_trunc('day', created_utc::timestamptz) as floor_day, url, count(*) as n_observations
+    from public.submissions
+    group by floor_day, url
+    order by floor_day desc, n_observations desc
+)

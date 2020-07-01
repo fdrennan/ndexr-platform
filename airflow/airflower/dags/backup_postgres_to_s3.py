@@ -44,6 +44,13 @@ task_4 = BashOperator(
     dag=dag
 )
 
+task_5 = BashOperator(
+    task_id='refresh_urls_count_by_day',
+    bash_command='. /home/scripts/R/shell/refresh_urls_count_by_day',
+    dag=dag
+)
+
 task_1 >> task_2
 task_2 >> task_3
 task_3 >> task_4
+task_3 >> task_5
