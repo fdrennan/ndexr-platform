@@ -287,6 +287,7 @@ docker-compose -f /Users/fdrennan/redditor/do.yml up
 https://analytics.google.com/analytics/web/#/
 
 # Reset Life
+
 ```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -f status=exited -q)
