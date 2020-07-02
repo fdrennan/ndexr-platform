@@ -213,7 +213,7 @@ docker image tag redditorapi:latest fdrennan/redditorapi:latest
 docker push fdrennan/redditorapi:latest
 ```
 
-# Reset Everythng Docker
+# Reset Everything Docker
 ```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -f status=exited -q)
