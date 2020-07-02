@@ -12,7 +12,7 @@ args = {
 }
 dag = DAG(dag_id='postgres_refresh',
           default_args=args,
-          schedule_interval='* */2 * * *',
+          schedule_interval='* 6 * * *',
           concurrency=1,
           max_active_runs=1,
           catchup=False)
@@ -30,7 +30,7 @@ task_0 = BashOperator(
 )
 
 task_1 = BashOperator(
-    task_id='refresh_mat_counts_by_secondg',
+    task_id='refresh_mat_counts_by_second',
     bash_command='. /home/scripts/R/shell/refresh_mat_counts_by_second',
     dag=dag
 )
