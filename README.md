@@ -3,6 +3,15 @@ I love large structures - behemoth applications which include a lot of moving pa
 
 This is one of them.
 
+# Technologies Used
+
+
+![](redditor-shiny/airflow.png)
+![](redditor-shiny/github.png)
+![](redditor-shiny/pgadmin.png)
+![](redditor-shiny/elasticsearch.jpeg)
+![](redditor-shiny/rstudio.png)
+
 # The Network
 ![This](ndexr.jpeg)
 All incoming ports are blocked to external users except for 80 and 3000, the remaining ports are only accessible
