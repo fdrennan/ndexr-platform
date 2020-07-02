@@ -1,9 +1,9 @@
-This application is for the gathering, storage, and display of Reddit data. 
-I love large structures - behemoth applications which include a lot of moving parts. 
+# NDEXR - Indexing the Reddit Platform
 
-This is one of them.
+## WHY?
+To find bad actors and determine if we can detect people spreading misinformation and make it known.
 
-I have over the past few weeks collected about 30 million submissions to Reddit and the data pipeline runs consistently
+Over the past few weeks this project has collected about 30 million submissions to Reddit and the data pipeline runs consistently
 
 ## Observing a World Event
 
