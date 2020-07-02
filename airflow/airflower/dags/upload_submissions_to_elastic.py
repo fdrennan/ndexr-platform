@@ -13,7 +13,7 @@ args = {
 
 dag = DAG(dag_id='upload_submissions_to_elastic',
           default_args=args,
-          schedule_interval='@daily',
+          schedule_interval='* 9 * * *',
           concurrency=1,
           max_active_runs=1,
           catchup=False)

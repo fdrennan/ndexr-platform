@@ -634,3 +634,6 @@ https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-wi
 sudo adduser newuser
 usermod -aG sudo newuser
 
+# Monitoring Users
+
+https://www.ostechnix.com/monitor-user-activity-linux/
