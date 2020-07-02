@@ -155,14 +155,6 @@ docker volume prune
 docker volume rm  redditor_postgres_data
 ```
 
-
-
-docker exec -it   redditor_scheduler_1  /bin/bash
-docker exec -it   redditor_backup_1  /bin/bash
-docker exec -it   redditor_redditapi_1  /bin/bash
-docker exec -it   redditor_postgres  /bin/bash
-
-
 # Restoring Postgres from Backup
 ```
 pg_dump -h db -p 5432 -Fc -o -U postgres postgres > postgres.bak
