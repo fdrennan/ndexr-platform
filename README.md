@@ -5,16 +5,6 @@ This is one of them.
 
 # Visit the [Live Site](http://ndexr.com)
 
-# Technologies Used
-
-
-![](redditor-shiny/airflow.png)
-![](redditor-shiny/github.png)
-![](redditor-shiny/pgadmin.png)
-![](redditor-shiny/elasticsearch.jpeg)
-![](redditor-shiny/rstudio.png)
-
-
 # The Network
 ![This](ndexr.jpeg)
 All incoming ports are blocked to external users except for 80 and 3000, the remaining ports are only accessible
@@ -319,3 +309,11 @@ https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-wi
 
 # Monitoring Users
 https://www.ostechnix.com/monitor-user-activity-linux/
+
+# Technologies Used
+
+![](redditor-shiny/airflow.png)
+![](redditor-shiny/github.png)
+![](redditor-shiny/pgadmin.png)
+![](redditor-shiny/elasticsearch.jpeg)
+![](redditor-shiny/rstudio.png)
