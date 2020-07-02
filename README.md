@@ -3,6 +3,9 @@ I love large structures - behemoth applications which include a lot of moving pa
 
 This is one of them.
 
+
+![This](ndexr.jpeg)
+
 ## A little bit of history
 
 I worked at a company called Digital First Media. I was hired on as a data optimization engineer. 
@@ -27,6 +30,9 @@ with the health of your network, and allows for push button runs of your code. T
 
 Well, I learned data engineering stuff and wanted to learn React/Javascript. This is the most recent venture, and I'm 
 still learning. 
+
+## The Network
+!()[NDEXR - AWS.jpeg]
                                                                                                                           
                                                                                                                           
 ## About This Project
@@ -593,13 +599,16 @@ GatewayPorts yes
 
 ### LENOVO
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 
 ### DELL XPS
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8081:localhost:8081 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 9200:localhost:9200 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2500:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 
 ### POWEREDGE
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8787:localhost:8787 -R 5433:localhost:5432 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2400:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 
 
 
