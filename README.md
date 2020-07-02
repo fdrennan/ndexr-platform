@@ -160,16 +160,17 @@ docker exec -it   redditor_redditapi_1  /bin/bash
 docker exec -it   redditor_postgres  /bin/bash
 
 
+# Restoring Postgres from Backup
+```
 pg_dump -h db -p 5432 -Fc -o -U postgres postgres > postgres.bak
 wget https://redditor-dumps.s3.us-east-2.amazonaws.com/postgres.tar.gz
 tar -xzvf postgres.tar.gz
+```
 
 
-
-
-docker exec -it   airflow_scheduler_1  /bin/bash
 ## Restore Database
-Run Gathering Dag
+1. Run Gathering Dag
+2. Run this
 ```
 docker exec -it   redditor_postgres  /bin/bash 
 tar -zxvf /data/postgres.tar.gz
@@ -180,7 +181,7 @@ pg_restore --clean --verbose -U postgres -d postgres /postgres.bak
 ## Networking Stuff
 
 ### To Kill a port
-sudo fuser -k -n tcp 3000
+`sudo fuser -k -n tcp 3000`
 
 
 ### Allowing Port Forwarding
