@@ -59,12 +59,13 @@ The main components are
 
 
 ## Getting Started 
-1. `FORK` this repository to your Github account
-2. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
-3. RUN `cd ndexr-platform`
-4. RUN `docker build -t redditorapi --file ./DockerfileApi .`
-5. RUN `docker build -t rpy --file ./DockerfileRpy .`
-6. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
+1. Request permission from `fdrennan` in NDEXR Slack for RStudio and Postgres access 
+2. `FORK` this repository to your Github account
+3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
+4. RUN `cd ndexr-platform`
+5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
+6. RUN `docker build -t rpy --file ./DockerfileRpy .`
+7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
 
 #### Once these steps are complete, contact me to see how to set your environment variables.
 
