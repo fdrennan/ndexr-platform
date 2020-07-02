@@ -12,6 +12,7 @@
 2. Get your own set of Reddit API credentials from [Reddit](https://ssl.reddit.com/prefs/apps/) 
 2. `FORK` this repository to your Github account
 3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
+4. RUN `git remote add upstream https://github.com/fdrennan/ndexr-platform.git`
 4. RUN `cd ndexr-platform`
 5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
 6. RUN `docker build -t rpy --file ./DockerfileRpy .`
