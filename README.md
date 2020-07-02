@@ -1,9 +1,11 @@
 # NDEXR - Indexing the Reddit Platform
 
 ## WHY?
-To find bad actors and determine if we can detect people spreading misinformation and make it known.
+### To find bad actors and determine if we can detect people spreading misinformation and make it known.
+### Over the past few weeks this project has collected about 30 million submissions to Reddit and the data pipeline runs consistently
 
-Over the past few weeks this project has collected about 30 million submissions to Reddit and the data pipeline runs consistently
+## WHAT IS THIS?
+### A semi-public machine learning project
 
 ## Observing a World Event
 
