@@ -50,9 +50,3 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
-
-volumes:
-  mongodbdata:
-  postgres: {}
-  redditor_data: {}
-  airflow-worker-logs:

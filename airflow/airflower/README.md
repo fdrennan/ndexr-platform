@@ -145,3 +145,73 @@ volumes:
   airflow-worker-logs:
 
 ```
+
+
+# DAGz and Airflow
+
+This is where all our Airflow dags live. R files are executed with a Bash Executor using the `Rscript` command. If you 
+look in `./airflower/scripts/R/shell` you will see where the bash commands live. Let's take a look at one. This 
+command `cd`'s into the `r_files` foler and runs the `streamall.R` R script. 
+
+
+The command:
+`. ./airflower/scripts/R/shell/streamall`
+
+executes the following. 
+```                                                                                                       
+#!/bin/bash
+
+cd /home/scripts/R/r_files
+/usr/bin/Rscript /home/scripts/R/r_files/streamall.R
+```
+
+You can see the mapping of files in the project to the containers by the following - the left side is the file location
+in the project directory and the ride side is in the container. 
+
+`- ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall`
+
+Anyways, this kicks off the file here at `/home/scripts/R/r_files/streamall.R` which begins to grab Reddit data 
+continuously. We see more environment variables we need to have. If you haven't already, go and get 
+[Reddit API credentials](`https://www.reddit.com/wiki/api`).
+
+
+This one manages the state of our dags.
+```
+  scheduler:
+    image: rpy
+    restart: always
+    depends_on:
+      - webserver
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@host.docker.internal:5439/airflow
+    volumes:
+      - ./airflower/dags:/root/airflow/dags
+      - ./airflower/scripts/sql:/home/scripts/sql
+      - ./airflower/scripts/R/r_files/aws_configure.R:/home/scripts/R/r_files/aws_configure.R
+      - ./airflower/scripts/R/r_files/r_venv_install.R:/home/scripts/R/r_files/r_venv_install.R
+      - ./airflower/scripts/R/r_files/refresh_mat_comments_by_second.R:/home/scripts/R/r_files/refresh_mat_comments_by_second.R
+      - ./airflower/scripts/R/r_files/refresh_mat_stream_authors.R:/home/scripts/R/r_files/refresh_mat_stream_authors.R
+      - ./airflower/scripts/R/r_files/refresh_mat_submissions_by_second.R:/home/scripts/R/r_files/refresh_mat_submissions_by_second.R
+      - ./airflower/scripts/R/r_files/stream_submissions_to_s3.R:/home/scripts/R/r_files/stream_submissions_to_s3.R
+      - ./airflower/scripts/R/r_files/streamall.R:/home/scripts/R/r_files/streamall.R
+      - ./airflower/scripts/R/r_files/streamsubmissions.R:/home/scripts/R/r_files/streamsubmissions.R
+      - ./airflower/scripts/R/r_files/streamtos3.R:/home/scripts/R/r_files/streamtos3.R
+      - ./airflower/scripts/R/shell/aws_configure:/home/scripts/R/shell/aws_configure
+      - ./airflower/scripts/R/shell/refresh_mat_comments_by_second:/home/scripts/R/shell/refresh_mat_comments_by_second
+      - ./airflower/scripts/R/shell/refresh_mat_submissions_by_second:/home/scripts/R/shell/refresh_mat_submissions_by_second
+      - ./airflower/scripts/R/shell/stream_submissions_all:/home/scripts/R/shell/stream_submissions_all
+      - ./airflower/scripts/R/shell/streamtos3:/home/scripts/R/shell/streamtos3
+      - ./airflower/scripts/R/shell/r_venv_install:/home/scripts/R/shell/r_venv_install
+      - ./airflower/scripts/R/shell/refresh_mat_stream_authors:/home/scripts/R/shell/refresh_mat_stream_authors
+      - ./airflower/scripts/R/shell/stream_submission_to_s3:/home/scripts/R/shell/stream_submission_to_s3
+      - ./airflower/scripts/R/shell/streamall:/home/scripts/R/shell/streamall
+      - ./airflower/plugins:/root/airflow/plugins
+      - ./.env:/home/scripts/R/r_files/.Renviron
+      - airflow-worker-logs:/root/airflow/logs
+    links:
+      - "postgres"
+    command: airflow scheduler
+```
