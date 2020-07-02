@@ -7,6 +7,16 @@
 ## WHAT IS THIS?
 ### A semi-public machine learning project
 
+## Getting Started 
+1. Request permission from `fdrennan` in [NDEXR Slack](https://app.slack.com/client/TAS9MV5K2) for [Rstudio](http://ndexr.com:8787) and Postgres access.
+2. Get your own set of Reddit API credentials from [Reddit](https://ssl.reddit.com/prefs/apps/) 
+2. `FORK` this repository to your Github account
+3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
+4. RUN `cd ndexr-platform`
+5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
+6. RUN `docker build -t rpy --file ./DockerfileRpy .`
+7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
+
 ## Observing a World Event
 
 Hourly submissions to Reddit mentioning George Floyd - could distributions like this one help determine the
@@ -76,16 +86,6 @@ The main components are
 7. Oxygen
 8. Oreos
 
-
-## Getting Started 
-1. Request permission from `fdrennan` in [NDEXR Slack](https://app.slack.com/client/TAS9MV5K2) for [Rstudio](http://ndexr.com:8787) and Postgres access.
-2. Get your own set of Reddit API credentials from [Reddit](https://ssl.reddit.com/prefs/apps/) 
-2. `FORK` this repository to your Github account
-3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
-4. RUN `cd ndexr-platform`
-5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
-6. RUN `docker build -t rpy --file ./DockerfileRpy .`
-7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
 
 #### Once these steps are complete, contact me to see how to set your environment variables.
 ```
