@@ -57,12 +57,91 @@ Code is contributed either in `dags`, a directory that houses all Airflow DAG co
 
 You'll notice in `docker-compose.yaml` that both DAGs and plugins are mounted as volumes. This means once Airflow is started, any changes to your code will be quickly synced to the webserver and scheduler. You shouldn't have to restart the Airflow instance during a period of development! 
 
-## To Step Inside the Container
-```
-docker exec -it  localflow_scheduler_1  /bin/bash
-```
+
+`docker-compose up -d` runs the Airflow UI, which is located at `localhost:8080`
 
 ```
-scp -i ndexr.pem ubuntu@ndexr.com:/var/lib/postgresql/pg_backup.bak pg_backup.bak
-scp -i ndexr.pem pg_backup.bak ubuntu@ndexr.com:/var/lib/postgresql/pg_backup.bak 
+version: '3.4'
+services:
+  webserver:
+    image: rpy
+    restart: always
+    depends_on:
+      - initdb
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@172.17.0.1:5439/airflow
+    volumes:
+      - ./airflower/dags:/root/airflow/dags
+      - ./airflower/plugins:/root/airflow/plugins
+      - airflow-worker-logs:/root/airflow/logs
+    ports:
+      - "8080:8080"
+    command: airflow webserver
+  postgres:
+    image: postgres:9.6
+    restart: always
+    environment:
+      - POSTGRES_USER=${AIRFLOW_USER}
+      - POSTGRES_PASSWORD=${AIRFLOW_PASSWORD}
+      - POSTGRES_DB=${AIRFLOW_DB}
+    ports:
+      - 5439:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  initdb:
+    image: rpy
+    restart: always
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@172.17.0.1:5439/airflow
+    command: airflow initdb
+  scheduler:
+    image: rpy
+    restart: always
+    depends_on:
+      - webserver
+    env_file: .env
+    environment:
+      AIRFLOW_HOME: /root/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@172.17.0.1:5439/airflow
+    volumes:
+      - ./airflower/dags:/root/airflow/dags
+      - ./airflower/scripts:/home/scripts
+      - ./airflower/plugins:/root/airflow/plugins
+      - ./.env:/root/.Renviron
+      - airflow-worker-logs:/root/airflow/logs
+      - ./data:/data
+    command: airflow scheduler
+  db:
+    image: postgres
+    container_name: "redditor_postgres"
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      - '22'
+      # Opens port 5432 on the container
+      - '5432'
+      # Where our data will be persisted
+    volumes:
+      - redditor_volume:/var/lib/postgresql/data
+      - ./data:/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+volumes:
+  postgres: {}
+  redditor_volume: {}
+  airflow-worker-logs:
+
 ```
