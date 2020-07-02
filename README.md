@@ -1,7 +1,22 @@
 This application is for the gathering, storage, and display of Reddit data. 
 I love large structures - behemoth applications which include a lot of moving parts. 
 
+I have over the past few weeks collected about 30 million submissions to Reddit and the data pipeline runs consistently
+
 This is one of them.
+
+## Observing a World Event
+
+Hourly submissions to Reddit mentioning George Floyd - could distributions like this one help determine the
+ duration of a political movement?
+
+![Viewing a World Event](georgefloyd.png)
+
+This is a log-scale look at the number of different links submitted to Reddit vs the number of Subreddits observed fir a single author.
+Sampled 10,000 authors from approx 5 million authors.
+![Viewing Authors](authoractivity.png)
+
+Are some of these authors bots or not? Can we determine this? If we can, then what can we say about them?
 
 # Visit the [Live Site](http://ndexr.com)
 
@@ -71,6 +86,18 @@ The main components are
 7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
 
 #### Once these steps are complete, contact me to see how to set your environment variables.
+```
+POSTGRES_USER=yournewusername
+POSTGRES_PASSWORD=yourstrongpassword
+POSTGRES_HOST=ndexr.com
+POSTGRES_PORT=5433
+POSTGRES_DB=postgres
+REDDIT_CLIENT=yourclient
+REDDIT_AUTH=yourauth
+USER_AGENT="datagather by /u/username"
+USERNAME=usernameforreddit
+PASSWORD=passwordforreddit
+```
 
 ## About the Dockerfiles
 There are three dockerfiles that are needed: `DockerfileApi`, `DockerfileRpy`, and `DockerfileUi`
