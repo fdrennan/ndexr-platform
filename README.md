@@ -190,15 +190,7 @@ docker image tag redditorapi:latest fdrennan/redditorapi:latest
 docker push fdrennan/redditorapi:latest
 ```
 
-# Check open ports
-https://gf.dev/port-scanner
-
-# Specify Docker Compose Location
-docker-compose -f /Users/fdrennan/redditor/do.yml up
-https://analytics.google.com/analytics/web/#/
-
-# Reset Life
-
+# Reset Everythng Docker
 ```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -f status=exited -q)
@@ -206,16 +198,16 @@ docker rmi $(docker images -a -q)
 docker volume prune
 ```
 
-# Install Elastic Search Plugins
-https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-with-docker-container
-
 # Add user
-`sudo adduser newuser`
+```
+sudo adduser newuser
+usermod -aG sudo newuser
+```
+# Useful LInks
+##[Port Scanner](https://gf.dev/port-scanner)
+##[Install Elastic Search Plugins](https://serverfault.com/questions/973325/how-to-install-elasticsearch-plugins-with-docker-container)
 
-`usermod -aG sudo newuser`
-
-# Monitoring Users
-https://www.ostechnix.com/monitor-user-activity-linux/
+##[Monitoring Users](https://www.ostechnix.com/monitor-user-activity-linux/)
 
 # Technologies Used
 
