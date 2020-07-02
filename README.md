@@ -3,6 +3,8 @@ I love large structures - behemoth applications which include a lot of moving pa
 
 This is one of them.
 
+# Visit the [Live Site](http://ndexr.com)
+
 # Technologies Used
 
 
@@ -11,6 +13,7 @@ This is one of them.
 ![](redditor-shiny/pgadmin.png)
 ![](redditor-shiny/elasticsearch.jpeg)
 ![](redditor-shiny/rstudio.png)
+
 
 # The Network
 ![This](ndexr.jpeg)
