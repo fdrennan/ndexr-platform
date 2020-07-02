@@ -1,9 +1,9 @@
 This application is for the gathering, storage, and display of Reddit data. 
 I love large structures - behemoth applications which include a lot of moving parts. 
 
-I have over the past few weeks collected about 30 million submissions to Reddit and the data pipeline runs consistently
-
 This is one of them.
+
+I have over the past few weeks collected about 30 million submissions to Reddit and the data pipeline runs consistently
 
 ## Observing a World Event
 
