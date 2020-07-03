@@ -167,7 +167,8 @@ tar -xzvf postgres.tar.gz
 1. Run Gathering Dag
 2. Run this
 ```
-docker exec -it   redditor_postgres  /bin/bash 
+
+  redditor_postgres  /bin/bash 
 tar -zxvf /data/postgres.tar.gz
 pg_restore --clean --verbose -U postgres -d postgres /postgres.bak
 # /var/lib/postgresql/data
@@ -195,7 +196,8 @@ autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22 -R 8999:localho
 
 ### DELL XPS
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2500:localhost:22 -R 9200:localhost:9200 -R 8081:localhost:8081 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8080:localhost:8080 2500:localhost:22 -R 9200:localhost:9200 -R 8081:localhost:8081 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8080:localhost:8080 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 ```
 
 ### POWEREDGE
