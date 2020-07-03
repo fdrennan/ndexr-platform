@@ -102,7 +102,12 @@ function(table_name = "meta_statistics") {
 
   get_summary_temp <- function(table_name = "meta_statistics") {
     message('Before Connection')
-    con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+    if (table_name == "meta_statistics") {
+      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+    } else {
+      con <- postgres_connector()
+    }
+
     message('After Connection')
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
