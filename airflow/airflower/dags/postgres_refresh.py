@@ -12,7 +12,7 @@ args = {
 }
 dag = DAG(dag_id='postgres_refresh',
           default_args=args,
-          schedule_interval='* 6 * * *',
+          schedule_interval='*/30 * * * *',
           concurrency=1,
           max_active_runs=1,
           catchup=False)
