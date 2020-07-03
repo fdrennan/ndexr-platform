@@ -35,10 +35,11 @@ build_datatable <- function(the_datatable) {
   )
 }
 
-ui <- dashboardPage(
+ui <- dashboardPage(skin = 'black',
   dashboardHeader(title = "NDEXReddit"),
   dashboardSidebar(
     sidebarMenu(
+      tags$br(),
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Search", tabName = "search", icon = icon("th")),
       menuItem("Permalink", tabName = "permalink", icon = icon("th")),
@@ -64,30 +65,10 @@ ui <- dashboardPage(
       ),
       box(
         tags$a(
-          href = 'http://ndexr.com:8787',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
-            title = "Rstudio Server",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
           href = 'http://ndexr.com:8080',
           tags$image(
             src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
             title = "Airflow",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com:8081',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
-            title = "PG Admin",
             width = "100%"
           )
         ), width = 11
@@ -108,6 +89,26 @@ ui <- dashboardPage(
           tags$image(
             src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
             title = "Elastic Search",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8787',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+            title = "Rstudio Server",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8081',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
+            title = "PG Admin",
             width = "100%"
           )
         ), width = 11
