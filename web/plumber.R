@@ -1,8 +1,8 @@
 #* @Plumber Example
 
 library(plumber)
-library(redditor)
 library(biggr)
+library(redditor)
 
 message("Configuring AWS")
 message(Sys.getenv("AWS_ACCESS"))
