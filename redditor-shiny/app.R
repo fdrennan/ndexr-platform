@@ -214,19 +214,26 @@ server <- function(input, output) {
   })
 
   output$all_time_submissions <- renderPlot({
+    time_ago <- round(as.numeric(Sys.time() - ymd_hms(max(counts_by_second$created_utc))), 2)
+    message_about_time <- glue('Last updated {time_ago} minutes ago')
+
     counts_by_second %>%
       mutate(
-        created_utc = floor_date(ymd_hms(created_utc), unit = "minutes"),
+        created_utc = floor_date(ymd_hms(created_utc), unit = "5 minutes"),
         created_utc = with_tz(created_utc, tzone = "America/Denver"),
         n_observations = as.numeric(n_observations)
       ) %>%
-      # group_by(created_utc) %>%
-      # summarise(n_observations = sum(n_observations)) %>%
+      group_by(created_utc) %>%
+      summarise(n_observations = sum(n_observations)) %>%
       ggplot() +
       aes(x = created_utc, y = n_observations) +
       geom_line() +
       xlab("Created At") +
-      ylab("Submissions Gathered")
+      ylab("Submissions Gathered") +
+      scale_x_datetime(date_breaks = "30 min", date_labels = "%Y-%m-%d %H:%M") +
+      theme(axis.text.x=element_text(angle = 35, vjust = 0.5)) +
+      ggtitle(label = 'Recently gathered submissions', subtitle = message_about_time)
+      
   })
 
 
