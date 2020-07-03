@@ -65,16 +65,6 @@ ui <- dashboardPage(skin = 'black',
       ),
       box(
         tags$a(
-          href = 'http://ndexr.com:8080',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
-            title = "Airflow",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
           href = 'http://ndexr.com/api/get_submission_files',
           tags$image(
             src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
@@ -89,6 +79,16 @@ ui <- dashboardPage(skin = 'black',
           tags$image(
             src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
             title = "Elastic Search",
+            width = "100%"
+          )
+        ), width = 11
+      ),
+      box(
+        tags$a(
+          href = 'http://ndexr.com:8080',
+          tags$image(
+            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+            title = "Airflow",
             width = "100%"
           )
         ), width = 11
