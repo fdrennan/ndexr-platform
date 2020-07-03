@@ -99,6 +99,16 @@ function(table_name = "meta_statistics") {
       table_name = table_name
     )
   )
+  
+  get_summary <- function(table_name = "meta_statistics") {
+    con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+    on.exit(dbDisconnect(conn = con))
+    
+    table_name <- tbl(con, in_schema("public", table_name)) %>%
+      collect()
+    
+    table_name
+  }
 
   response <- tryCatch(
     {
