@@ -155,9 +155,9 @@ ui <- dashboardPage(
         )
       ),
       tabItem(
-        tabName = "ink",
+        tabName = "permalink",
         fluidRow(
-          box(textInput(inputId = "ink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")),
+          box(textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")),
           column(dataTableOutput("permalink_summary"), width = 12),
           column(dataTableOutput("permalink_data"), width = 12)
         )
