@@ -100,10 +100,10 @@ function(table_name = "meta_statistics") {
     )
   )
 
-  get_summary <- function(table_name = "meta_statistics") {
-
+  get_summary_temp <- function(table_name = "meta_statistics") {
+    message('Before Connection')
     con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
-    print('Connection')
+    message('After Connection')
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
 
@@ -116,7 +116,7 @@ function(table_name = "meta_statistics") {
   response <- tryCatch(
     {
       tic()
-      response$data <- toJSON(get_summary(table_name = table_name))
+      response$data <- toJSON(get_summary_temp(table_name = table_name))
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
       return(response)
