@@ -2,6 +2,7 @@ FROM trestletech/plumber
 MAINTAINER Docker User <docker@user.org>
 
 RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
+  libgcc-8-dev \
   git-core \
   libssl-dev \
   libcurl4-openssl-dev \
