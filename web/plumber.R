@@ -103,6 +103,7 @@ function(table_name = "meta_statistics") {
   get_summary <- function(table_name = "meta_statistics") {
 
     con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+    print('Connection')
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
 
