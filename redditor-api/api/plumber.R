@@ -1,8 +1,8 @@
 #* @Plumber Example
 
 library(plumber)
-library(redditor)
 library(biggr)
+library(redditor)
 
 message("Configuring AWS")
 message(Sys.getenv("AWS_ACCESS"))
@@ -100,10 +100,28 @@ function(table_name = "meta_statistics") {
     )
   )
 
+  get_summary_temp <- function(table_name = "meta_statistics") {
+    message('Before Connection')
+    if (table_name == "meta_statistics") {
+      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+    } else {
+      con <- postgres_connector()
+    }
+
+    message('After Connection')
+    print(dbListTables(con))
+    on.exit(dbDisconnect(conn = con))
+
+    table_name <- tbl(con, in_schema("public", table_name)) %>%
+      collect()
+
+    table_name
+  }
+
   response <- tryCatch(
     {
       tic()
-      response$data <- toJSON(get_summary(table_name = table_name))
+      response$data <- toJSON(get_summary_temp(table_name = table_name))
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
       return(response)
