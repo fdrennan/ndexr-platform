@@ -53,6 +53,7 @@ RUN R -e "install.packages('httpuv')"
 RUN R -e "install.packages('quanteda')"
 RUN R -e "install.packages('spacyr')"
 
+ARG DUMMY=randommmmm
 COPY ./redditor-api /home/redditor-api
 COPY ./biggr /home/biggr
 
@@ -68,7 +69,7 @@ RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 
 
 COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
-ARG DUMMY=randommmmm
+
 RUN Rscript /r_venv_install.R
 COPY ./plumber.R /app/plumber.R
 EXPOSE 8000
