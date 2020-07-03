@@ -227,7 +227,7 @@ server <- function(input, output) {
       summarise(n_observations = sum(n_observations)) %>%
       ggplot() +
       aes(x = created_utc, y = n_observations) +
-      geom_line() +
+      geom_col() +
       xlab("Created At") +
       ylab("Submissions Gathered") +
       scale_x_datetime(date_breaks = "30 min", date_labels = "%Y-%m-%d %H:%M") +
