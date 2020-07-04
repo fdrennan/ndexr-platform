@@ -57,6 +57,16 @@ ui <- dashboardPage(skin = 'black',
           box(tags$h1('Public Routes', align='center'), width = 12, background = 'light-blue'),
           box(
             tags$a(
+              href = 'https://us-east-2.console.aws.amazon.com/console/home?region=us-east-2',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/aws.png',
+                title = "AWS Console",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+            tags$a(
               href = 'https://github.com/fdrennan/ndexr-platform',
               tags$image(
                 src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/github.png',
