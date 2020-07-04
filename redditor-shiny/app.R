@@ -52,6 +52,57 @@ ui <- dashboardPage(skin = 'black',
   dashboardBody(
     tabItems(
       tabItem(
+        tabName = "dashboard",
+        fluidRow(
+          # Dynamic infoBoxes
+          box(
+            infoBoxOutput("submissionsBox", width = 4),
+            infoBoxOutput("authorsBox", width = 4),
+            infoBoxOutput("subredditsBox", width = 4), width = 12
+          )
+        ),
+        # fluidRow(
+        #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
+        # ),
+        fluidRow(
+          box(plotOutput("all_time_submissions"), width = 12)
+        )
+      ),
+      tabItem(
+        tabName = "search",
+        fluidRow(
+          # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
+        
+          box(title = 'Search Parameters',
+            column(textInput(
+              inputId = "search_value", label = "Query Data",
+              value = "Natural Language Processing",
+              placeholder = "Natural Language Processing"
+            ), width = 9),
+            column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
+          ),
+          box(title = 'Options',
+              column(downloadButton("downloadData", "Download"), width = 6),
+              column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)),
+        ),
+        box(tags$h3('Submission Results', align='center'), width = 12, background = 'light-blue'),
+        fluidRow(
+          column(dataTableOutput("search_data"), width = 12)
+        ),
+        box(tags$h3('Images', align='center'), width = 12, background = 'light-blue'),
+        fluidRow(
+          column(uiOutput("imageOutput"), width = 12)
+        )
+      ),
+      tabItem(
+        tabName = "permalink",
+        fluidRow(
+          box(title = 'Submit any Reddit Permalink to see threads decomposed', textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"), width = 12),
+          column(dataTableOutput("permalink_summary"), width = 12),
+          column(dataTableOutput("permalink_data"), width = 12)
+        )
+      ),
+      tabItem(
         tabName = "links",
         fluidPage(
           box(tags$h1('Public Routes', align='center'), width = 12, background = 'light-blue'),
@@ -96,14 +147,14 @@ ui <- dashboardPage(skin = 'black',
             ), width = 3
           ),
           box(
-              tags$a(
-                href = 'http://ndexr.com/api/get_submission_files',
-                tags$image(
-                  src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
-                  title = "Plumber",
-                  width = "100%"
-                )
-              ), width = 3
+            tags$a(
+              href = 'http://ndexr.com/api/get_submission_files',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
+                title = "Plumber",
+                width = "100%"
+              )
+            ), width = 3
           ),
           box(tags$h1('Private Routes', align='center'), width = 12, background = 'light-blue'),
           box(
@@ -136,57 +187,6 @@ ui <- dashboardPage(skin = 'black',
               )
             ), width = 3
           )
-        )
-      ),
-      tabItem(
-        tabName = "dashboard",
-        fluidRow(
-          # Dynamic infoBoxes
-          box(
-            infoBoxOutput("submissionsBox", width = 4),
-            infoBoxOutput("authorsBox", width = 4),
-            infoBoxOutput("subredditsBox", width = 4), width = 12
-          )
-        ),
-        # fluidRow(
-        #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
-        # ),
-        fluidRow(
-          box(plotOutput("all_time_submissions"), width = 12)
-        )
-      ),
-      tabItem(
-        tabName = "search",
-        fluidRow(
-          # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
-        
-          box(title = 'Search Parameters',
-            column(textInput(
-              inputId = "search_value", label = "Query Data",
-              value = "Natural Language Processing",
-              placeholder = "Natural Language Processing"
-            ), width = 9),
-            column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
-          ),
-          box(title = 'Options',
-              column(downloadButton("downloadData", "Download"), width = 6),
-              column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)),
-          
-          
-        ),
-        fluidRow(
-          column(dataTableOutput("search_data"), width = 12)
-        ),
-        fluidRow(
-          column(uiOutput("imageOutput"), width = 12)
-        )
-      ),
-      tabItem(
-        tabName = "permalink",
-        fluidRow(
-          box(title = 'Submit any Reddit Permalink to see threads decomposed', textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"), width = 12),
-          column(dataTableOutput("permalink_summary"), width = 12),
-          column(dataTableOutput("permalink_data"), width = 12)
         )
       )
     )
