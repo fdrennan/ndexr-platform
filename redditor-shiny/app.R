@@ -72,33 +72,39 @@ ui <- dashboardPage(skin = 'black',
       ),
       tabItem(
         tabName = "search",
-        fluidRow(
-          # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
-        
-          box(title = 'Search Parameters',
-            column(textInput(
-              inputId = "search_value", label = "Query Data",
-              value = "Natural Language Processing",
-              placeholder = "Natural Language Processing"
-            ), width = 9),
-            column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
-          ),
-          box(title = 'Options',
-              column(downloadButton("downloadData", "Download"), width = 6),
-              column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)),
+          bsCollapse(
+            id = 'submissioncollapse', open = "Submission Query Menu",
+            bsCollapsePanel(
+              "Submission Query Menu",
+              fluidRow(
+              actionButton("p1Button", "Push Me!"),
+              box(title = 'Search Parameters',
+                  column(textInput(
+                    inputId = "search_value", label = "Query Data",
+                    value = "Natural Language Processing",
+                    placeholder = "Natural Language Processing"
+                  ), width = 9),
+                  column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
+              ),
+              box(title = 'Options',
+                  column(downloadButton("downloadData", "Download"), width = 6),
+                  column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6))
+            )
+          )
         ),
-        bsCollapse(id = "collapseExample", open = "Panel 2",
+        bsCollapse(id = "submissioncollapse", open = "Submission Results",
                    bsCollapsePanel("Submission Results", 
                                    fluidRow(
-                                     column(dataTableOutput("search_data"), width = 12)
+                                     column(withSpinner(dataTableOutput("search_data")), width = 12)
                                    ),
-                                   style = "info"),
+                                   style = "info")
+        ),
+        bsCollapse(id = "submissioncollapse", open = "Image Results",
                    bsCollapsePanel("Image Results", 
-                                   fluidRow(
-                                     column(uiOutput("imageOutput"), width = 12)
-                                   )
-                                   , style = "success")
-        )
+                        fluidRow(
+                          column(withSpinner(uiOutput("imageOutput")), width = 12)
+                        )
+                        , style = "success"))
       ),
       tabItem(
         tabName = "permalink",
@@ -199,8 +205,10 @@ ui <- dashboardPage(skin = 'black',
   )
 )
 
-server <- function(input, output) {
-  
+server <- function(input, output, session) {
+  observeEvent(input$p1Button, ({
+    updateCollapse(session, "submissioncollapse", open = "Panel 1")
+  }))
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = 'POWEREDGE'))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
