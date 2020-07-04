@@ -47,8 +47,14 @@ task_3 = BashOperator(
     dag=dag
 )
 
+task_4 = BashOperator(
+    task_id='refresh_mat_meta_statistics_poweredge',
+    bash_command='. /home/scripts/R/shell/refresh_mat_meta_statistics_poweredge',
+    dag=dag
+)
 
 task   >> task_0
 task_0 >> task_1
 task_0 >> task_2
 task_0 >> task_3
+task_0 >> task_4
