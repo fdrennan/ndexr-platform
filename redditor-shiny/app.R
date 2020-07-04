@@ -121,15 +121,17 @@ ui <- dashboardPage(skin = 'black',
         tabName = "dashboard",
         fluidRow(
           # Dynamic infoBoxes
-          infoBoxOutput("submissionsBox", width = 4),
-          infoBoxOutput("authorsBox", width = 4),
-          infoBoxOutput("subredditsBox", width = 4)
+          box(
+            infoBoxOutput("submissionsBox", width = 4),
+            infoBoxOutput("authorsBox", width = 4),
+            infoBoxOutput("subredditsBox", width = 4), width = 12
+          )
         ),
         # fluidRow(
         #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
         # ),
         fluidRow(
-          plotOutput("all_time_submissions")
+          box(plotOutput("all_time_submissions"), width = 12)
         )
       ),
       tabItem(
