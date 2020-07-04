@@ -36,87 +36,98 @@ build_datatable <- function(the_datatable) {
 }
 
 ui <- dashboardPage(skin = 'black',
-  dashboardHeader(title = "NDEXReddit"),
+  dashboardHeader(
+    title = "NDEXReddit"
+  ),
+  
   dashboardSidebar(
     sidebarMenu(
-      tags$br(),
-      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Search", tabName = "search", icon = icon("th")),
-      menuItem("Permalink", tabName = "permalink", icon = icon("th")),
-      box(
-        tags$a(
-          href = 'https://github.com/fdrennan/ndexr-platform',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/github.png',
-            title = "Get the Repo",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'https://join.slack.com/t/ndexr/shared_invite/zt-fhxk2scl-Y9BeA~JZUoTiDLVk~6degQ',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/joinslack.jpg',
-            title = "Join Slack",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com/api/get_submission_files',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
-            title = "Plumber",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com/elastic',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
-            title = "Elastic Search",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com:8080',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
-            title = "Airflow",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com:8787',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
-            title = "Rstudio Server",
-            width = "100%"
-          )
-        ), width = 11
-      ),
-      box(
-        tags$a(
-          href = 'http://ndexr.com:8081',
-          tags$image(
-            src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
-            title = "PG Admin",
-            width = "100%"
-          )
-        ), width = 11
-      )
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("chart-bar")),
+      menuItem("Search", tabName = "search", icon = icon("search-plus")),
+      menuItem("Submission Deconstructor", tabName = "permalink", icon = icon("comments")),
+      menuItem("Production Links", tabName = "links", icon = icon("dashboard"))
+      
     )
   ),
   dashboardBody(
     tabItems(
+      tabItem(
+        tabName = "links",
+        fluidPage(
+          box(tags$h1('Public Routes', align='center'), width = 12, background = 'light-blue'),
+          box(
+            tags$a(
+              href = 'https://github.com/fdrennan/ndexr-platform',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/github.png',
+                title = "Get the Repo",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+            tags$a(
+              href = 'https://join.slack.com/t/ndexr/shared_invite/zt-fhxk2scl-Y9BeA~JZUoTiDLVk~6degQ',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/joinslack.jpg',
+                title = "Join Slack",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+            tags$a(
+              href = 'http://ndexr.com/elastic',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
+                title = "Elastic Search",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+              tags$a(
+                href = 'http://ndexr.com/api/get_submission_files',
+                tags$image(
+                  src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
+                  title = "Plumber",
+                  width = "100%"
+                )
+              ), width = 3
+          ),
+          box(tags$h1('Private Routes', align='center'), width = 12, background = 'light-blue'),
+          box(
+            tags$a(
+              href = 'http://ndexr.com:8080',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+                title = "Airflow",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+            tags$a(
+              href = 'http://ndexr.com:8787',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+                title = "Rstudio Server",
+                width = "100%"
+              )
+            ), width = 3
+          ),
+          box(
+            tags$a(
+              href = 'http://ndexr.com:8081',
+              tags$image(
+                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
+                title = "PG Admin",
+                width = "100%"
+              )
+            ), width = 3
+          )
+        )
+      ),
       tabItem(
         tabName = "dashboard",
         fluidRow(
@@ -138,17 +149,20 @@ ui <- dashboardPage(skin = 'black',
         tabName = "search",
         fluidRow(
           # HTML('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'),
-          box(
-            checkboxInput("removensfw", "Remove NSFW", TRUE),
-            numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000),
-            textInput(
+        
+          box(title = 'Search Parameters',
+            column(textInput(
               inputId = "search_value", label = "Query Data",
               value = "Natural Language Processing",
               placeholder = "Natural Language Processing"
-            )
+            ), width = 9),
+            column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
           ),
-          downloadButton("downloadData", "Download"),
-          width = 12
+          box(title = 'Options',
+              column(downloadButton("downloadData", "Download"), width = 6),
+              column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)),
+          
+          
         ),
         fluidRow(
           column(dataTableOutput("search_data"), width = 12)
@@ -160,7 +174,7 @@ ui <- dashboardPage(skin = 'black',
       tabItem(
         tabName = "permalink",
         fluidRow(
-          box(textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/")),
+          box(title = 'Submit any Reddit Permalink to see threads decomposed', textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"), width = 12),
           column(dataTableOutput("permalink_summary"), width = 12),
           column(dataTableOutput("permalink_data"), width = 12)
         )
@@ -193,7 +207,7 @@ server <- function(input, output) {
     infoBox(
       "Submissions Gathered", comma(filter(as.data.frame(meta_statistics), type == "submissions")$value),
       icon = icon("list"),
-      color = "purple"
+      color = "aqua"
     )
   })
 
@@ -201,7 +215,7 @@ server <- function(input, output) {
     infoBox(
       "Subreddits Discovered", comma(filter(as.data.frame(meta_statistics), type == "subreddits")$value),
       icon = icon("list"),
-      color = "purple"
+      color = "aqua"
     )
   })
 
@@ -212,7 +226,7 @@ server <- function(input, output) {
         type == "authors"
       )$value),
       icon = icon("list"),
-      color = "purple"
+      color = "aqua"
     )
   })
 
