@@ -37,7 +37,7 @@ build_datatable <- function(the_datatable) {
 
 ui <- dashboardPage(skin = 'black',
   dashboardHeader(
-    title = "NDEXReddit"
+    title = "NDEX for Reddit"
   ),
   
   dashboardSidebar(
@@ -281,14 +281,37 @@ server <- function(input, output) {
     print(images_to_show[!str_detect(images_to_show, "www.reddit.com")])
     images_to_show <- images_to_show[!str_detect(images_to_show, "www.reddit.com")]
 
-    map(unique(images_to_show), ~ box(tags$a(
-      href = .,
-      tags$img(
-        src = .,
-        title = "Example Image Link",
-        width = "100%"
-      )
-    ), width = 3))
+    map(unique(images_to_show), 
+        function(x) {
+          
+          if (str_detect(x, 'youtube')) {
+            type_logic <- 'youtube'
+          } else if (str_detect_any(x, c('.jpg', '.png', '.jpeg', '.gif'))) {
+            type_logic <- 'image'
+          } else {
+            type_logic <- 'unknown'
+          }
+          
+          if(type_logic == 'image') {
+            response <- box(tags$a(
+              href = x,
+              tags$img(
+                src = x,
+                title = x,
+                width = "100%"
+              )
+            ), width = 3)
+          } else {
+            # response <-tags$a(
+            #   href = x,
+            #   title = x,
+            #   tags$div(tags$text(x, align='center'))
+            # )
+            response <- tags$div()
+          }
+          return(response)
+        }
+    )
   })
   #
   current_permalink <- reactive({
