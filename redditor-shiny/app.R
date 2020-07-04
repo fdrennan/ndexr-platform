@@ -37,18 +37,18 @@ build_datatable <- function(the_datatable) {
   )
 }
 
-ui <- dashboardPage(skin = 'black',
+ui <- dashboardPage(
+  skin = "black",
   dashboardHeader(
     title = "NDEX for Reddit"
   ),
-  
+
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("chart-bar")),
       menuItem("Search", tabName = "search", icon = icon("search-plus")),
       menuItem("Submission Deconstructor", tabName = "permalink", icon = icon("comments")),
       menuItem("Production Links", tabName = "links", icon = icon("dashboard"))
-      
     )
   ),
   dashboardBody(
@@ -60,143 +60,172 @@ ui <- dashboardPage(skin = 'black',
           box(
             withSpinner(infoBoxOutput("submissionsBox", width = 4)),
             infoBoxOutput("authorsBox", width = 4),
-            infoBoxOutput("subredditsBox", width = 4), width = 12
+            infoBoxOutput("subredditsBox", width = 4),
+            width = 12
           )
         ),
-        # fluidRow(
-        #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
-        # ),
         fluidRow(
           box(withSpinner(plotOutput("all_time_submissions")), width = 12)
         )
       ),
       tabItem(
         tabName = "search",
-          bsCollapse(
-            id = 'submissioncollapse', open = "Submission Query Menu",
-            bsCollapsePanel(
-              "Submission Query Menu",
-              fluidRow(
-              box(title = 'Search Parameters',
-                  column(textInput(
-                    inputId = "search_value", label = "Query Data",
-                    value = "Natural Language Processing",
-                    placeholder = "Natural Language Processing"
-                  ), width = 9),
-                  column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
+        bsCollapse(
+          id = "submissioncollapse", open = "Submission Query Menu",
+          bsCollapsePanel(
+            "Submission Query Menu",
+            fluidRow(
+              box(
+                title = "Search Parameters",
+                column(textInput(
+                  inputId = "search_value", label = "Query Data",
+                  value = "Natural Language Processing",
+                  placeholder = "Natural Language Processing"
+                ), width = 9),
+                column(numericInput(inputId = "limit", label = "Limit", value = 200, min = 0, max = 20000), width = 9),
               ),
-              box(title = 'Options',
-                  column(downloadButton("downloadData", "Download"), width = 6),
-                  column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6))
+              box(
+                title = "Options",
+                column(downloadButton("downloadData", "Download"), width = 6),
+                column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)
+              )
             )
           )
         ),
-        bsCollapse(id = "submissioncollapse", open = "Submission Results",
-                   bsCollapsePanel("Submission Results", 
-                                   fluidRow(
-                                     column(withSpinner(dataTableOutput("search_data")), width = 12)
-                                   ),
-                                   style = "info")
+        bsCollapse(
+          id = "submissioncollapse", open = "Submission Results",
+          bsCollapsePanel(
+            "Submission Results",
+            fluidRow(
+              column(withSpinner(dataTableOutput("search_data")), width = 12)
+            )
+          )
         ),
-        bsCollapse(id = "submissioncollapse", open = "Image Results",
-                   bsCollapsePanel("Image Results", 
-                        fluidRow(
-                          column(withSpinner(uiOutput("imageOutput")), width = 12)
-                        )
-                        , style = "success"))
+        bsCollapse(
+          id = "submissioncollapse", open = "Image Results",
+          bsCollapsePanel(
+            "Image Results",
+            fluidRow(
+              column(withSpinner(uiOutput("imageOutput")), width = 12)
+            )
+          )
+        )
       ),
       tabItem(
         tabName = "permalink",
         fluidRow(
-          box(title = 'Submit any Reddit Permalink to see threads decomposed', textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"), width = 12),
-          column(dataTableOutput("permalink_summary"), width = 12),
-          column(dataTableOutput("permalink_data"), width = 12)
+          box(title = "Submit any Reddit Permalink to see threads decomposed", textInput(inputId = "permalink", label = "Permalink", value = "/r/SeriousConversation/comments/gteetu/you_know_what_would_significantly_impact_police/"), width = 12),
+          box(
+            bsCollapse(
+              id = "submissioncollapse", open = "Submission Comments",
+              bsCollapsePanel(
+                "Submission Comments",
+                column(withSpinner(dataTableOutput("permalink_summary")), width = 12)
+              )
+            ),
+            bsCollapse(
+              id = "submissioncollapse", open = "Comment Threads",
+              bsCollapsePanel(
+                "Comment Threads",
+                column(withSpinner(dataTableOutput("permalink_data")), width = 12)
+              )
+            ),
+            width = 12
+          )
         )
       ),
       tabItem(
         tabName = "links",
         fluidPage(
-          box(tags$h1('Public Routes', align='center'), width = 12, background = 'light-blue'),
+          box(tags$h1("Public Routes", align = "center"), width = 12, background = "light-blue"),
           box(
             tags$a(
-              href = 'https://us-east-2.console.aws.amazon.com/console/home?region=us-east-2',
+              href = "https://us-east-2.console.aws.amazon.com/console/home?region=us-east-2",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/aws.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/aws.png",
                 title = "AWS Console",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'https://github.com/fdrennan/ndexr-platform',
+              href = "https://github.com/fdrennan/ndexr-platform",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/github.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/github.png",
                 title = "Get the Repo",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'https://join.slack.com/t/ndexr/shared_invite/zt-fhxk2scl-Y9BeA~JZUoTiDLVk~6degQ',
+              href = "https://join.slack.com/t/ndexr/shared_invite/zt-fhxk2scl-Y9BeA~JZUoTiDLVk~6degQ",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/joinslack.jpg',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/joinslack.jpg",
                 title = "Join Slack",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'http://ndexr.com/elastic',
+              href = "http://ndexr.com/elastic",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/elasticsearch.jpeg",
                 title = "Elastic Search",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'http://ndexr.com/api/get_submission_files',
+              href = "http://ndexr.com/api/get_submission_files",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/plumber.png",
                 title = "Plumber",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
-          box(tags$h1('Private Routes', align='center'), width = 12, background = 'light-blue'),
+          box(tags$h1("Private Routes", align = "center"), width = 12, background = "light-blue"),
           box(
             tags$a(
-              href = 'http://ndexr.com:8080',
+              href = "http://ndexr.com:8080",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/airflow.png",
                 title = "Airflow",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'http://ndexr.com:8787',
+              href = "http://ndexr.com:8787",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/rstudio.png",
                 title = "Rstudio Server",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           ),
           box(
             tags$a(
-              href = 'http://ndexr.com:8081',
+              href = "http://ndexr.com:8081",
               tags$image(
-                src =  'https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png',
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png",
                 title = "PG Admin",
                 width = "100%"
               )
-            ), width = 3
+            ),
+            width = 3
           )
         )
       )
@@ -205,8 +234,7 @@ ui <- dashboardPage(skin = 'black',
 )
 
 server <- function(input, output, session) {
-  
-  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = 'POWEREDGE'))
+  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = "POWEREDGE"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
@@ -253,7 +281,7 @@ server <- function(input, output, session) {
 
   output$all_time_submissions <- renderPlot({
     time_ago <- round(as.numeric(Sys.time() - ymd_hms(max(counts_by_second$created_utc))), 2)
-    message_about_time <- glue('Last updated {time_ago} minutes ago')
+    message_about_time <- glue("Last updated {time_ago} minutes ago")
 
     counts_by_second %>%
       mutate(
@@ -269,9 +297,8 @@ server <- function(input, output, session) {
       xlab("Created At (MST)") +
       ylab("Submissions Gathered") +
       scale_x_datetime(date_breaks = "2 hour", date_labels = "%Y-%m-%d %H:%M") +
-      theme(axis.text.x=element_text(angle = 90, vjust = 0.5)) +
-      ggtitle(label = 'Recently gathered submissions', subtitle = message_about_time)
-      
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+      ggtitle(label = "Recently gathered submissions", subtitle = message_about_time)
   })
 
 
@@ -301,38 +328,39 @@ server <- function(input, output, session) {
     images_to_show <- elastic_results()$url
     print(images_to_show[!str_detect(images_to_show, "www.reddit.com")])
     images_to_show <- images_to_show[!str_detect(images_to_show, "www.reddit.com")]
-    map(unique(images_to_show), 
-        function(x) {
-          
-          if (str_detect(x, 'youtube')) {
-            type_logic <- 'youtube'
-          } else if (str_detect_any(x, c('.jpg', '.png', '.jpeg', '.gif'))) {
-            type_logic <- 'image'
-          } else {
-            type_logic <- 'unknown'
-          }
-          
-          if(type_logic == 'image') {
-            response <- box(
-              tags$a(
-                href = x,
-                tags$img(
-                  src = x,
-                  title = x,
-                  width = "100%"
-                )
-              ), width = 3
-            )
-          } else {
-            # response <-tags$a(
-            #   href = x,
-            #   title = x,
-            #   tags$div(tags$text(x, align='center'))
-            # )
-            response <- tags$div()
-          }
-          return(response)
+    map(
+      unique(images_to_show),
+      function(x) {
+        if (str_detect(x, "youtube")) {
+          type_logic <- "youtube"
+        } else if (str_detect_any(x, c(".jpg", ".png", ".jpeg", ".gif"))) {
+          type_logic <- "image"
+        } else {
+          type_logic <- "unknown"
         }
+
+        if (type_logic == "image") {
+          response <- box(
+            tags$a(
+              href = x,
+              tags$img(
+                src = x,
+                title = x,
+                width = "100%"
+              )
+            ),
+            width = 3
+          )
+        } else {
+          # response <-tags$a(
+          #   href = x,
+          #   title = x,
+          #   tags$div(tags$text(x, align='center'))
+          # )
+          response <- tags$div()
+        }
+        return(response)
+      }
     )
   })
   #
