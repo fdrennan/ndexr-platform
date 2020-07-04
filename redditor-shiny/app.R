@@ -5,6 +5,7 @@ library(jsonlite)
 library(openxlsx)
 library(scales)
 library(shinyBS)
+library(shinycssloaders)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -57,7 +58,7 @@ ui <- dashboardPage(skin = 'black',
         fluidRow(
           # Dynamic infoBoxes
           box(
-            infoBoxOutput("submissionsBox", width = 4),
+            withSpinner(infoBoxOutput("submissionsBox", width = 4)),
             infoBoxOutput("authorsBox", width = 4),
             infoBoxOutput("subredditsBox", width = 4), width = 12
           )
@@ -66,7 +67,7 @@ ui <- dashboardPage(skin = 'black',
         #   numericInput(inputId = "limit_value", label = "Plot N Seconds", value = 3000, min = 100, max = 1000000)
         # ),
         fluidRow(
-          box(plotOutput("all_time_submissions"), width = 12)
+          box(withSpinner(plotOutput("all_time_submissions")), width = 12)
         )
       ),
       tabItem(

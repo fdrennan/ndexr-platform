@@ -52,6 +52,8 @@ RUN R -e "install.packages('httpuv')"
 RUN R -e "install.packages('spacyr')"
 RUN R -e "install.packages('quanteda')"
 RUN R -e "install.packages('shinyBS')"
+RUN R -e "install.packages('shinycssloaders')"
+
 
 ARG DUMMY=unknowndatasssss
 RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \ 
