@@ -4,6 +4,7 @@ library(httr)
 library(jsonlite)
 library(openxlsx)
 library(scales)
+library(shinyBS)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -85,13 +86,17 @@ ui <- dashboardPage(skin = 'black',
               column(downloadButton("downloadData", "Download"), width = 6),
               column(checkboxInput("removensfw", "Remove NSFW", TRUE), width = 6)),
         ),
-        box(tags$h3('Submission Results', align='center'), width = 12, background = 'light-blue'),
-        fluidRow(
-          column(dataTableOutput("search_data"), width = 12)
-        ),
-        box(tags$h3('Images', align='center'), width = 12, background = 'light-blue'),
-        fluidRow(
-          column(uiOutput("imageOutput"), width = 12)
+        bsCollapse(id = "collapseExample", open = "Panel 2",
+                   bsCollapsePanel("Submission Results", 
+                                   fluidRow(
+                                     column(dataTableOutput("search_data"), width = 12)
+                                   ),
+                                   style = "info"),
+                   bsCollapsePanel("Image Results", 
+                                   fluidRow(
+                                     column(uiOutput("imageOutput"), width = 12)
+                                   )
+                                   , style = "success")
         )
       ),
       tabItem(
@@ -290,7 +295,6 @@ server <- function(input, output) {
     images_to_show <- elastic_results()$url
     print(images_to_show[!str_detect(images_to_show, "www.reddit.com")])
     images_to_show <- images_to_show[!str_detect(images_to_show, "www.reddit.com")]
-
     map(unique(images_to_show), 
         function(x) {
           
@@ -303,14 +307,16 @@ server <- function(input, output) {
           }
           
           if(type_logic == 'image') {
-            response <- box(tags$a(
-              href = x,
-              tags$img(
-                src = x,
-                title = x,
-                width = "100%"
-              )
-            ), width = 3)
+            response <- box(
+              tags$a(
+                href = x,
+                tags$img(
+                  src = x,
+                  title = x,
+                  width = "100%"
+                )
+              ), width = 3
+            )
           } else {
             # response <-tags$a(
             #   href = x,
