@@ -77,7 +77,6 @@ ui <- dashboardPage(skin = 'black',
             bsCollapsePanel(
               "Submission Query Menu",
               fluidRow(
-              actionButton("p1Button", "Push Me!"),
               box(title = 'Search Parameters',
                   column(textInput(
                     inputId = "search_value", label = "Query Data",
@@ -206,9 +205,7 @@ ui <- dashboardPage(skin = 'black',
 )
 
 server <- function(input, output, session) {
-  observeEvent(input$p1Button, ({
-    updateCollapse(session, "submissioncollapse", open = "Panel 1")
-  }))
+  
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = 'POWEREDGE'))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
