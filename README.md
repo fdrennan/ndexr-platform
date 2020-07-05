@@ -188,10 +188,18 @@ sudo vim /etc/ssh/sshd_config
 /var/log/secure
 AllowTcpForwarding yes
 GatewayPorts yes
+
+### Kill Autossh
+
+pkill -3 autossh
+ps aux | grep ssh
+kill -9 11666 11667 2758
+
 ```
 ### LENOVO
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22 -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8000:localhost:8000 -R 8001:localhost:8001 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22 -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8005:localhost:8005 -R 8006:localhost:8006 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8005:localhost:8005 -R 8006:localhost:8006  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 ```
 
 ### DELL XPS
@@ -202,7 +210,8 @@ autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8080:localhost:8080 ubuntu@ndexr.
 
 ### POWEREDGE
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2400:localhost:22 -R 8787:localhost:8787 -R 5433:localhost:5432 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8001:localhost:8001 -R 8000:localhost:8000 -R 2400:localhost:22 -R 8787:localhost:8787 -R 5433:localhost:5432 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8000:localhost:8000 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 ```
 
 

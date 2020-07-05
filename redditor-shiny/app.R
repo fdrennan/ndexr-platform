@@ -218,6 +218,17 @@ ui <- dashboardPage(
           ),
           box(
             tags$a(
+              href = "http://ndexr.com:8000",
+              tags$image(
+                src = "https://ndexr-images.s3.us-east-2.amazonaws.com/jupyterhub.svg",
+                title = "Jupyterhub",
+                width = "100%"
+              )
+            ),
+            width = 3
+          ),
+          box(
+            tags$a(
               href = "http://ndexr.com:8081",
               tags$image(
                 src = "https://ndexr-images.s3.us-east-2.amazonaws.com/pgadmin.png",
