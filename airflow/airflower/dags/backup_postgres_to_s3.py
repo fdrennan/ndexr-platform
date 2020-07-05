@@ -11,7 +11,7 @@ args = {
     'email_on_retry': True
 }
 
-dag = DAG(dag_id='backup_postgres_to_s3',
+dag = DAG(dag_id='daily_ndexr',
           default_args=args,
           schedule_interval='@daily',
           concurrency=1,
