@@ -46,7 +46,7 @@ task_4 = BashOperator(
 
 task_5 = BashOperator(
     task_id='refresh_urls_count_by_day_poweredge',
-    bash_command='. /home/scripts/R/shell/refresh_urls_count_by_day_poweredge',
+    bash_command='. /home/scripts/R/shell/refresh_urls_count_by_day',
     dag=dag
 )
 
