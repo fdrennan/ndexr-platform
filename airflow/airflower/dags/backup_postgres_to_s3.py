@@ -62,10 +62,18 @@ task_7 = BashOperator(
     dag=dag
 )
 
+task_8 = BashOperator(
+    task_id='upload_comments_to_elastic',
+    bash_command='. /home/scripts/R/shell/upload_comments_to_elastic',
+    dag=dag
+)
+
+
 
 task_1 >> task_2
 task_2 >> task_3
 task_3 >> task_4
 task_3 >> task_5
 task_3 >> task_6
+task_3 >> task_8
 task_6 >> task_7
