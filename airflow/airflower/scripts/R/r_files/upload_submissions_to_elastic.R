@@ -9,7 +9,7 @@ dwh_verification_table <- "submissions_to_elastic_success"
 dwh_failed_verification_table <- "submissions_to_elastic_failed"
 elastic_search_table <- "submissions"
 
-con <- postgres_connector(POSTGRES_PORT = 5433, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
 response_table <- tbl(con, in_schema("public", dwh_table))
 counts <-
   response_table %>%

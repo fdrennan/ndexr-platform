@@ -48,11 +48,42 @@ ui <- dashboardPage(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("chart-bar")),
       menuItem("Search", tabName = "search", icon = icon("search-plus")),
       menuItem("Submission Deconstructor", tabName = "permalink", icon = icon("comments")),
-      menuItem("Production Links", tabName = "links", icon = icon("dashboard"))
+      menuItem("Production Links", tabName = "links", icon = icon("dashboard")),
+      menuItem("Cost Summary", tabName = "costs", icon = icon("money"))
     )
   ),
   dashboardBody(
     tabItems(
+      tabItem(
+        tabName = "costs",
+        bsCollapse(
+          id = "costcollapse", open = "Monthly Cost Activity",
+          bsCollapsePanel(
+            "Monthly Cost Activity",
+            fluidRow(
+              box(withSpinner(plotOutput("costReportMonth")), width = 12)
+            )
+          )
+        ),
+        bsCollapse(
+          id = "costcollapse", open = "Historical Cost Activity",
+          bsCollapsePanel(
+            "Historical Cost Activity",
+            fluidRow(
+              box(withSpinner(plotOutput("costReportYear")), width = 12),
+            )
+          )
+        ),
+        bsCollapse(
+          id = "costcollapse", open = "Prior Month Cost Activity",
+          bsCollapsePanel(
+            "Prior Month Cost Activity",
+            fluidRow(
+              box(withSpinner(plotOutput("costReportPrior")), width = 12),
+            )
+          )
+        ),
+      ),
       tabItem(
         tabName = "dashboard",
         fluidRow(
@@ -65,7 +96,7 @@ ui <- dashboardPage(
           )
         ),
         fluidRow(
-          box(withSpinner(plotOutput("all_time_submissions")), width = 12)
+          box(withSpinner(plotOutput("all_time_submissions")), width = 12),
         )
       ),
       tabItem(
@@ -245,6 +276,8 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
+
+  
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = "POWEREDGE"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
@@ -381,6 +414,7 @@ server <- function(input, output, session) {
     response
   })
 
+ 
   output$permalink_summary <- renderDataTable({
     summarise_thread_stack(current_permalink()) %>%
       arrange(desc(engagement_ratio))
@@ -394,6 +428,61 @@ server <- function(input, output, session) {
 
     build_datatable(response)
   })
+  
+  resp <- GET(url = glue("http://ndexr.com/api/get_costs")); content(resp, 'text')
+  get_costs <- fromJSON(fromJSON(content(resp, 'text'))$data)
+  
+  output$costReportYear <- renderPlot({
+    
+    get_costs %>%
+      mutate(start = as.Date(start)) %>%
+      # filter(between(start, floor_date(Sys.Date(), 'month'), Sys.Date())) %>%
+      mutate(total_cost = cumsum(unblended_cost)) %>%
+      pivot_longer(cols = c(unblended_cost, blended_cost, usage_quantity, total_cost)) %>%
+      ggplot() +
+      aes(x = as.Date(start), y = value) +
+      geom_col() +
+      facet_wrap(name ~ ., scales = 'free') +
+      xlab(label = 'Month to Date') +
+      ylab('Amount') +
+      ggtitle('AWS Checkup')
+  })
+  
+  output$costReportPrior <- renderPlot({
+    get_costs %>%
+      mutate(start = as.Date(start)) %>%
+      filter(between(start, floor_date(floor_date(Sys.Date(), 'month')-3, 'month'), Sys.Date())) %>%
+      mutate(total_cost = cumsum(unblended_cost)) %>%
+      pivot_longer(cols = c(unblended_cost, blended_cost, usage_quantity, total_cost)) %>%
+      ggplot() +
+      aes(x = as.Date(start), y = value) +
+      geom_col() +
+      facet_wrap(name ~ ., scales = 'free') +
+      xlab(label = 'Month to Date') +
+      ylab('Amount') +
+      ggtitle('AWS Checkup')
+  })
+  
+  output$costReportMonth <- renderPlot({
+    cost_df <- get_costs %>%
+      mutate(start = as.Date(start)) %>%
+      filter(between(start, floor_date(Sys.Date(), 'month'), Sys.Date())) %>%
+      mutate(total_cost = cumsum(unblended_cost)) 
+    
+    cost_df_sum <- sum(cost_df$unblended_cost, na.rm = TRUE)
+    
+    cost_df %>% 
+      pivot_longer(cols = c(unblended_cost, blended_cost, usage_quantity, total_cost)) %>%
+      ggplot() +
+      aes(x = as.Date(start), y = value) +
+      geom_col() +
+      facet_wrap(name ~ ., scales = 'free') +
+      xlab(label = 'Month to Date') +
+      ylab('Amount') +
+      ggtitle(glue('AWS Checkup: Month to Date Cost {cost_df_sum}'))
+  })
+
+
 }
 
 shinyApp(ui, server)
