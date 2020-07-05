@@ -278,7 +278,7 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
 
   
-  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "meta_statistics", host_variable = "POWEREDGE"))
+  resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "poweredge_meta_statistics", host_variable = "XPS"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
   counts_by_second <- fromJSON(fromJSON(content(resp, "text"))$data)
