@@ -1,7 +1,7 @@
 CREATE EXTENSION dblink;
 
 -- create the connection
-SELECT dblink_connect('myconn', 'hostaddr=192.168.0.59 port=5432 dbname=postgres user=postgres password=Rockies23');
+-- SELECT dblink_connect('myconn', 'hostaddr=HOST port=PORT dbname=DBNAME user=USERNAME password=PASSWORD');
 
 -- then use the connection
 -- select key, type, value
