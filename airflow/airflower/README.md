@@ -215,3 +215,27 @@ This one manages the state of our dags.
       - "postgres"
     command: airflow scheduler
 ```
+
+apt-get update
+
+apt-get install apt-file
+
+apt-file update
+
+apt-get install vim     # now finally this will work !!!
+
+
+max_connections = 200
+shared_buffers = 32GB
+effective_cache_size = 96GB
+maintenance_work_mem = 2GB
+checkpoint_completion_target = 0.7
+wal_buffers = 16MB
+default_statistics_target = 100
+random_page_cost = 1.1
+effective_io_concurrency = 200
+work_mem = 41943kB
+min_wal_size = 1GB
+max_wal_size = 4GB
+max_worker_processes = 40
+max_parallel_workers_per_gather = 4

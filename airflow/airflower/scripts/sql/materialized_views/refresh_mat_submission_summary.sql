@@ -1,1 +1,1 @@
-refresh materialized view public.submission_summary;
+refresh materialized view public.author_summary;

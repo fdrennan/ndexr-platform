@@ -39,8 +39,14 @@ task_3 = BashOperator(
 )
 
 task_4 = BashOperator(
-    task_id='refresh_mat_submission_summary_poweredge',
-    bash_command='. /home/scripts/R/shell/refresh_mat_submission_summary',
+    task_id='refresh_mat_author_summary_poweredge',
+    bash_command='. /home/scripts/R/shell/refresh_mat_author_summary',
+    dag=dag
+)
+
+task_9 = BashOperator(
+    task_id='refresh_mat_subreddit_summary_poweredge',
+    bash_command='. /home/scripts/R/shell/refresh_mat_subreddit_summary',
     dag=dag
 )
 
@@ -76,4 +82,5 @@ task_3 >> task_4
 task_3 >> task_5
 task_3 >> task_6
 task_3 >> task_8
+task_3 >> task_9
 task_6 >> task_7
