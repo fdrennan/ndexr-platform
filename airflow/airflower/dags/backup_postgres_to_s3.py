@@ -55,8 +55,17 @@ task_6 = BashOperator(
     bash_command='. /home/scripts/R/shell/refresh_mat_meta_statistics_poweredge',
     dag=dag
 )
+
+task_7 = BashOperator(
+    task_id='poweredge_to_xps_meta_statistics',
+    bash_command='. /home/scripts/R/shell/poweredge_to_xps_meta_statistics',
+    dag=dag
+)
+
+
 task_1 >> task_2
 task_2 >> task_3
 task_3 >> task_4
 task_3 >> task_5
 task_3 >> task_6
+task_6 >> task_7

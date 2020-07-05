@@ -174,3 +174,10 @@ CREATE TABLE public.comments_to_word
     pos  varchar,
     entity varchar
 );
+-- SPLIT
+create table public.poweredge_meta_statistics  (
+        key varchar not null,
+        type varchar,
+        value numeric,
+        primary key (type)
+);
