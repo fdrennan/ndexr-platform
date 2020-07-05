@@ -26,14 +26,14 @@ task_1 = BashOperator(
 )
 
 task_2 = BashOperator(
-    task_id='backup_postgres_to_s3',
+    task_id='backup_postgres_to_s3_xps',
     bash_command='. /home/scripts/R/shell/backup_postgres_to_s3',
     dag=dag
 )
 
 
 task_3 = BashOperator(
-    task_id='transfer_submission_from_s3_to_postgres',
+    task_id='transfer_submission_from_s3_to_postgres_poweredge',
     bash_command='. /home/scripts/R/shell/transfer_submission_from_s3_to_postgres',
     dag=dag
 )
