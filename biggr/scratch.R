@@ -3,8 +3,6 @@
 # Created by: fdrennan
 # Created on: 5/14/20
 
-
-
 library(biggr)
 library(ipify)
 
