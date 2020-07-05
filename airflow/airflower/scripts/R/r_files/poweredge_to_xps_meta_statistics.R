@@ -1,5 +1,6 @@
 
-library(redditorcon <- postgres_connector()
+library(redditor)
+con <- postgres_connector()
 
 secondary_db <- Sys.getenv('POSTGRES_DB')
 secondary_user <- Sys.getenv('POSTGRES_USER')
