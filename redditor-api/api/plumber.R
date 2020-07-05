@@ -239,3 +239,41 @@ comment_plot <- function(limit = 600,
   ggsave(filename = file, plot = p, width = width, height = height)
   readBin(file, "raw", n = file.info(file)$size)
 }
+
+
+#* @serializer unboxedJSON
+#* @param days_ago
+#* @get /get_costs
+function(days_ago = 300) {
+  message(glue("Within get_summary {Sys.time()}"))
+  days_ago = as.numeric(days_ago)
+  # Build the response object (list will be serialized as JSON)
+  response <- list(
+    statusCode = 200,
+    data = "",
+    message = "Success!",
+    metaData = list(
+      runtime = 0,
+      days_ago = days_ago
+    )
+  )
+
+  response <- tryCatch(
+    {
+      tic()
+      results <- cost_get(from = as.character(Sys.Date() - days_ago), to = as.character(Sys.Date()))
+      response$data <- toJSON(results)
+      timer <- toc(quiet = T)
+      response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
+      return(response)
+    },
+    error = function(err) {
+      response$statusCode <- 400
+      response$message <- paste(err)
+      return(response)
+    }
+  )
+
+  return(response)
+}
+

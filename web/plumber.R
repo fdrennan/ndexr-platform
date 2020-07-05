@@ -18,9 +18,9 @@ configure_aws(
 #* @filter cors
 cors <- function(req, res) {
   message(glue("Within filter {Sys.time()}"))
-
+  
   res$setHeader("Access-Control-Allow-Origin", "*")
-
+  
   if (req$REQUEST_METHOD == "OPTIONS") {
     res$setHeader("Access-Control-Allow-Methods", "*")
     res$setHeader(
@@ -42,9 +42,9 @@ cors <- function(req, res) {
 function(search_term = "trump",
          limit = 5) {
   limit <- as.numeric(limit)
-
+  
   message(glue("Within get_stocks {Sys.time()}"))
-
+  
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -58,7 +58,7 @@ function(search_term = "trump",
       runtime = 0
     )
   )
-
+  
   response <- tryCatch(
     {
       if (limit > 1000) {
@@ -69,17 +69,17 @@ function(search_term = "trump",
       response$data <- find_posts(search_term = str_to_lower(search_term), limit = limit, to_json = TRUE)
       timer <- toc(quiet = T)
       response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
-
+      
       return(response)
     },
     error = function(err) {
       response$statusCode <- 400
       response$message <- paste(err)
-
+      
       return(response)
     }
   )
-
+  
   return(response)
 }
 
@@ -88,7 +88,7 @@ function(search_term = "trump",
 #* @get /get_summary
 function(table_name = "meta_statistics") {
   message(glue("Within get_summary {Sys.time()}"))
-
+  
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -99,7 +99,7 @@ function(table_name = "meta_statistics") {
       table_name = table_name
     )
   )
-
+  
   get_summary_temp <- function(table_name = "meta_statistics") {
     message('Before Connection')
     if (table_name == "meta_statistics") {
@@ -107,17 +107,17 @@ function(table_name = "meta_statistics") {
     } else {
       con <- postgres_connector()
     }
-
+    
     message('After Connection')
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
-
+    
     table_name <- tbl(con, in_schema("public", table_name)) %>%
       collect()
-
+    
     table_name
   }
-
+  
   response <- tryCatch(
     {
       tic()
@@ -132,7 +132,7 @@ function(table_name = "meta_statistics") {
       return(response)
     }
   )
-
+  
   return(response)
 }
 
@@ -141,7 +141,7 @@ function(table_name = "meta_statistics") {
 #* @get /build_submission_stack
 function(permalink = "meta_statistics") {
   message(glue("Within get_summary {Sys.time()}"))
-
+  
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -152,7 +152,7 @@ function(permalink = "meta_statistics") {
       permalink = permalink
     )
   )
-
+  
   response <- tryCatch(
     {
       tic()
@@ -167,7 +167,7 @@ function(permalink = "meta_statistics") {
       return(response)
     }
   )
-
+  
   return(response)
 }
 
@@ -175,7 +175,7 @@ function(permalink = "meta_statistics") {
 #* @get /get_submission_files
 function() {
   message(glue("Within get_summary {Sys.time()}"))
-
+  
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -185,7 +185,7 @@ function() {
       runtime = 0
     )
   )
-
+  
   response <- tryCatch(
     {
       tic()
@@ -202,7 +202,7 @@ function() {
       return(response)
     }
   )
-
+  
   return(response)
 }
 
@@ -225,7 +225,7 @@ comment_plot <- function(limit = 600,
                          height = NA) {
   width <- as.numeric(width)
   height <- as.numeric(height)
-
+  
   limit <- as.numeric(limit)
   file <- "plot.png"
   p <- plot_stream(
@@ -239,3 +239,41 @@ comment_plot <- function(limit = 600,
   ggsave(filename = file, plot = p, width = width, height = height)
   readBin(file, "raw", n = file.info(file)$size)
 }
+
+
+#* @serializer unboxedJSON
+#* @param days_ago
+#* @get /get_costs
+function(days_ago = 300) {
+  message(glue("Within get_summary {Sys.time()}"))
+  days_ago = as.numeric(days_ago)
+  # Build the response object (list will be serialized as JSON)
+  response <- list(
+    statusCode = 200,
+    data = "",
+    message = "Success!",
+    metaData = list(
+      runtime = 0,
+      days_ago = days_ago
+    )
+  )
+  
+  response <- tryCatch(
+    {
+      tic()
+      results <- cost_get(from = as.character(Sys.Date() - days_ago), to = as.character(Sys.Date()))
+      response$data <- toJSON(results)
+      timer <- toc(quiet = T)
+      response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
+      return(response)
+    },
+    error = function(err) {
+      response$statusCode <- 400
+      response$message <- paste(err)
+      return(response)
+    }
+  )
+  
+  return(response)
+}
+
