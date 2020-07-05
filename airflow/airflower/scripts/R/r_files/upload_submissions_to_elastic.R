@@ -64,7 +64,7 @@ for (hour_count in counts) {
   tryCatch(
     {
       send_message('Uploading to Elastic')
-      elastic(paste0(Sys.getenv("XPS"), ':9200'), elastic_search_table, "data") %index% as.data.frame(response)
+      elastic(paste0("http://", Sys.getenv("XPS"), ':9200'), elastic_search_table, "data") %index% as.data.frame(response)
       send_message('Writing to table')
       dbWriteTable(conn = con, name = dwh_verification_table, value = hour_count, append = TRUE)
       send_message('Complete')
