@@ -39,14 +39,14 @@ task_3 = BashOperator(
 )
 
 task_4 = BashOperator(
-    task_id='refresh_mat_submission_summary',
+    task_id='refresh_mat_submission_summary_poweredge',
     bash_command='. /home/scripts/R/shell/refresh_mat_submission_summary',
     dag=dag
 )
 
 task_5 = BashOperator(
-    task_id='refresh_urls_count_by_day',
-    bash_command='. /home/scripts/R/shell/refresh_urls_count_by_day',
+    task_id='refresh_urls_count_by_day_poweredge',
+    bash_command='. /home/scripts/R/shell/refresh_urls_count_by_day_poweredge',
     dag=dag
 )
 
