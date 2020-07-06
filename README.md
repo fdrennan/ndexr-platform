@@ -55,7 +55,7 @@ Are some of these authors bots or not? Can we determine this? If we can, then wh
 # Visit the [Live Site](http://ndexr.com)
 
 # The Network
-![This](ndexr.jpeg)
+![This](ndexr.png)
 All incoming ports are blocked to external users except for 80 and 3000, the remaining ports are only accessible
  to approved IP addresses.
 
