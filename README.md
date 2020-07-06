@@ -204,7 +204,7 @@ pg_restore --clean --verbose -U postgres -d postgres /postgres.bak
 # /var/lib/postgresql/data
 ```
  
-## Networking Stuff
+# Creating Connections from Local Servers to Remote Servers
 
 ### To Kill a port
 `sudo fuser -k -n tcp 3000`
@@ -227,7 +227,6 @@ kill -9 11666 11667 2758
 
 ```
 
-# Creating Connections from Local Servers to Remote Servers
 ### LENOVO
 ```
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22 -R 8999:localhost:8999 -R 3000:localhost:3000 -R 8005:localhost:8005 -R 8006:localhost:8006 -R 8002:localhost:8002 -R 8003:localhost:8003 -R 8004:localhost:8004 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
