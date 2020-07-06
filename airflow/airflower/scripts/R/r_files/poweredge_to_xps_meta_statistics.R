@@ -8,9 +8,17 @@ secondary_password <- Sys.getenv('POSTGRES_PASSWORD')
 secondary_host <- Sys.getenv('POWEREDGE')
 secondary_port <- Sys.getenv('POSTGRES_PORT')
 
-
 sql_query <-
   list(
+    "drop table if exists poweredge_meta_statistics",
+    "
+    create table public.poweredge_meta_statistics  (
+        key varchar not null,
+        type varchar,
+        value numeric,
+        primary key (type)
+    );
+    ",
     glue("SELECT dblink_connect('myconn', 'hostaddr={secondary_host} port={secondary_port} dbname={secondary_db} user={secondary_user} password={secondary_password}');"),
     "with remote_table as (
         select * from dblink('myconn','select key, type, value from meta_statistics')

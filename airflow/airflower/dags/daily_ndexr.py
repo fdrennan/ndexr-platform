@@ -51,7 +51,7 @@ task_9 = BashOperator(
 )
 
 task_5 = BashOperator(
-    task_id='refresh_urls_summary_poweredge',
+    task_id='refresh_mat_urls_summary_poweredge',
     bash_command='. /home/scripts/R/shell/refresh_urls_summary',
     dag=dag
 )
