@@ -148,8 +148,8 @@ This container contains code and packags required to run the Shiny application
 docker build -t redditorapp --file ./DockerfileShiny .
 ```
 ### The main DAG, man
-1. Update AWS credentials on file for `biggr`
-2. `backup_postgres_to_s3`: Moves submission data from the XPS server and move to S3
+1. `set_up_aws`: Update AWS credentials on file for `biggr`
+2. `backup_postgres_to_s3`: Moves recent submission data from the XPS server to S3
 3. `transfer_subissions_from_s3_to_poweredge`: Grabs the data in S3 and stages for long term storage on the Poweredge 
 in Postgres at `public.submissions`.
 4. `upload_submissions_to_elastic`: takes all submissions not stored in elastic search and saves them there - running on the `Dell XPS` laptop
