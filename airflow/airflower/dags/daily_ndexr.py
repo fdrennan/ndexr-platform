@@ -25,6 +25,12 @@ task_1 = BashOperator(
     dag=dag
 )
 
+task_11 = BashOperator(
+    task_id='update_costs',
+    bash_command='. /home/scripts/R/shell/update_costs',
+    dag=dag
+)
+
 task_2 = BashOperator(
     task_id='backup_postgres_to_s3_xps',
     bash_command='. /home/scripts/R/shell/backup_postgres_to_s3',
@@ -83,6 +89,7 @@ task_8 = BashOperator(
 
 
 task_1 >> task_2
+task_1 >> task_11
 task_2 >> task_3
 task_3 >> task_4
 task_3 >> task_5

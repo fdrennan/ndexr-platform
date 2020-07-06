@@ -1,10 +1,7 @@
-# install.packages(c('reticulate', 'RPostgres', 'tidytext', 'tictoc', 'elasticsearchr', 'dbx', 'ggthemes', 'shinydashboard', 'shiny', 'DT', 'openxlsx', 'spacyr', 'quanteda', 'uuid'))
-
 library(biggr)
 library(redditor)
 
 ENV_NAME = 'XPS'
-
 con <- redditor::postgres_connector(POSTGRES_HOST = Sys.getenv(ENV_NAME))
 if(!db_has_table(con, 'costs')) {
   results <- cost_get(from = as.character(Sys.Date() - 365), to = as.character(Sys.Date() + 1))

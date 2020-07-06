@@ -244,7 +244,8 @@ comment_plot <- function(limit = 600,
 #* @serializer unboxedJSON
 #* @param days_ago
 #* @get /get_costs
-function(days_ago = 300) {
+function(days_ago = 300, ENV_NAME = 'XPS') {
+  browser()
   message(glue("Within get_summary {Sys.time()}"))
   days_ago = as.numeric(days_ago)
   # Build the response object (list will be serialized as JSON)

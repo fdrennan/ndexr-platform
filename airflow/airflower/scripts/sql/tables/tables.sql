@@ -181,3 +181,11 @@ create table public.poweredge_meta_statistics  (
         value numeric,
         primary key (type)
 );
+
+create table public.costs  (
+        start date,
+        unblended_cost numeric,
+        blended_cost numeric,
+        usage_quantity numeric,
+        primary key (start)
+);
