@@ -1,1 +1,1 @@
-refresh materialized view public.urls_count_by_day;
+refresh materialized view public.urls_summary;
