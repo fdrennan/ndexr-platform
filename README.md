@@ -82,9 +82,7 @@ when things break, it's devastating and a time sink and kept me up nights.
 AIRFLOW, is one of the tools for this job. It makes your scheduled jobs smooth like butter, and is highly transparent 
 with the health of your network, and allows for push button runs of your code. This was far superior to cron jobs 
 kicking off singular scripts.
-
-                                                                                                                          
-                                                                                                                          
+                                                                               
 ## About This Project
 
 The main components are 
@@ -149,6 +147,18 @@ This container contains code and packags required to run the Shiny application
 ```
 docker build -t redditorapp --file ./DockerfileShiny .
 ```
+### The main DAG, man
+1. Update AWS credentials on file for `biggr`
+2. `backup_postgres_to_s3`: Moves submission data from the XPS server and move to S3
+3. `transfer_subissions_from_s3_to_poweredge`: Grabs the data in S3 and stages for long term storage on the Poweredge 
+in Postgres at `public.submissions`.
+4. `upload_submissions_to_elastic`: takes all submissions not stored in elastic search and saves them there - running on the `Dell XPS` laptop
+5. `refresh_*`: are all materialized views that get updated on the Poweredge once received from the S3 bucket
+![Daily Dag](the_daily_ndexr.png)
+6. `poweredge_to_xps_meta_statistics`: takes the submission, author, and subreddit counts and stored in the `XPS` Postgres database. 
+This allows for updated statistics when the Poweredge server is off. 
+7. `update_costs`: Once the ETL process is done, grab the latest costs from AWS and store in the DB.
+
 # Useful quick commands
 
 ```
