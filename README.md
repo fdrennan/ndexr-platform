@@ -160,12 +160,10 @@ This allows for updated statistics when the Poweredge server is off.
 
 ![Daily Dag](the_daily_ndexr.png)
 
-# Useful quick commands
+# Hop Into A Container
 
 ```
-docker exec -it  redditor_scheduler_1  /bin/bash
-docker exec -it  redditor_postgres_1  /bin/bash
-docker exec -it  redditor_userinterface_1  /bin/bash
+docker exec -it  [container name]  bash
 ```
 
 # Backing Up Your Data
