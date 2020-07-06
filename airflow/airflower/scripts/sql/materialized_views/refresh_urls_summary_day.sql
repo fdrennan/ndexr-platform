@@ -1,0 +1,1 @@
+refresh materialized view public.urls_summary_day;
