@@ -173,6 +173,7 @@ with cleanup as (
     )
 
     select url,
+           substring(url from '(?:\w+\.)+\w+') as host_name,
            count(distinct date_trunc('day', created_utc)) as n_days,
            min(created_utc) as first_observation,
            max(created_utc) as most_recent_observation,
@@ -224,6 +225,7 @@ with cleanup as (
 
     select url,
            floor_day,
+           substring(url from '(?:\w+\.)+\w+') as host_name,
            count(distinct date_trunc('day', created_utc)) as n_days,
            min(created_utc) as first_observation,
            max(created_utc) as most_recent_observation,
