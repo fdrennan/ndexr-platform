@@ -1,0 +1,1 @@
+refresh materialized view public.author_summary;
