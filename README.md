@@ -1,11 +1,32 @@
 # NDEXR - Indexing the Reddit Platform
 
-## WHY?
-### To find bad actors and determine if we can detect people spreading misinformation and make it known.
-### Over the past few weeks this project has collected about 30 million submissions to Reddit and the data pipeline runs consistently
+## About This Project
+Reddit has become one of the most frequently visited websites on the web. At the current time, according
+to [Ahrefs](https://ahrefs.com/blog/most-visited-websites/) Reddit is the 7th most popular website in the world. As a 
+decentralized platform, moderators are expected to do the policing of their subreddits. However, anyone can create
+a subreddit and anyone can receive an API token - which to this date, allows access indistinguishable from a normal user.
 
-## WHAT IS THIS?
-### A semi-public machine learning project
+Given that we have near exclusive access to Reddit data, what can we do with it? Some thoughts - 
+
+1. Models can help determine bad actors on the platform
+2. The duration of high impact national events can potentially be determined - tend to follow a log normal distribution
+3. The API creates the opportunity to learn about data engineering best practices with real-time data
+4. A team can learn group collaboration
+5. The platform built translates to real world needs in other areas
+
+### Bots
+
+We frequently encounter bots on the platform. Some of the most common ones are designed to make sure a post is following 
+the appropriate guidelines for the subreddit - i.e., did the post contain correct content, headers - did the author have 
+karma (internet points) to post, etc. This is done by looking at the submission data and the data about the author which is 
+publicly available.
+
+Bots can do everything a human can do, including guilding which is a paid badge to a user for good content and removal
+of ads for the user for a given time.
+
+### Trolls
+Trolls are human actors which intentionally work to mislead or aggravate people. A troll can change the tone of the conversation and
+generally speaking do not add context or nuance to otherwise well intentioned discussions.
 
 ## Getting Started 
 1. Request permission from `fdrennan` in [NDEXR Slack](https://app.slack.com/client/TAS9MV5K2) for [RStudio](http://ndexr.com:8787) and Postgres access.
