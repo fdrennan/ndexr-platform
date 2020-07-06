@@ -154,10 +154,11 @@ docker build -t redditorapp --file ./DockerfileShiny .
 in Postgres at `public.submissions`.
 4. `upload_submissions_to_elastic`: takes all submissions not stored in elastic search and saves them there - running on the `Dell XPS` laptop
 5. `refresh_*`: are all materialized views that get updated on the Poweredge once received from the S3 bucket
-![Daily Dag](the_daily_ndexr.png)
 6. `poweredge_to_xps_meta_statistics`: takes the submission, author, and subreddit counts and stored in the `XPS` Postgres database. 
 This allows for updated statistics when the Poweredge server is off. 
 7. `update_costs`: Once the ETL process is done, grab the latest costs from AWS and store in the DB.
+
+![Daily Dag](the_daily_ndexr.png)
 
 # Useful quick commands
 
