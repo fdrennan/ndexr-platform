@@ -56,7 +56,6 @@ ui <- dashboardPage(
     tabItems(
       tabItem(
         tabName = "costs",
-        h1('UNDER CONSTRUCTION'),
         bsCollapse(
           id = "costcollapse", open = "Monthly Cost Activity",
           bsCollapsePanel(

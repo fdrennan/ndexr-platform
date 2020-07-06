@@ -86,7 +86,7 @@ function(search_term = "trump",
 #* @serializer unboxedJSON
 #* @param table_name A table to grab
 #* @get /get_summary
-function(table_name = "meta_statistics") {
+function(table_name = "meta_statistics", filter_column = NULL, filter_value = NULL) {
   message(glue("Within get_summary {Sys.time()}"))
 
   # Build the response object (list will be serialized as JSON)
