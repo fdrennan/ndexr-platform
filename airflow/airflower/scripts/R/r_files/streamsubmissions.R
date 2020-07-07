@@ -9,7 +9,7 @@ while (TRUE) {
   con <- postgres_connector()
   tryCatch(
     {
-      gather_submissions(con = con, reddit_con = reddit_con, sleep_time = 3)
+      gather_submissions(con = con, reddit_con = reddit_con)
     },
     error = function(e) {
       Sys.sleep(5)
