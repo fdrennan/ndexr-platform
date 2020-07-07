@@ -552,6 +552,12 @@ get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) 
     subreddit$top(limit = limit)
   }, )
   comments <- iterate(subreddit)
+  tryCatch(expr = {
+    throttle_me(reddit)
+  }, error = function(err) {
+    send_message("Something went wrong in get_submission's throttle")
+    send_message(as.character(err))
+  })
   meta_data <- map_df(comments, ~ parse_meta(.))
   meta_data %>%
     mutate(

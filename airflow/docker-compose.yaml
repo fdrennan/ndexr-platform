@@ -64,7 +64,6 @@ services:
     ports:
       - '5432:5432'
     expose:
-      - '22'
       # Opens port 5432 on the container
       - '5432'
       # Where our data will be persisted

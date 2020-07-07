@@ -1,16 +1,5 @@
 library(redditor)
 
-rcon <- reddit_connector()
-pcon <- postgres_connector()
+reddit_con <- reddit_connector()
 
-submissions <- find_posts(search_term = "Defeat Trump in November", limit = 10) %>%
-  mutate(permalink = paste0("http://reddit.com", permalink)) %>%
-  collect()
-
-response <- map(
-  submissions$permalink,
-  ~ get_url(reddit = rcon, url = .)
-)
-
-resp <- map_df(response, ~ .$meta_data)
-
+get_all <- get_submission(reddit = reddit_con, name = "all", limit = 100L, type = "new")

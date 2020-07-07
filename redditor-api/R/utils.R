@@ -290,3 +290,22 @@ s3_submissions_to_postgres <- function(con = NULL) {
   try(dir_delete("tmp"))
   walk(tar_files, ~ upsert_data(.))
 }
+
+#' @export throttle_me
+throttle_me <- function(reddit_con, throttle_multiple = 1.05, ignore_under_1 = TRUE) {
+  print(reddit_con$auth$limits)
+  limits <- reddit_con$auth$limits
+  reset_time <- as.POSIXct(limits$reset_timestamp, origin = '1970-01-01')
+  time_til_reset <- reset_time - Sys.time()
+  time_div_ramaining_pings <- as.numeric(time_til_reset)/limits$remaining * 60
+  wait_time <- time_div_ramaining_pings * throttle_multiple
+  message(glue('Time til reset: {as.character(round(time_til_reset, 3))} minutes'))
+  message(glue('Reset time {reset_time}'))
+  message(glue('Current time {Sys.time()}'))
+  if (wait_time >= 1) {
+    message(glue('Sleeping, wait time is {wait_time/throttle_multiple}'))
+    Sys.sleep(wait_time)
+  } else {
+    message(glue('Skipping sleep, wait time is {wait_time}'))
+  }
+}
