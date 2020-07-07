@@ -12,6 +12,7 @@ while (TRUE) {
       gather_submissions(con = con, reddit_con = reddit_con, sleep_time = 3)
     },
     error = function(e) {
+      Sys.sleep(10)
       send_message(glue("{str_sub(as.character(e), 1, 100)}"))
     }
   )
