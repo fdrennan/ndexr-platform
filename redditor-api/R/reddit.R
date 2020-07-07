@@ -552,12 +552,6 @@ get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) 
     subreddit$top(limit = limit)
   }, )
   comments <- iterate(subreddit)
-  tryCatch(expr = {
-    throttle_me(reddit)
-  }, error = function(err) {
-    send_message("Something went wrong in get_submission's throttle")
-    send_message(as.character(err))
-  })
   meta_data <- map_df(comments, ~ parse_meta(.))
   meta_data %>%
     mutate(
@@ -567,9 +561,9 @@ get_submission <- function(reddit = NULL, name = NULL, type = NULL, limit = 10) 
 }
 
 #' @export gather_submissions
-gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 3) {
+gather_submissions <- function(con = con, reddit_con = NULL) {
   while (TRUE) {
-    get_all <- get_submission(reddit = reddit_con, name = "all", limit = 3000L, type = "new")
+    get_all <- get_submission(reddit = reddit_con, name = "all", limit = 1000L, type = "new")
     tryCatch(
       {
         dbxUpsert(con, "submissions", get_all, where_cols = c("submission_key"))
@@ -578,7 +572,12 @@ gather_submissions <- function(con = con, reddit_con = NULL, sleep_time = 3) {
         message("Something went wrong with upsert in gather_submissions, {as.character(Sys.time())}")
       }
     )
-    Sys.sleep(sleep_time)
+    tryCatch(expr = {
+      throttle_me(reddit_con)
+    }, error = function(err) {
+      send_message("Something went wrong in get_submission's throttle")
+      send_message(as.character(err))
+    })
   }
 }
 

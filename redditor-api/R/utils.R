@@ -292,7 +292,7 @@ s3_submissions_to_postgres <- function(con = NULL) {
 }
 
 #' @export throttle_me
-throttle_me <- function(reddit_con, throttle_multiple = 1.05, ignore_under_1 = TRUE) {
+throttle_me <- function(reddit_con, throttle_multiple = 1, ignore_under_1 = TRUE) {
   print(reddit_con$auth$limits)
   limits <- reddit_con$auth$limits
   reset_time <- as.POSIXct(limits$reset_timestamp, origin = '1970-01-01')
