@@ -77,7 +77,7 @@ CREATE TABLE public.stream_submissions_all
     url                     varchar
 );
 -- SPLIT
-CREATE TABLE public.submissions
+CREATE TABLE public.submissions_top
 (
     submission_key varchar primary key,
     created_utc             varchar,
