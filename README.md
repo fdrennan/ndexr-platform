@@ -278,3 +278,7 @@ usermod -aG sudo newuser
 ![](redditor-shiny/pgadmin.png)
 ![](redditor-shiny/elasticsearch.jpeg)
 ![](redditor-shiny/rstudio.png)
+
+
+
+docker run -d -p 8081:80 nextcloud
