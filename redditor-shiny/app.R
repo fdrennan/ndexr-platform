@@ -6,6 +6,7 @@ library(openxlsx)
 library(scales)
 library(shinyBS)
 library(shinycssloaders)
+library(shinyLP)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -87,7 +88,18 @@ ui <- dashboardPage(
       tabItem(
         tabName = "dashboard",
         fluidRow(
+          # Using a custom container and class
+          # tags$ul(
+          #   htmlOutput("summary", container = tags$li, class = "custom-li-output")
+          # ),
           # Dynamic infoBoxes
+          # http://ndexr.com/api/construction_rmd
+          # shinyLP::iframe(url_link = "http://ndexr.com/api/construction_rmd"),
+          # HTML(read_file_r("http://facebook.com")),
+          # tags$iframe(src="http://facebook.com", height=600, width=535 ),
+          # shinyLP::iframe(width = "560", height = "315",url_link = "https://www.youtube.com/embed/0fKg7e37bQE"),
+          # tags$iframe(src = "www.rstudio.com", seamless=NA),
+          
           box(
             withSpinner(infoBoxOutput("submissionsBox", width = 4)),
             infoBoxOutput("authorsBox", width = 4),
