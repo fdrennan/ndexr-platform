@@ -280,5 +280,7 @@ usermod -aG sudo newuser
 ![](images/rstudio.png)
 
 
-
-docker run -d -p 8081:80 nextcloud
+# Build The DockerFiles
+docker build -t redditorapi --build-arg DUMMY={DUMMY} --file ./DockerfileApi .
+docker build -t rpy --build-arg DUMMY={DUMMY} --file ./DockerfileRpy .
+docker build -t redditorapp --build-arg DUMMY={DUMMY} --file ./DockerfileShiny .
