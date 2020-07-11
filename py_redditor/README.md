@@ -1,9 +1,13 @@
-## https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
 
+## Install
+[Notes](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 ``` 
-python3 -m pip install --user --upgrade pip
-python3 -m pip install --user virtualenv
-python3 -m venv pyredditor
-source pyredditor/bin/activate
-pip install -r requirements.txt 
+conda create --name pyredditor
+conda install -c conda-forge praw
+conda install -c conda-forge python-dotenv
+conda install --file requirements.txt
+```
+
+```
+conda activate pyredditor
 ```

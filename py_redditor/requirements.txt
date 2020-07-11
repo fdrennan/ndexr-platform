@@ -1,4 +1,4 @@
 requests
 pandas
-praw
 python-dotenv
+psycopg2

@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import praw
 import os
 
+
 load_dotenv(verbose=True)
 
 reddit = praw.Reddit(client_id=os.getenv("REDDIT_CLIENT"),
@@ -10,3 +11,5 @@ reddit = praw.Reddit(client_id=os.getenv("REDDIT_CLIENT"),
                      user_agent=os.getenv("USER_AGENT"))
 
 subreddits = get_subreddit(reddit, 'politics',  10, 'hot')
+
+print(subreddits)
