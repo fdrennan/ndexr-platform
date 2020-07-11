@@ -44,18 +44,18 @@ generally speaking do not add context or nuance to otherwise well intentioned di
 Hourly submissions to Reddit mentioning George Floyd - could distributions like this one help determine the
  duration of a political movement?
 
-![Viewing a World Event](georgefloyd.png)
+![Viewing a World Event](images/georgefloyd.png)
 
 This is a log-scale look at the number of different links submitted to Reddit vs the number of Subreddits observed fir a single author.
 Sampled 10,000 authors from approx 5 million authors.
-![Viewing Authors](authoractivity.png)
+![Viewing Authors](images/authoractivity.png)
 
 Are some of these authors bots or not? Can we determine this? If we can, then what can we say about them?
 
 # Visit the [Live Site](http://ndexr.com)
 
 # The Network
-![This](ndexr.png)
+![This](images/ndexr.png)
 All incoming ports are blocked to external users except for 80 and 3000, the remaining ports are only accessible
  to approved IP addresses.
 
@@ -158,7 +158,7 @@ in Postgres at `public.submissions`.
 This allows for updated statistics when the Poweredge server is off. 
 7. `update_costs`: Once the ETL process is done, grab the latest costs from AWS and store in the DB.
 
-![Daily Dag](the_daily_ndexr.png)
+![Daily Dag](images/the_daily_ndexr.png)
 
 # Hop Into A Container
 
@@ -273,11 +273,11 @@ usermod -aG sudo newuser
 
 # Technologies Used
 
-![](redditor-shiny/airflow.png)
-![](redditor-shiny/github.png)
-![](redditor-shiny/pgadmin.png)
-![](redditor-shiny/elasticsearch.jpeg)
-![](redditor-shiny/rstudio.png)
+![](images/airflow.png)
+![](images/github.png)
+![](images/pgadmin.png)
+![](images/elasticsearch.jpeg)
+![](images/rstudio.png)
 
 
 
