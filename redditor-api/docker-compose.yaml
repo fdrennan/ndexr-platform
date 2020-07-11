@@ -10,6 +10,7 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
   redditapitwo:
     image: redditorapi
     command: /app/plumber.R
@@ -20,6 +21,7 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
   redditapithree:
     image: redditorapi
     command: /app/plumber.R
@@ -30,6 +32,7 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
   redditapifour:
     image: redditorapi
     command: /app/plumber.R
@@ -40,6 +43,7 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
   redditapifive:
     image: redditorapi
     command: /app/plumber.R
@@ -50,3 +54,4 @@ services:
     volumes:
       - ./.env:/app/.Renviron
       - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
