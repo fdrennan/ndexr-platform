@@ -72,7 +72,7 @@ RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
 
 RUN Rscript /r_venv_install.R
-COPY ./plumber.R /app/plumber.R
+
 EXPOSE 8000
 ENTRYPOINT ["R", "-e", "pr <- plumber::plumb(commandArgs()[4]); pr$run(host='0.0.0.0', port=8000)"]
 CMD ["/app/plumber.R"]
