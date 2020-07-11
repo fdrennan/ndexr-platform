@@ -1,1 +1,0 @@
-docker build -t local_postgres  --file ./Dockerfile .
