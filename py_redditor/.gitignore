@@ -1,6 +1,8 @@
+pyredditor
 .idea
 venv
 dist
 build
 *.egg-info
+.env
 
