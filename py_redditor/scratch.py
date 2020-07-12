@@ -26,7 +26,7 @@ conn = psycopg2.connect(host=os.getenv("POSTGRES_HOST"),
 sql = "select date_trunc('hour', created_utc::timestamptz) as time_hour, count(*) as n_observations " \
       "from submissions " \
       "where lower(selftext) like '%wayfair%'" \
-      " by time_hour;"
+      "order by time_hour;"
 
 dat = pd.read_sql(sql, conn)\
     .sort_values(by=['time_hour'])
