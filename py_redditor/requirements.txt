@@ -2,3 +2,5 @@ requests
 pandas
 python-dotenv
 psycopg2
+plotly
+
