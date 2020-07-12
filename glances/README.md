@@ -32,3 +32,10 @@ WantedBy=multi-user.target
 sudo systemctl enable glances.service
 sudo systemctl start glances.service
 ```
+
+```
+ndexr.com:61208 # EC2
+ndexr.com:61209 # LENOVO
+ndexr.com:61210 # XPS
+ndexr.com:61211 # Poweredge
+```

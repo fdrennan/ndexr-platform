@@ -223,13 +223,13 @@ GatewayPorts yes
 
 pkill -3 autossh
 ps aux | grep ssh
-kill -9 11666 11667 2758
+kill -9 28186 14428
 
 ```
 
 ### LENOVO
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61209:localhost:61209  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61209:localhost:61208  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2300:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8999:localhost:8999  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 3000:localhost:3000 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
@@ -242,7 +242,7 @@ autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8006:localhost:8006 ubuntu@ndexr.
 
 ### DELL XPS
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61210:localhost:61210 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61210:localhost:61208 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8080:localhost:8080 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2500:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 9200:localhost:9200 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
@@ -251,7 +251,7 @@ autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8081:localhost:8081 ubuntu@ndexr.
 
 ### POWEREDGE
 ```
-autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61211:localhost:61211   ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
+autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 61211:localhost:61208   ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8001:localhost:8001 ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 8000:localhost:8000   ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
 autossh -f -nNT -i /home/fdrennan/ndexr.pem -R 2400:localhost:22  ubuntu@ndexr.com -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes
