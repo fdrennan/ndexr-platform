@@ -3,4 +3,43 @@ pandas
 python-dotenv
 psycopg2
 plotly
+psycopg2
+# numpy
+# scipy
+# tensorflow
+# theano
+# keras
+# seaborn
+# bokeh
+# plotly
+# statsmodels
+# gensim
+# nltk
+# kivy
+# xgboost
+# lightgbm
+# catboost
+# pydot
+# eli5
+# spacy
+# textblob
+# textacy
+# ftfy
+# fuzzywuzzy
+# inflect
+# django
+# dash
+# dask
+# transformers
+# flask
 
+# Unable to find in conda forge
+# pycaret
+# dist-keras
+# fast-bert
+# sktime
+# calmjs
+# bert-for-tf2
+# streamlit
+# transformers-keras
+# spacy-streamlit

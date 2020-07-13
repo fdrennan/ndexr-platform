@@ -1,9 +1,12 @@
 
 ## Install
 [Notes](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+conda config --append channels conda-forge
+
 ``` 
+conda update -n base -c defaults conda
 conda create --name pyredditor
-conda install -c conda-forge praw
+conda install -c praw
 conda install -c conda-forge python-dotenv
 conda install --file requirements.txt
 ```
