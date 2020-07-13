@@ -6,7 +6,7 @@ library(openxlsx)
 library(scales)
 library(shinyBS)
 library(shinycssloaders)
-library(shinyLP)
+# library(shinyLP)
 
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
@@ -278,6 +278,35 @@ ui <- dashboardPage(
                 title = "PG Admin",
                 width = "100%"
               )
+            ),
+            width = 3
+          ),
+          box(tags$h1("Monitoring", align = "center"), width = 12, background = "light-blue"),
+          box(
+            tags$a(
+              href = "http://ndexr.com:61211",
+              tags$h1('Poweredge')
+            ),
+            width = 3
+          ),
+          box(
+            tags$a(
+              href = "http://ndexr.com:61209",
+              tags$h1('Lenovo')
+            ),
+            width = 3
+          ),
+          box(
+            tags$a(
+              href = "http://ndexr.com:61208",
+              tags$h1('EC2')
+            ),
+            width = 3
+          ),
+          box(
+            tags$a(
+              href = "http://ndexr.com:61210",
+              tags$h1('XPS')
             ),
             width = 3
           )
