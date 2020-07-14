@@ -6,6 +6,7 @@ python-dotenv
 psycopg2
 plotly
 psycopg2
+praw
 # numpy
 # scipy
 # tensorflow
@@ -16,7 +17,7 @@ psycopg2
 # plotly
 # statsmodels
 # gensim
-# nltk
+# nltkw
 # kivy
 # xgboost
 # lightgbm
