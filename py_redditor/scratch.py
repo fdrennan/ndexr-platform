@@ -1,7 +1,7 @@
-from py_redditor.redditor.subreddits import get_subreddit
-from py_redditor.redditor.connections import postgres_connector
-from py_redditor.redditor.connections import reddit_connector
-from py_redditor.redditor.plotting import plot_line_2d
+from redditor.subreddits import get_subreddit
+from redditor.connections import postgres_connector
+from redditor.connections import reddit_connector
+from redditor.plotting import plot_line_2d
 import pandas as pd
 
 

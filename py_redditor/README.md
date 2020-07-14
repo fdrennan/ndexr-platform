@@ -67,6 +67,9 @@ plot_line_2d(dat, x='time_hour', y='n_observations')
 conda init
 conda create --name tester python=3.8
 source activate tester
+conda config --add channels conda-forge
+conda install --file requirements.txt
+
 conda install -n tester ipykernel nb_conda_kernels
 conda install -c conda-forge praw 
 /home/pchhabria/.conda/envs/tester/bin/python -m nb_conda_kernels.install -v --enable
