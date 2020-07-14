@@ -50,3 +50,24 @@ dat = pd.read_sql(sql, conn)\
 
 plot_line_2d(dat, x='time_hour', y='n_observations')
 ```
+
+
+
+
+
+
+# Setup
+1. Fork the fdrennan/ndexr-platform repo to your Github account
+2. Run git clone https://github.com/USERNAME/ndexr-platform.git
+3. Click `New` -> `Terminal` in JupyterLab
+
+
+
+
+conda init
+conda create --name tester python=3.8
+source activate tester
+conda install -n tester ipykernel nb_conda_kernels
+conda install -c conda-forge praw 
+/home/pchhabria/.conda/envs/tester/bin/python -m nb_conda_kernels.install -v --enable
+python -m ipykernel install --user --name=tester

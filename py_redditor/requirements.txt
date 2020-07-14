@@ -1,3 +1,5 @@
+ipykernel
+nb_conda_kernels
 requests
 pandas
 python-dotenv
