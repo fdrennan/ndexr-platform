@@ -10,7 +10,7 @@ reddit = reddit_connector()
 
 subreddits = get_subreddit(reddit, 'politics',  10, 'hot')
 
-conn = postgres_connector(POSTGRES_HOST='192.168.0.51', POSTGRES_PORT=5432)
+conn = postgres_connector()
 
 sql = "select date_trunc('minute', created_utc::timestamptz) as time_hour, count(*) as n_observations " \
       "from submissions " \
