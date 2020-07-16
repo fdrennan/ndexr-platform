@@ -1,5 +1,7 @@
 # NDEXR - Indexing the Reddit Platform
 
+## Visit the [Live Site](http://ndexr.com)
+
 ## About This Project
 Reddit has become one of the most frequently visited websites on the web. At the current time, according
 to [Ahrefs](https://ahrefs.com/blog/most-visited-websites/) Reddit is the 7th most popular website in the world. As a 
@@ -52,9 +54,9 @@ Sampled 10,000 authors from approx 5 million authors.
 
 Are some of these authors bots or not? Can we determine this? If we can, then what can we say about them?
 
-# Visit the [Live Site](http://ndexr.com)
 
-# The Network
+
+## The Network
 ![This](images/ndexr.png)
 All incoming ports are blocked to external users except for 80 and 3000, the remaining ports are only accessible
  to approved IP addresses.
