@@ -11,6 +11,7 @@ library(shinycssloaders)
 options(shiny.sanitize.errors = FALSE)
 print(py_config())
 print(system("whoami"))
+
 # con <- postgres_connector()
 # reddit <- reddit_connector()
 # reddit_con <- reddit_connector()
@@ -38,12 +39,13 @@ build_datatable <- function(the_datatable) {
   )
 }
 
+
 ui <- dashboardPage(
   skin = "black",
+  # tags$header(includeHTML(("google-analytics.html"))),
   dashboardHeader(
     title = "NDEX for Reddit"
   ),
-
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("chart-bar")),
