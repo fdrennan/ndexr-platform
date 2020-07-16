@@ -89,7 +89,7 @@ kicking off singular scripts.
 
 ### Dell XPS and Lenovo Ideapad (hangin out in the kitchen)
 ![](images/lenovo_xps.png)
-### Dell Poweredge
+### Dell Poweredge (40 cores and 128gb)
 ![](images/poweredge.jpeg)
 ### Between the AC below and PowerEdge above, I have to choose one.... stupid
 ![](images/air.jpeg)
