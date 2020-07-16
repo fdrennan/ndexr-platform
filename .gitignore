@@ -1,4 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
+redditor_presentation-figure
+redditor_presentation.md
 .env*
 postgres.bak
 airflow/data

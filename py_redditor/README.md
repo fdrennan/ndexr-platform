@@ -14,10 +14,13 @@ conda init
 ```
 cd ~
 cd ndexr-platform/py_redditor/
-conda create --name tester python=3.8 -y
-source activate tester
+conda create --name YOUR_ENV_NAME python=3.8 -y
+source activate YOUR_ENV_NAME
 conda config --add channels conda-forge
-conda install --file requirements.txt -y
+conda install --file ndexr-platform/py_redditor/requirements.txt -y
+/home/YOUR_USER_NAME/.conda/envs/YOUR_ENV_NAME/bin/python -m nb_conda_kernels.install -v --enable
+python -m ipykernel install --user --name=YOUR_ENV_NAME
+
 ```
 
 Getting Started

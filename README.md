@@ -85,6 +85,15 @@ kicking off singular scripts.
                                                                                
 ## About This Project
 
+# What's Running it
+
+### Dell XPS and Lenovo Ideapad (hangin out in the kitchen)
+![](images/lenovo_xps.png)
+### Dell Poweredge
+![](images/poweredge.jpeg)
+### Between the AC below and PowerEdge above, I have to choose one.... stupid
+![](images/air.jpeg)
+
 The main components are 
 
 1. An Airflow instance running scripts for data gathering.
@@ -159,6 +168,9 @@ This allows for updated statistics when the Poweredge server is off.
 7. `update_costs`: Once the ETL process is done, grab the latest costs from AWS and store in the DB.
 
 ![Daily Dag](images/the_daily_ndexr.png)
+
+### More Detail into the Airflow Process
+![](images/daily_ndexr.png)
 
 # Hop Into A Container
 

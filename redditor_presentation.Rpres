@@ -1,0 +1,61 @@
+NDEXR - Indexing the Reddit Platform
+========================================================
+author: Freddy Drennan
+date: `r Sys.Date()`
+autosize: true
+
+Why is this cool?
+========================================================
+
+# Can be stripped for other purposes
+# Data Engineering + Data Science in one repo
+# Docker'd everything
+
+What's Running it
+========================================================
+### Dell XPS and Lenovo Ideapad (hangin out in the kitchen)
+<div align="center">
+  <img src="images/lenovo_xps.png" width=90% >
+</div>
+
+Dell Poweredge
+========================================================
+### 40 Cores, 128 GB pretty much idle atm
+#### Buy me a rack?
+<div align="center">
+  <img src="images/poweredge.jpeg" width=80% >
+</div>
+
+Next Door
+========================================================
+## Stupid
+<div align="center">
+  <img src="images/air.jpeg" width=50% >
+</div>
+
+t2.micro (EC2)
+========================================================
+<div align="center">
+  <img src="images/t2micro.png" width=1200 height=600>
+</div>
+
+
+About the Infrastructure
+========================================================
+<div align="center">
+  <img src="images/ndexr_infra.png" width='80%'>
+</div>
+
+DAGz
+========================================================
+<div align="center">
+  <img src="images/the_daily_ndexr.png" width='80%'>
+</div>
+
+A little more detail
+========================================================
+<div align="center">
+  <img src="images/daily_ndexr.png" width='80%'>
+</div>
+
+

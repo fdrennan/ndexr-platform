@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 ## Load Packages
@@ -59,3 +61,5 @@ author_summary <- tbl(con, in_schema('public', 'author_summary'))
 author_summary %>% 
   filter()
 ```
+
+
