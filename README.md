@@ -30,17 +30,6 @@ of ads for the user for a given time.
 Trolls are human actors which intentionally work to mislead or aggravate people. A troll can change the tone of the conversation and
 generally speaking do not add context or nuance to otherwise well intentioned discussions.
 
-## Getting Started 
-1. Request permission from `fdrennan` in [NDEXR Slack](https://app.slack.com/client/TAS9MV5K2) for [RStudio](http://ndexr.com:8787) and Postgres access.
-2. Get your own set of Reddit API credentials from [Reddit](https://ssl.reddit.com/prefs/apps/) 
-2. `FORK` this repository to your Github account
-3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
-4. RUN `git remote add upstream https://github.com/fdrennan/ndexr-platform.git`
-4. RUN `cd ndexr-platform`
-5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
-6. RUN `docker build -t rpy --file ./DockerfileRpy .`
-7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
-
 ## Observing a World Event
 
 Hourly submissions to Reddit mentioning George Floyd - could distributions like this one help determine the
@@ -53,8 +42,6 @@ Sampled 10,000 authors from approx 5 million authors.
 ![Viewing Authors](images/authoractivity.png)
 
 Are some of these authors bots or not? Can we determine this? If we can, then what can we say about them?
-
-
 
 ## The Network
 ![This](images/ndexr.png)
@@ -84,10 +71,8 @@ when things break, it's devastating and a time sink and kept me up nights.
 AIRFLOW, is one of the tools for this job. It makes your scheduled jobs smooth like butter, and is highly transparent 
 with the health of your network, and allows for push button runs of your code. This was far superior to cron jobs 
 kicking off singular scripts.
-                                                                               
-## About This Project
 
-# What's Running it
+## What's Running it
 
 ### Dell XPS and Lenovo Ideapad (hangin out in the kitchen)
 ![](images/lenovo_xps.png)
@@ -117,6 +102,16 @@ The main components are
 7. Oxygen
 8. Oreos
 
+## Getting Started 
+1. Request permission from `fdrennan` in [NDEXR Slack](https://app.slack.com/client/TAS9MV5K2) for [RStudio](http://ndexr.com:8787) and Postgres access.
+2. Get your own set of Reddit API credentials from [Reddit](https://ssl.reddit.com/prefs/apps/) 
+2. `FORK` this repository to your Github account
+3. Run `git clone https://github.com/YOUR_GITHUB_USERNAME/ndexr-platform.git`
+4. RUN `git remote add upstream https://github.com/fdrennan/ndexr-platform.git`
+4. RUN `cd ndexr-platform`
+5. RUN `docker build -t redditorapi --file ./DockerfileApi .`
+6. RUN `docker build -t rpy --file ./DockerfileRpy .`
+7. RUN `docker build -t redditorapp --file ./DockerfileShiny .`
 
 #### Once these steps are complete, contact me to see how to set your environment variables.
 ```
