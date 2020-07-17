@@ -169,8 +169,6 @@ This allows for updated statistics when the Poweredge server is off.
 ### More Detail into the Airflow Process
 ![](images/daily_ndexr.png)
 
-# The Website
-![](images/app_network.png)
 
 # Hop Into A Container
 
