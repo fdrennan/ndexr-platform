@@ -268,8 +268,18 @@ get_url <- function(reddit,
     my_collect()
 
   if (has_value & dont_update) {
+    meta_data <-
+      tbl(con, in_schema("public", "submissions")) %>%
+      filter(str_detect(str_to_lower(permalink), local(str_to_lower(permalink)))) %>%
+      my_collect()
+    
+    comments <-
+      tbl(con, in_schema("public", "comments")) %>%
+      filter(str_detect(str_to_lower(permalink), local(str_to_lower(permalink)))) %>%
+      my_collect()
+    
     message("Skipping, already hit once")
-    return(TRUE)
+    return(list(meta_data, comments))
   }
 
   url <- glue("http://reddit.com{permalink}")

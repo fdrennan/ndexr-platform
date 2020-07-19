@@ -33,7 +33,7 @@ Next Door
   <img src="images/air.jpeg" width=50% >
 </div>
 
-t2.micro (EC2)
+t2.micro (EC2) 
 ========================================================
 <div align="center">
   <img src="images/t2micro.png" width=1200 height=600>
@@ -46,16 +46,160 @@ About the Infrastructure
   <img src="images/ndexr_infra.png" width='80%'>
 </div>
 
-DAGz
+The main DAG
 ========================================================
 <div align="center">
   <img src="images/the_daily_ndexr.png" width='80%'>
 </div>
 
-A little more detail
+A little more detail on Airflow
 ========================================================
 <div align="center">
   <img src="images/daily_ndexr.png" width='80%'>
 </div>
 
 
+Installation of Virtualenv
+========================================================
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+library(redditor)
+
+new_glue <- function(string) {
+  glue(string, .open = "--", .close = "--")
+}
+
+VIRTUALENV_NAME <- "redditor"
+virtualenv_install(envname = VIRTUALENV_NAME, packages = "praw")
+virtualenv_install(envname = VIRTUALENV_NAME, packages = "spacy")
+install_python(method = "virtualenv", envname = VIRTUALENV_NAME)
+if (Sys.getenv("RETICULATE_PYTHON") != "") {
+  system(
+    new_glue("echo RETICULATE_PYTHON=${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python >> .Renviron")
+  )
+}
+command_to_install_spacy <- new_glue("${HOME}/.virtualenvs/--VIRTUALENV_NAME--/bin/python -m spacy download en_core_web_sm")
+
+print(command_to_install_spacy)
+system(command_to_install_spacy)
+```
+
+
+Using Redditor (Grabbing Submissions)
+========================================================
+```{r}
+library(redditor)
+con <- reddit_connector()
+new_submissions <- get_submission(reddit = con, name = 'all', type = 'new', limit = 10)
+new_submissions
+```
+
+Using Redditor (Grabbing Comments from a Submission)
+========================================================
+```{r}
+library(redditor)
+con <- reddit_connector()
+submission_comments <- redditor::get_url(reddit = con, 
+                                         permalink = '/r/dataisbeautiful/comments/hoaenj/coronavirus_cases_in_usa_by_political_party_of',
+                                         store = TRUE,
+                                         dont_update = TRUE, 
+                                         comments_to_word = FALSE)
+submission_comments
+```
+
+Using Redditor (Create Comment Threads)
+========================================================
+```{r}
+threads <- create_submission_thread(submission_comments[[2]])
+tail(threads)
+```
+
+Using Redditor (Create Comment Decomposition)
+========================================================
+```{r}
+threads <- create_submission_thread(submission_comments[[2]])
+comment_thread_decomp <- create_thread_stack(threads, submission_comments[[2]], min_length = 0)
+glimpse(comment_thread_decomp)
+```
+
+
+Plumber (Create R APIs)
+========================================================
+
+```
+#* @serializer unboxedJSON
+#* @param permalink
+#* @get /build_submission_stack
+function(permalink = "meta_statistics") {
+  message(glue("Within build_submission_stack {Sys.time()}"))
+
+  # Build the response object (list will be serialized as JSON)
+  response <- list(
+    statusCode = 200,
+    data = "",
+    message = "Success!",
+    metaData = list(
+      runtime = 0,
+      permalink = permalink
+    )
+  )
+
+  response <- tryCatch(
+    {
+      tic()
+      response$data <- toJSON(build_submission_stack(permalink = permalink))
+      timer <- toc(quiet = T)
+      response$metaData$runtime <- as.numeric(timer$toc - timer$tic)
+      return(response)
+    },
+    error = function(err) {
+      response$statusCode <- 400
+      response$message <- paste(err)
+      return(response)
+    }
+  )
+
+  return(response)
+}
+```
+
+Load Balancing the API (nginx.conf)
+========================================================
+
+```
+events {}
+
+http {
+
+    upstream backend {
+        server ndexr.com:8002;
+        server ndexr.com:8003;
+        server ndexr.com:8004;
+        server ndexr.com:8005;
+        server ndexr.com:8006;
+    }
+
+    server {
+
+        listen 80;
+
+        location / {
+            proxy_pass http://ndexr.com:3000;
+        }
+
+        location /api/ {
+            proxy_pass http://backend/;
+        }
+
+        location /elastic {
+            proxy_pass http://ndexr.com:9200;
+        }
+
+    }
+}
+```
+
+Hot Topics
+========================================================
+<div align="center">
+  <img src="images/topic_plot.png" width='80%'>
+</div>

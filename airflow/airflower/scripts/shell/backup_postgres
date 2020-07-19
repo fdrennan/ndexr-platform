@@ -1,3 +1,4 @@
 #!/bin/bash
 
-/usr/bin/pg_dump --cluster 12.3/main -h ndexr.com -p $POSTGRES_PORT -Fc -o -U $POSTGRES_USER $POSTGRES_DB > /postgres.bak
+/usr/bin/pg_dump -h localhost -p 5432 -Fc -v -U $POSTGRES_USER $POSTGRES_DB > /postgres.bak
+
