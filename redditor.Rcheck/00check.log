@@ -1,0 +1,755 @@
+* using log directory ‘/home/fdrennan/ndexr-platform/redditor.Rcheck’
+* using R version 4.0.3 (2020-10-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --as-cran’
+* checking for file ‘redditor/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘redditor’ version ‘0.1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... NOTE
+Depends: includes the non-default packages:
+  'tidyverse', 'reticulate', 'RPostgres', 'DBI', 'glue', 'fs',
+  'dbplyr', 'rvest', 'lubridate', 'tidytext', 'purrr', 'jsonlite',
+  'tictoc', 'stringr', 'elasticsearchr', 'dbx', 'ggthemes',
+  'shinydashboard', 'shiny', 'DT', 'openxlsx', 'spacyr', 'quanteda',
+  'uuid'
+Adding so many packages to the search path is excessive and importing
+selectively is preferable.
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking serialization versions ... OK
+* checking whether package ‘redditor’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... WARNING
+Non-standard license specification:
+  What license is it under?
+Standardizable: FALSE
+* checking top-level files ... NOTE
+Non-standard files/directories found at top level:
+  ‘api’ ‘docker-compose.yaml’ ‘notebooks’ ‘plumber.R’ ‘redditor.Rproj’
+  ‘starter.Rmd’
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' call to ‘openxlsx’ which was already attached by Depends.
+  Please remove these calls from your code.
+Packages in Depends field not imported from:
+  ‘DBI’ ‘DT’ ‘RPostgres’ ‘dbplyr’ ‘dbx’ ‘elasticsearchr’ ‘fs’
+  ‘ggthemes’ ‘glue’ ‘jsonlite’ ‘lubridate’ ‘openxlsx’ ‘purrr’
+  ‘quanteda’ ‘reticulate’ ‘rvest’ ‘shiny’ ‘shinydashboard’ ‘spacyr’
+  ‘stringr’ ‘tictoc’ ‘tidytext’ ‘tidyverse’ ‘uuid’
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+backup_submissions_to_s3: no visible global function definition for
+  ‘dbDisconnect’
+backup_submissions_to_s3: no visible global function definition for
+  ‘%>%’
+backup_submissions_to_s3: no visible global function definition for
+  ‘tbl’
+backup_submissions_to_s3: no visible global function definition for
+  ‘in_schema’
+backup_submissions_to_s3: no visible global function definition for
+  ‘mutate’
+backup_submissions_to_s3: no visible global function definition for
+  ‘sql’
+backup_submissions_to_s3: no visible global function definition for
+  ‘filter’
+backup_submissions_to_s3: no visible binding for global variable
+  ‘date_created’
+backup_submissions_to_s3 : <local>: no visible global function
+  definition for ‘now’
+backup_submissions_to_s3 : <local>: no visible global function
+  definition for ‘days’
+backup_submissions_to_s3: no visible global function definition for
+  ‘distinct’
+backup_submissions_to_s3: no visible global function definition for
+  ‘collect’
+backup_submissions_to_s3: no visible global function definition for
+  ‘with_tz’
+backup_submissions_to_s3: no visible global function definition for
+  ‘s3_list_objects’
+backup_submissions_to_s3: no visible global function definition for
+  ‘str_remove’
+backup_submissions_to_s3: no visible global function definition for
+  ‘walk’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘glue’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘%>%’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘filter’
+backup_submissions_to_s3 : <anonymous>: no visible binding for global
+  variable ‘date_created’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘write_csv’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘tar’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘s3_upload_file’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘str_detect’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘file_delete’
+backup_submissions_to_s3 : <anonymous>: no visible global function
+  definition for ‘dbExecute’
+comment_gather_on: no visible global function definition for
+  ‘dbDisconnect’
+comment_gather_on: no visible global function definition for ‘%>%’
+comment_gather_on: no visible global function definition for ‘tbl’
+comment_gather_on: no visible global function definition for
+  ‘in_schema’
+comment_gather_on: no visible global function definition for ‘filter’
+comment_gather_on: no visible global function definition for ‘sql’
+comment_gather_on: no visible global function definition for
+  ‘str_detect’
+comment_gather_on: no visible global function definition for
+  ‘str_to_lower’
+comment_gather_on: no visible binding for global variable ‘selftext’
+comment_gather_on: no visible global function definition for ‘walk’
+comment_thread: no visible global function definition for
+  ‘dbDisconnect’
+comment_thread: no visible global function definition for ‘%>%’
+comment_thread: no visible global function definition for ‘tbl’
+comment_thread: no visible global function definition for ‘in_schema’
+comment_thread: no visible global function definition for ‘filter’
+comment_thread: no visible global function definition for ‘str_detect’
+comment_thread: no visible global function definition for ‘collect’
+comment_thread: no visible global function definition for ‘select’
+comment_thread: no visible binding for global variable ‘id’
+comment_thread: no visible binding for global variable ‘parent_id’
+comment_thread: no visible global function definition for ‘everything’
+count_submissions: no visible global function definition for
+  ‘dbDisconnect’
+count_submissions: no visible global function definition for ‘tbl’
+count_submissions: no visible global function definition for
+  ‘in_schema’
+count_submissions: no visible global function definition for ‘%>%’
+count_submissions: no visible global function definition for ‘count’
+count_submissions: no visible global function definition for ‘glue’
+create_submission_thread: no visible global function definition for
+  ‘%>%’
+create_submission_thread: no visible global function definition for
+  ‘select’
+create_submission_thread: no visible binding for global variable
+  ‘link_id’
+create_submission_thread: no visible binding for global variable
+  ‘parent_id’
+create_submission_thread: no visible binding for global variable ‘id’
+create_submission_thread: no visible global function definition for
+  ‘mutate’
+create_submission_thread: no visible global function definition for
+  ‘str_sub’
+create_submission_thread: no visible global function definition for
+  ‘map_lgl’
+create_submission_thread : <anonymous>: no visible global function
+  definition for ‘str_detect’
+create_submission_thread: no visible global function definition for
+  ‘map’
+create_submission_thread : <anonymous>: no visible global function
+  definition for ‘filter’
+create_submission_thread : <anonymous>: no visible binding for global
+  variable ‘id’
+create_submission_thread : <anonymous>: no visible binding for global
+  variable ‘parents’
+create_thread: no visible global function definition for ‘filter’
+create_thread: no visible binding for global variable ‘id’
+create_thread: no visible global function definition for ‘bind_rows’
+create_thread: no visible global function definition for ‘%>%’
+create_thread: no visible global function definition for ‘arrange’
+create_thread: no visible binding for global variable ‘created_utc’
+create_thread_stack: no visible global function definition for ‘%>%’
+create_thread_stack: no visible global function definition for ‘keep’
+create_thread_stack: no visible global function definition for
+  ‘map2_df’
+create_thread_stack: no visible binding for global variable ‘.’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘%>%’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘filter’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘id’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘mutate’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘thread’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘select’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘thread_number’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘created_utc’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘author’
+create_thread_stack : <anonymous>: no visible binding for global
+  variable ‘parent_id’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘everything’
+create_thread_stack : <anonymous>: no visible global function
+  definition for ‘arrange’
+find_parent: no visible global function definition for ‘%>%’
+find_parent: no visible global function definition for ‘filter’
+find_parent: no visible global function definition for ‘str_detect’
+find_parent: no visible binding for global variable ‘id’
+find_parent: no visible global function definition for ‘select’
+find_parent: no visible global function definition for ‘contains’
+find_parent: no visible binding for global variable ‘created_utc’
+find_parent: no visible global function definition for ‘str_remove_all’
+find_posts: no visible global function definition for ‘sort_on’
+find_posts: no visible global function definition for ‘query’
+find_posts: no visible global function definition for ‘glue’
+find_posts: no visible global function definition for ‘%search%’
+find_posts: no visible global function definition for ‘elastic’
+find_posts: no visible global function definition for ‘toJSON’
+gather_submissions: no visible global function definition for
+  ‘dbxUpsert’
+get_submission: no visible global function definition for ‘iterate’
+get_submission: no visible global function definition for ‘map_df’
+get_submission: no visible global function definition for ‘%>%’
+get_submission: no visible global function definition for ‘mutate’
+get_submission: no visible global function definition for ‘glue’
+get_submission: no visible global function definition for ‘select’
+get_submission: no visible binding for global variable ‘submission_key’
+get_submission: no visible binding for global variable ‘created_utc’
+get_submission: no visible global function definition for ‘everything’
+get_subreddit: no visible global function definition for ‘iterate’
+get_subreddit: no visible global function definition for ‘map_df’
+get_subreddit : <anonymous>: no visible global function definition for
+  ‘map_df’
+get_summary: no visible global function definition for ‘dbDisconnect’
+get_summary: no visible global function definition for ‘%>%’
+get_summary: no visible global function definition for ‘tbl’
+get_summary: no visible global function definition for ‘in_schema’
+get_summary: no visible global function definition for ‘collect’
+get_url: no visible global function definition for ‘glue’
+get_url: no visible global function definition for ‘dbDisconnect’
+get_url: no visible global function definition for ‘%>%’
+get_url: no visible global function definition for ‘tbl’
+get_url: no visible global function definition for ‘in_schema’
+get_url: no visible global function definition for ‘filter’
+get_url: no visible global function definition for ‘str_detect’
+get_url: no visible global function definition for ‘str_to_lower’
+get_url : <local>: no visible global function definition for
+  ‘str_to_lower’
+get_url: no visible global function definition for ‘count’
+get_url: no visible global function definition for ‘mutate’
+get_url: no visible global function definition for ‘select’
+get_url: no visible binding for global variable ‘submission_key’
+get_url: no visible binding for global variable ‘created_utc’
+get_url: no visible global function definition for ‘everything’
+get_url: no visible global function definition for ‘dbxUpsert’
+get_url: no visible global function definition for ‘map’
+get_url : <anonymous>: no visible global function definition for
+  ‘map_df’
+get_url: no visible global function definition for ‘keep’
+get_url: no visible global function definition for ‘bind_rows’
+get_url: no visible global function definition for ‘glimpse’
+get_url: no visible global function definition for ‘map_chr’
+get_url: no visible binding for global variable ‘comment_key’
+get_url: no visible global function definition for ‘dbGetQuery’
+get_user_comments: no visible global function definition for ‘iterate’
+get_user_comments: no visible global function definition for ‘map_df’
+get_user_comments : <anonymous>: no visible global function definition
+  for ‘map_df’
+get_user_comments : <anonymous> : <anonymous>: no visible global
+  function definition for ‘tibble’
+get_user_comments : <anonymous>: no visible global function definition
+  for ‘as_tibble’
+get_user_comments : <anonymous>: no visible global function definition
+  for ‘%>%’
+get_user_comments : <anonymous>: no visible global function definition
+  for ‘mutate’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘archived’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘author_premium’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘can_mod_post’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘created’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘created_utc’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘downs’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘edited’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘is_root’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘is_submitter’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘locked’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘no_follow’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘num_comments’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘over_18’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘quarantine’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘score’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘score_hidden’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘send_replies’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘stickied’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘total_awards_received’
+get_user_comments : <anonymous>: no visible binding for global variable
+  ‘ups’
+get_user_comments : <anonymous>: no visible global function definition
+  for ‘now’
+i_like: no visible global function definition for ‘str_detect’
+i_like: no visible global function definition for ‘str_to_lower’
+mat_comments_by_second: no visible global function definition for
+  ‘dbDisconnect’
+mat_comments_by_second: no visible global function definition for ‘%>%’
+mat_comments_by_second: no visible global function definition for ‘tbl’
+mat_comments_by_second: no visible global function definition for
+  ‘in_schema’
+mat_comments_by_second: no visible global function definition for
+  ‘mutate_if’
+mat_comments_by_second: no visible global function definition for
+  ‘head’
+mat_comments_by_second: no visible global function definition for
+  ‘collect’
+my_collect: no visible global function definition for ‘%>%’
+my_collect: no visible global function definition for ‘mutate_if’
+my_collect: no visible global function definition for ‘collect’
+parse_comments: no visible global function definition for ‘map_chr’
+parse_comments: no visible global function definition for ‘as_tibble’
+parse_comments: no visible global function definition for ‘%>%’
+parse_comments: no visible global function definition for ‘mutate’
+parse_comments: no visible binding for global variable
+  ‘author_patreon_flair’
+parse_comments: no visible binding for global variable ‘author_premium’
+parse_comments: no visible binding for global variable ‘can_gild’
+parse_comments: no visible binding for global variable ‘can_mod_post’
+parse_comments: no visible binding for global variable
+  ‘controversiality’
+parse_comments: no visible binding for global variable ‘created’
+parse_comments: no visible binding for global variable ‘created_utc’
+parse_comments: no visible binding for global variable ‘depth’
+parse_comments: no visible binding for global variable ‘downs’
+parse_comments: no visible binding for global variable ‘is_root’
+parse_comments: no visible binding for global variable ‘is_submitter’
+parse_comments: no visible binding for global variable ‘no_follow’
+parse_comments: no visible binding for global variable ‘score’
+parse_comments: no visible binding for global variable
+  ‘total_awards_received’
+parse_comments: no visible binding for global variable ‘ups’
+parse_comments: no visible global function definition for ‘now’
+parse_meta: no visible global function definition for ‘as_tibble’
+parse_meta: no visible global function definition for ‘tibble’
+parse_meta: no visible global function definition for ‘map_chr’
+parse_meta: no visible global function definition for ‘%>%’
+parse_meta: no visible global function definition for ‘mutate_at’
+parse_meta: no visible global function definition for ‘vars’
+parse_meta: no visible global function definition for ‘starts_with’
+parse_meta: no visible global function definition for ‘mutate’
+parse_meta: no visible binding for global variable ‘created_utc’
+plot_stream: no visible global function definition for ‘dbDisconnect’
+plot_stream: no visible global function definition for ‘%>%’
+plot_stream: no visible global function definition for ‘tbl’
+plot_stream: no visible global function definition for ‘in_schema’
+plot_stream: no visible global function definition for ‘mutate_if’
+plot_stream: no visible global function definition for ‘arrange’
+plot_stream: no visible global function definition for ‘desc’
+plot_stream: no visible binding for global variable ‘created_utc’
+plot_stream: no visible global function definition for ‘head’
+plot_stream: no visible global function definition for ‘collect’
+plot_stream: no visible global function definition for ‘mutate’
+plot_stream: no visible global function definition for ‘round_date’
+plot_stream: no visible global function definition for ‘group_by’
+plot_stream: no visible global function definition for ‘summarise’
+plot_stream: no visible binding for global variable ‘n_observations’
+plot_stream: no visible global function definition for ‘ggplot’
+plot_stream: no visible global function definition for ‘aes’
+plot_stream: no visible global function definition for ‘with_tz’
+plot_stream: no visible global function definition for ‘hours’
+plot_stream: no visible global function definition for ‘geom_point’
+plot_stream: no visible global function definition for ‘geom_col’
+plot_stream: no visible global function definition for ‘ylim’
+plot_stream: no visible global function definition for ‘ggtitle’
+plot_stream: no visible global function definition for ‘glue’
+plot_stream: no visible global function definition for ‘xlab’
+plot_stream: no visible global function definition for ‘ylab’
+plot_submission_query: no visible global function definition for
+  ‘dbDisconnect’
+plot_submission_query: no visible global function definition for ‘%>%’
+plot_submission_query: no visible global function definition for ‘tbl’
+plot_submission_query: no visible global function definition for
+  ‘in_schema’
+plot_submission_query: no visible global function definition for
+  ‘filter’
+plot_submission_query: no visible global function definition for
+  ‘between’
+plot_submission_query: no visible binding for global variable
+  ‘created_utc’
+plot_submission_query: no visible global function definition for
+  ‘str_detect’
+plot_submission_query: no visible global function definition for
+  ‘str_to_lower’
+plot_submission_query: no visible binding for global variable
+  ‘selftext’
+plot_submission_query: no visible global function definition for
+  ‘group_by’
+plot_submission_query: no visible global function definition for
+  ‘count’
+plot_submission_query: no visible global function definition for
+  ‘mutate’
+plot_submission_query: no visible global function definition for ‘sql’
+plot_submission_query: no visible global function definition for
+  ‘ungroup’
+plot_submission_query: no visible global function definition for
+  ‘floor_date’
+plot_submission_query: no visible global function definition for
+  ‘ggplot’
+plot_submission_query: no visible global function definition for ‘aes’
+plot_submission_query: no visible binding for global variable
+  ‘n_observations’
+plot_submission_query: no visible global function definition for
+  ‘geom_line’
+plot_submissions: no visible global function definition for
+  ‘dbDisconnect’
+plot_submissions: no visible global function definition for ‘tbl’
+plot_submissions: no visible global function definition for ‘in_schema’
+plot_submissions: no visible global function definition for ‘%>%’
+plot_submissions: no visible global function definition for ‘mutate’
+plot_submissions: no visible global function definition for ‘sql’
+plot_submissions: no visible global function definition for ‘glue’
+plot_submissions: no visible global function definition for
+  ‘date_trunc’
+plot_submissions: no visible binding for global variable ‘created_utc’
+plot_submissions: no visible global function definition for ‘filter’
+plot_submissions: no visible global function definition for ‘between’
+plot_submissions: no visible global function definition for ‘group_by’
+plot_submissions: no visible global function definition for ‘count’
+plot_submissions: no visible global function definition for ‘ungroup’
+plot_submissions: no visible global function definition for ‘ggplot’
+plot_submissions: no visible global function definition for ‘aes’
+plot_submissions: no visible binding for global variable
+  ‘n_observations’
+plot_submissions: no visible global function definition for ‘geom_col’
+plot_submissions: no visible global function definition for ‘xlab’
+plot_submissions: no visible global function definition for ‘ylab’
+plot_submissions: no visible global function definition for ‘ggtitle’
+postgres_connector: no visible global function definition for
+  ‘dbConnect’
+postgres_connector: no visible global function definition for ‘glue’
+query_plot: no visible global function definition for ‘tbl’
+query_plot: no visible global function definition for ‘in_schema’
+query_plot: no visible global function definition for ‘%>%’
+query_plot: no visible global function definition for ‘filter’
+query_plot: no visible global function definition for ‘str_detect’
+query_plot: no visible global function definition for ‘str_to_lower’
+query_plot: no visible binding for global variable ‘selftext’
+query_plot: no visible global function definition for ‘transmute’
+query_plot: no visible global function definition for ‘sql’
+query_plot: no visible global function definition for ‘group_by’
+query_plot: no visible binding for global variable ‘created_utc’
+query_plot: no visible global function definition for ‘count’
+query_plot: no visible global function definition for ‘mutate_if’
+query_plot: no visible binding for global variable ‘collect’
+query_plot: no visible global function definition for ‘ggplot’
+query_plot: no visible global function definition for ‘aes’
+query_plot: no visible binding for global variable ‘n_obs’
+query_plot: no visible global function definition for ‘geom_col’
+query_plot: no visible global function definition for ‘ylab’
+query_plot: no visible global function definition for ‘xlab’
+query_plot: no visible global function definition for ‘ggtitle’
+query_plot: no visible global function definition for ‘glue’
+reddit_connector: no visible global function definition for ‘import’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘fromJSON’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘%>%’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘tibble’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘mutate’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘str_remove’
+s3_submissions_to_postgres: no visible binding for global variable
+  ‘file_path’
+s3_submissions_to_postgres: no visible binding for global variable
+  ‘associated_gzip’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘tbl’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘sql’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘distinct’
+s3_submissions_to_postgres: no visible binding for global variable
+  ‘associated_date’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘collect’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘anti_join’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘map_chr’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘walk2’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘dir_ls’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘str_detect’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘dir_delete’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘untar’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘dir_ls’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘str_detect’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘%>%’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘read.csv’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘select’
+s3_submissions_to_postgres : upsert_data: no visible binding for global
+  variable ‘date_created’
+s3_submissions_to_postgres : upsert_data: no visible global function
+  definition for ‘dbxUpsert’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘dir_delete’
+s3_submissions_to_postgres: no visible global function definition for
+  ‘walk’
+send_message: no visible global function definition for ‘glue’
+send_message: no visible global function definition for ‘str_squish’
+str_detect_any: no visible global function definition for ‘str_detect’
+str_detect_any: no visible global function definition for
+  ‘str_to_lower’
+stream_comments: no visible global function definition for ‘iterate’
+stream_submission: no visible global function definition for ‘iterate’
+subreddit_profile: no visible global function definition for
+  ‘dbDisconnect’
+subreddit_profile: no visible global function definition for ‘%>%’
+subreddit_profile: no visible global function definition for ‘tbl’
+subreddit_profile: no visible global function definition for
+  ‘in_schema’
+subreddit_profile: no visible global function definition for ‘filter’
+subreddit_profile: no visible binding for global variable ‘subreddit’
+subreddit_profile: no visible global function definition for ‘distinct’
+subreddit_profile: no visible binding for global variable ‘author’
+subreddit_profile: no visible global function definition for
+  ‘inner_join’
+subreddit_profile: no visible global function definition for ‘group_by’
+subreddit_profile: no visible global function definition for ‘count’
+subreddit_profile: no visible global function definition for ‘ungroup’
+subreddit_profile: no visible global function definition for ‘select’
+subreddit_profile: no visible binding for global variable ‘n_obs’
+subreddit_profile: no visible binding for global variable ‘pct_nsfw’
+subreddit_profile: no visible global function definition for
+  ‘mutate_if’
+subreddit_profile: no visible global function definition for ‘arrange’
+subreddit_profile: no visible global function definition for ‘desc’
+subreddit_profile: no visible global function definition for ‘mutate’
+subreddit_profile: no visible global function definition for
+  ‘row_number’
+subreddit_profile: no visible global function definition for ‘collect’
+summarise_thread_stack: no visible global function definition for ‘%>%’
+summarise_thread_stack: no visible global function definition for
+  ‘group_by’
+summarise_thread_stack: no visible binding for global variable
+  ‘thread_number’
+summarise_thread_stack: no visible binding for global variable ‘author’
+summarise_thread_stack: no visible global function definition for
+  ‘count’
+summarise_thread_stack: no visible global function definition for
+  ‘summarise’
+summarise_thread_stack: no visible global function definition for
+  ‘n_distinct’
+summarise_thread_stack: no visible binding for global variable
+  ‘n_observations’
+summarise_thread_stack: no visible global function definition for
+  ‘mutate’
+summarise_thread_stack: no visible binding for global variable
+  ‘n_authors’
+throttle_me: no visible global function definition for ‘glue’
+update_comments_to_word: no visible global function definition for
+  ‘dbDisconnect’
+update_comments_to_word: no visible global function definition for
+  ‘%>%’
+update_comments_to_word: no visible global function definition for
+  ‘dbGetQuery’
+update_comments_to_word: no visible global function definition for
+  ‘mutate’
+update_comments_to_word: no visible global function definition for
+  ‘row_number’
+update_comments_to_word: no visible global function definition for
+  ‘glue’
+update_comments_to_word: no visible global function definition for
+  ‘spacy_parse’
+update_comments_to_word: no visible global function definition for
+  ‘inner_join’
+update_comments_to_word: no visible global function definition for
+  ‘select’
+update_comments_to_word: no visible binding for global variable
+  ‘token_key’
+update_comments_to_word: no visible binding for global variable
+  ‘comment_key’
+update_comments_to_word: no visible binding for global variable
+  ‘submission’
+update_comments_to_word: no visible binding for global variable
+  ‘author’
+update_comments_to_word: no visible binding for global variable
+  ‘subreddit’
+update_comments_to_word: no visible binding for global variable
+  ‘sentence_id’
+update_comments_to_word: no visible binding for global variable
+  ‘token_id’
+update_comments_to_word: no visible binding for global variable ‘token’
+update_comments_to_word: no visible binding for global variable ‘lemma’
+update_comments_to_word: no visible binding for global variable ‘pos’
+update_comments_to_word: no visible binding for global variable
+  ‘entity’
+update_comments_to_word: no visible global function definition for
+  ‘dbxUpsert’
+update_comments_to_word : <anonymous>: no visible global function
+  definition for ‘str_sub’
+upload_police_data: no visible global function definition for
+  ‘download.file’
+upload_police_data: no visible global function definition for
+  ‘read.xlsx’
+upload_police_data: no visible global function definition for ‘%>%’
+upload_police_data: no visible global function definition for
+  ‘rename_all’
+upload_police_data : <anonymous>: no visible global function definition
+  for ‘%>%’
+upload_police_data : <anonymous>: no visible global function definition
+  for ‘str_replace_all’
+upload_police_data : <anonymous>: no visible global function definition
+  for ‘str_to_lower’
+upload_police_data: no visible global function definition for ‘rename’
+upload_police_data: no visible binding for global variable
+  ‘geography_via_trulia_methodology_based_on_zipcode_population_density_http_jedkolko_com_wp_content_uploads_2015_05_full_zcta_urban_suburban_rural_classification_xlsx_’
+upload_police_data: no visible global function definition for
+  ‘db_drop_table’
+upload_police_data: no visible binding for global variable ‘con’
+upload_police_data: no visible global function definition for
+  ‘dbWriteTable’
+upload_subreddit: no visible global function definition for ‘%>%’
+upload_subreddit: no visible global function definition for ‘tbl’
+upload_subreddit: no visible global function definition for ‘in_schema’
+upload_subreddit: no visible global function definition for ‘filter’
+upload_subreddit: no visible binding for global variable ‘subreddit’
+upload_subreddit: no visible global function definition for ‘mutate’
+upload_subreddit: no visible global function definition for ‘sql’
+upload_subreddit: no visible binding for global variable ‘id’
+upload_subreddit: no visible binding for global variable ‘created_utc’
+upload_subreddit : <local>: no visible global function definition for
+  ‘now’
+upload_subreddit : <local>: no visible global function definition for
+  ‘days’
+upload_subreddit: no visible global function definition for ‘arrange’
+upload_subreddit: no visible global function definition for ‘transmute’
+upload_subreddit: no visible binding for global variable ‘submission’
+upload_subreddit: no visible global function definition for ‘distinct’
+upload_subreddit: no visible global function definition for ‘anti_join’
+upload_subreddit: no visible global function definition for ‘head’
+upload_subreddit: no visible global function definition for ‘glue’
+upload_subreddit: no visible global function definition for ‘walk’
+Undefined global functions or variables:
+  %>% %search% . aes anti_join archived arrange as_tibble
+  associated_date associated_gzip author author_patreon_flair
+  author_premium between bind_rows can_gild can_mod_post collect
+  comment_key con contains controversiality count created created_utc
+  date_created date_trunc days dbConnect dbDisconnect dbExecute
+  dbGetQuery dbWriteTable db_drop_table dbxUpsert depth desc dir_delete
+  dir_ls distinct download.file downs edited elastic entity everything
+  file_delete file_path filter floor_date fromJSON
+  geography_via_trulia_methodology_based_on_zipcode_population_density_http_jedkolko_com_wp_content_uploads_2015_05_full_zcta_urban_suburban_rural_classification_xlsx_
+  geom_col geom_line geom_point ggplot ggtitle glimpse glue group_by
+  head hours id import in_schema inner_join is_root is_submitter
+  iterate keep lemma link_id locked map map2_df map_chr map_df map_lgl
+  mutate mutate_at mutate_if n_authors n_distinct n_obs n_observations
+  no_follow now num_comments over_18 parent_id parents pct_nsfw pos
+  quarantine query read.csv read.xlsx rename rename_all round_date
+  row_number s3_list_objects s3_upload_file score score_hidden select
+  selftext send_replies sentence_id sort_on spacy_parse sql starts_with
+  stickied str_detect str_remove str_remove_all str_replace_all
+  str_squish str_sub str_to_lower submission submission_key subreddit
+  summarise tar tbl thread thread_number tibble toJSON token token_id
+  token_key total_awards_received transmute ungroup untar ups vars walk
+  walk2 with_tz write_csv xlab ylab ylim
+Consider adding
+  importFrom("stats", "filter")
+  importFrom("utils", "download.file", "head", "read.csv", "tar",
+             "untar")
+to your NAMESPACE file.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  ‘area_code’ ‘backup_submissions_to_s3’ ‘build_submission_stack’
+  ‘comment_gather_on’ ‘comment_thread’ ‘count_submissions’
+  ‘create_submission_thread’ ‘create_thread’ ‘create_thread_stack’
+  ‘find_parent’ ‘find_posts’ ‘gather_submissions’ ‘get_submission’
+  ‘get_subreddit’ ‘get_summary’ ‘get_url’ ‘get_user_comments’ ‘i_like’
+  ‘mat_comments_by_second’ ‘my_collect’ ‘parse_comments’ ‘parse_meta’
+  ‘plot_stream’ ‘plot_submission_query’ ‘plot_submissions’
+  ‘postgres_connector’ ‘query_plot’ ‘reddit_connector’ ‘reply_comment’
+  ‘s3_submissions_to_postgres’ ‘send_message’ ‘str_detect_any’
+  ‘stream_comments’ ‘stream_submission’ ‘subreddit_profile’
+  ‘summarise_thread_stack’ ‘throttle_me’ ‘update_comments_to_word’
+  ‘upload_police_data’ ‘upload_subreddit’
+Undocumented data sets:
+  ‘area_code’
+All user-level objects in a package should have documentation entries.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking for code/documentation mismatches ... WARNING
+Functions or methods with usage in documentation object 'hello' but not in code:
+  ‘hello’
+
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... WARNING
+  Warning: package needs dependence on R (>= 2.10)
+* checking examples ... ERROR
+Running examples in ‘redditor-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hello
+> ### Title: Hello, World!
+> ### Aliases: hello
+> 
+> ### ** Examples
+> 
+> hello()
+Error in hello() : could not find function "hello"
+Execution halted
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 ERROR, 4 WARNINGs, 4 NOTEs

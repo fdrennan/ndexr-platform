@@ -1,0 +1,65 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+## Load Packages
+```{r}
+library(tidyverse)
+library(DBI)
+library(RPostgres)
+library(dbplyr)
+```
+
+## Create Connections
+```{r}
+con <- 
+  dbConnect(Postgres(),
+    host = Sys.getenv("POSTGRES_HOST"),
+    port = Sys.getenv("POSTGRES_PORT"),
+    user = Sys.getenv("POSTGRES_USER"),
+    password = Sys.getenv("POSTGRES_PASSWORD"),
+    dbname = Sys.getenv("POSTGRES_DB")
+  )
+```
+
+## Access the Database
+```{r}
+submissions <- tbl(con, in_schema('public', 'submissions'))
+```
+
+```{r}
+submissions_count <- 
+  submissions %>% 
+  # filter(str_detect(str_to_lower(selftext), 'george floyd')) %>% 
+  mutate(created_utc = sql("date_trunc('day', created_utc::timestamptz)")) %>% 
+  group_by(created_utc) %>% 
+  count(name = 'n_observations') %>% 
+  mutate_if(is.numeric, as.numeric) %>% 
+  collect
+```
+
+```{r}
+submissions_count %>% 
+  filter(created_utc > Sys.Date() - 100) %>% 
+  ggplot() +
+  aes(x = created_utc, y = n_observations) +
+  geom_col() +
+  scale_y_continuous(labels = scales::comma) +
+  ylab('Number of Submissions Gathered') +
+  xlab('Created Date')
+```
+
+
+```{r}
+author_summary <- tbl(con, in_schema('public', 'author_summary'))
+```
+
+```{r}
+author_summary %>% 
+  filter()
+```
+
+

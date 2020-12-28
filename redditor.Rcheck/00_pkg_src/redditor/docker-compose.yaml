@@ -1,0 +1,57 @@
+version: '3.4'
+services:
+  redditapione:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8002:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
+  redditapitwo:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8003:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
+  redditapithree:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8004:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
+  redditapifour:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8005:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks
+  redditapifive:
+    image: redditorapi
+    command: /app/plumber.R
+    restart: always
+    ports:
+     - "8006:8000"
+    working_dir: /app
+    volumes:
+      - ./.env:/app/.Renviron
+      - ./plumber.R:/app/plumber.R
+      - ./notebooks:/app/notebooks

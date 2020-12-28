@@ -4,7 +4,7 @@ library(dbx)
 
 praw <- reticulate::import("praw")
 reddit_con <- reddit_connector()
-
+debug(gather_submissions)
 while (TRUE) {
   con <- postgres_connector()
   tryCatch(

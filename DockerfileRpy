@@ -24,7 +24,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     libudunits2-dev \
     libgdal-dev \
-    libpq-dev -y
+    libpq-dev \
+    libgit2-dev \
+  libsodium-dev -y
 
 WORKDIR /home/scripts
 

@@ -239,3 +239,8 @@ min_wal_size = 1GB
 max_wal_size = 4GB
 max_worker_processes = 40
 max_parallel_workers_per_gather = 4
+
+
+docker-compose up -d --build postgres
+docker-compose up -d --build initdb
+docker-compose up -d

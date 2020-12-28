@@ -15,7 +15,9 @@ RUN apt-get update --allow-releaseinfo-change -qq && apt-get install -y \
   libssl-dev \
   postgresql-client \
   libudunits2-dev \
-  libsasl2-dev
+  libsasl2-dev \
+  libgit2-dev \
+  libsodium-dev
 
 RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('tidyverse')"
@@ -72,10 +74,10 @@ RUN R -e 'library(reticulate); \
           use_python("/usr/bin/python3", required = TRUE); \
           install_python(envname="redditor")'
 
-ARG DUMMY=rando
-RUN R -e "setwd('/home/redditor-api'); devtools::install()"
+# ARG DUMMY=rando1
+# RUN R -e "setwd('/home/redditor-api'); devtools::install()"
 
 
-COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
-ARG DUMMY=randommmmm
-RUN Rscript /r_venv_install.R
+# COPY ./airflow/airflower/scripts/R/r_files/r_venv_install.R /r_venv_install.R
+# ARG DUMMY=randommmmm
+# RUN Rscript /r_venv_install.R

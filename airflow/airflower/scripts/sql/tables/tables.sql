@@ -1,4 +1,4 @@
-CREATE TABLE public.streamall
+CREATE TABLE if not exists public.streamall
 (
     author                varchar,
     author_fullname       varchar,
@@ -30,7 +30,7 @@ CREATE TABLE public.streamall
     time_gathered_utc     timestamptz
 );
 -- SPLIT
-CREATE TABLE public.stream_submissions_all
+CREATE TABLE if not exists public.stream_submissions_all
 (
     author                  varchar,
     author_fullname         varchar,
@@ -77,7 +77,7 @@ CREATE TABLE public.stream_submissions_all
     url                     varchar
 );
 -- SPLIT
-CREATE TABLE public.submissions_top
+CREATE TABLE if not exists public.submissions_top
 (
     submission_key varchar primary key,
     created_utc             varchar,
@@ -127,7 +127,7 @@ CREATE TABLE public.submissions_top
 
 -- SPLIT
 -- drop table if exists public.comments
-CREATE TABLE public.comments
+CREATE TABLE if not exists  public.comments
 (
     comment_key varchar primary key,
     author varchar,
@@ -160,7 +160,7 @@ CREATE TABLE public.comments
     time_gathered_utc varchar
 );
 -- SPLIT
-CREATE TABLE public.comments_to_word
+CREATE TABLE if not exists  public.comments_to_word
 (
     token_key varchar primary key,
     comment_key varchar,
@@ -175,17 +175,64 @@ CREATE TABLE public.comments_to_word
     entity varchar
 );
 -- SPLIT
-create table public.poweredge_meta_statistics  (
+CREATE TABLE if not exists public.poweredge_meta_statistics  (
         key varchar not null,
         type varchar,
         value numeric,
         primary key (type)
 );
 
-create table public.costs  (
+CREATE TABLE if not exists  public.costs  (
         start date,
         unblended_cost numeric,
         blended_cost numeric,
         usage_quantity numeric,
         primary key (start)
 );
+-- SPLIT
+CREATE TABLE if not exists public.submissions (
+        submission_key varchar,
+        created_utc varchar, 
+        author varchar, 
+        author_fullname varchar, 
+        author_premium varchar, 
+        author_patreon_flair varchar, 
+        can_gild varchar, 
+        can_mod_post varchar, 
+        clicked varchar, 
+        comment_limit varchar, 
+        created varchar, 
+        downs varchar, 
+        edited varchar, 
+        fullname varchar, 
+        gilded varchar, 
+        hidden varchar, 
+        hide_score varchar, 
+        id varchar, 
+        is_crosspostable varchar, 
+        is_meta varchar, 
+        is_original_content varchar, 
+        is_reddit_media_domain varchar, 
+        is_robot_indexable varchar, 
+        is_self varchar, 
+        is_video varchar, 
+        locked varchar, 
+        media_only varchar, 
+        name varchar, 
+        no_follow varchar, 
+        over_18 varchar, 
+        permalink varchar, 
+        pinned varchar, 
+        quarantine varchar, 
+        saved varchar, 
+        selftext varchar, 
+        shortlink varchar, 
+        subreddit varchar, 
+        subreddit_id varchar, 
+        subreddit_name_prefixed varchar, 
+        subreddit_subscribers varchar, 
+        subreddit_type varchar, 
+        thumbnail varchar, 
+        title varchar, 
+        url varchar, 
+        primary key (submission_key))

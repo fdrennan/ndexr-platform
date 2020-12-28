@@ -21,7 +21,7 @@ refresh_mat <- function() {
 refresh <- function() {
   con <- postgres_connector()
   on.exit(dbDisconnect(con))
-  all_tables <- db_list_tables(con = con)
+  all_tables <- dbListTables(con = con)
   if (length(all_tables) > 1) {
     return(TRUE)
   }

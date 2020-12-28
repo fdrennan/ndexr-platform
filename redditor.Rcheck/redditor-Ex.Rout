@@ -1,0 +1,155 @@
+
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "redditor"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "redditor-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('redditor')
+Loading required package: tidyverse
+── [1mAttaching packages[22m ─────────────────────────────────────── tidyverse 1.3.0 ──
+[32m✓[39m [34mggplot2[39m 3.3.2     [32m✓[39m [34mpurrr  [39m 0.3.4
+[32m✓[39m [34mtibble [39m 3.0.4     [32m✓[39m [34mdplyr  [39m 1.0.2
+[32m✓[39m [34mtidyr  [39m 1.1.2     [32m✓[39m [34mstringr[39m 1.4.0
+[32m✓[39m [34mreadr  [39m 1.4.0     [32m✓[39m [34mforcats[39m 0.5.0
+── [1mConflicts[22m ────────────────────────────────────────── tidyverse_conflicts() ──
+[31mx[39m [34mdplyr[39m::[32mfilter()[39m masks [34mstats[39m::filter()
+[31mx[39m [34mdplyr[39m::[32mlag()[39m    masks [34mstats[39m::lag()
+Loading required package: reticulate
+Loading required package: RPostgres
+Loading required package: DBI
+Loading required package: glue
+
+Attaching package: ‘glue’
+
+The following object is masked from ‘package:dplyr’:
+
+    collapse
+
+Loading required package: fs
+Loading required package: dbplyr
+
+Attaching package: ‘dbplyr’
+
+The following objects are masked from ‘package:dplyr’:
+
+    ident, sql
+
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: ‘rvest’
+
+The following object is masked from ‘package:purrr’:
+
+    pluck
+
+The following object is masked from ‘package:readr’:
+
+    guess_encoding
+
+Loading required package: lubridate
+
+Attaching package: ‘lubridate’
+
+The following objects are masked from ‘package:base’:
+
+    date, intersect, setdiff, union
+
+Loading required package: tidytext
+Loading required package: jsonlite
+
+Attaching package: ‘jsonlite’
+
+The following object is masked from ‘package:purrr’:
+
+    flatten
+
+Loading required package: tictoc
+Loading required package: elasticsearchr
+Loading required package: dbx
+Loading required package: ggthemes
+Loading required package: shinydashboard
+
+Attaching package: ‘shinydashboard’
+
+The following object is masked from ‘package:graphics’:
+
+    box
+
+Loading required package: shiny
+
+Attaching package: ‘shiny’
+
+The following object is masked from ‘package:jsonlite’:
+
+    validate
+
+Loading required package: DT
+
+Attaching package: ‘DT’
+
+The following objects are masked from ‘package:shiny’:
+
+    dataTableOutput, renderDataTable
+
+Loading required package: openxlsx
+Loading required package: spacyr
+Loading required package: quanteda
+Package version: 2.1.2
+Parallel computing: 2 of 24 threads used.
+See https://quanteda.io for tutorials and examples.
+
+Attaching package: ‘quanteda’
+
+The following object is masked from ‘package:utils’:
+
+    View
+
+Loading required package: uuid
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("hello")
+> ### * hello
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hello
+> ### Title: Hello, World!
+> ### Aliases: hello
+> 
+> ### ** Examples
+> 
+> hello()
+Error in hello() : could not find function "hello"
+Execution halted
