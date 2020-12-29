@@ -8,10 +8,10 @@
 NULL
 
 ## quiets concNoerns of R CMD check re: the .'s that appear in pipelines
-if(getRversion() >= "2.15.1")  {
+if (getRversion() >= "2.15.1") {
   utils::globalVariables(
     c(
-      ".",  "Key", "Size", "ETag", "StorageClass", "Owner.ID", "LastModified", "Keep",
+      ".", "Key", "Size", "ETag", "StorageClass", "Owner.ID", "LastModified", "Keep",
       "group_name", "group_id"
     )
   )

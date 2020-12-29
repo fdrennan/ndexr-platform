@@ -10,14 +10,15 @@ s3_upload_file <- function(bucket,
                            to,
                            make_public = FALSE,
                            region = "us-east-2") {
+  s3 <- client_s3()
 
-  s3 = client_s3()
+  s3$upload_file(
+    Filename = from,
+    Bucket = bucket,
+    Key = to
+  )
 
-  s3$upload_file(Filename = from,
-                 Bucket   = bucket,
-                 Key      = to)
-
-  if(make_public) {
+  if (make_public) {
     s3_put_object_acl(bucket = bucket, file = to)
   }
 
@@ -25,11 +26,10 @@ s3_upload_file <- function(bucket,
   message(
     paste(
       "You may need to change the region in the url",
-      paste0('https://s3.', region,'.amazonaws.com/', bucket,'/', to),
+      paste0("https://s3.", region, ".amazonaws.com/", bucket, "/", to),
       sep = "\n"
     )
   )
 
-  paste0('https://s3.us-east-2.amazonaws.com/', bucket,'/', to)
-
+  paste0("https://s3.us-east-2.amazonaws.com/", bucket, "/", to)
 }

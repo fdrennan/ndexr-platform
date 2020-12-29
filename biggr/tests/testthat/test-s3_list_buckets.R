@@ -7,4 +7,3 @@ test_that("s3 lists return the correct values", {
     c("name", "creation_date")
   )
 })
-

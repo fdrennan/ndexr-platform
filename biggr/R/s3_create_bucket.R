@@ -2,7 +2,7 @@
 #' @param bucket_name A name for the bucket
 #' @param location An AWS region. Defaults to us-east-2
 #' @export s3_create_bucket
-s3_create_bucket <- function(bucket_name = NA, location = 'us-east-2') {
+s3_create_bucket <- function(bucket_name = NA, location = "us-east-2") {
   message(
     'Bucket name should conform with DNS requirements:
     - Should not contain uppercase characters
@@ -12,11 +12,12 @@ s3_create_bucket <- function(bucket_name = NA, location = 'us-east-2') {
     - Cannot contain two, adjacent periods
     - Cannot contain dashes next to periods (e.g., "my-.bucket.com" and "my.-bucket" are invalid)'
   )
-  s3 = client_s3()
+  s3 <- client_s3()
   response <-
-    s3$create_bucket(Bucket=bucket_name,
-                     CreateBucketConfiguration=list(LocationConstraint= location))
+    s3$create_bucket(
+      Bucket = bucket_name,
+      CreateBucketConfiguration = list(LocationConstraint = location)
+    )
 
   response$Location
-
 }

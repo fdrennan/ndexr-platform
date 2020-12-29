@@ -4,7 +4,7 @@ bucket_name <- rand_name()
 
 test_that("s3 list objectss", {
   expect_equal(
-    is.data.frame(s3_list_objects('fdrennanunittest')),
+    is.data.frame(s3_list_objects("fdrennanunittest")),
     TRUE
   )
 })

@@ -101,14 +101,14 @@ function(table_name = "meta_statistics", filter_column = NULL, filter_value = NU
   )
 
   get_summary_temp <- function(table_name = "meta_statistics") {
-    message('Before Connection')
+    message("Before Connection")
     if (table_name == "meta_statistics") {
-      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv("POWEREDGE"))
     } else {
       con <- postgres_connector()
     }
 
-    message('After Connection')
+    message("After Connection")
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
 
@@ -244,10 +244,10 @@ comment_plot <- function(limit = 600,
 #* @serializer unboxedJSON
 #* @param days_ago
 #* @get /get_costs
-function(days_ago = 300, ENV_NAME = 'XPS') {
+function(days_ago = 300, ENV_NAME = "XPS") {
   browser()
   message(glue("Within get_summary {Sys.time()}"))
-  days_ago = as.numeric(days_ago)
+  days_ago <- as.numeric(days_ago)
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -277,4 +277,3 @@ function(days_ago = 300, ENV_NAME = 'XPS') {
 
   return(response)
 }
-

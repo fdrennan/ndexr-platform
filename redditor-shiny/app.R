@@ -101,7 +101,7 @@ ui <- dashboardPage(
           # tags$iframe(src="http://facebook.com", height=600, width=535 ),
           # shinyLP::iframe(width = "560", height = "315",url_link = "https://www.youtube.com/embed/0fKg7e37bQE"),
           # tags$iframe(src = "www.rstudio.com", seamless=NA),
-          
+
           box(
             withSpinner(infoBoxOutput("submissionsBox", width = 4)),
             infoBoxOutput("authorsBox", width = 4),
@@ -287,28 +287,28 @@ ui <- dashboardPage(
           box(
             tags$a(
               href = "http://ndexr.com:61211",
-              tags$h1('Poweredge')
+              tags$h1("Poweredge")
             ),
             width = 3
           ),
           box(
             tags$a(
               href = "http://ndexr.com:61209",
-              tags$h1('Lenovo')
+              tags$h1("Lenovo")
             ),
             width = 3
           ),
           box(
             tags$a(
               href = "http://ndexr.com:61208",
-              tags$h1('EC2')
+              tags$h1("EC2")
             ),
             width = 3
           ),
           box(
             tags$a(
               href = "http://ndexr.com:61210",
-              tags$h1('XPS')
+              tags$h1("XPS")
             ),
             width = 3
           )
@@ -319,8 +319,6 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
-
-  
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "poweredge_meta_statistics", host_variable = "XPS"))
   meta_statistics <- fromJSON(fromJSON(content(resp, "text"))$data)
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "counts_by_minute"))
@@ -457,7 +455,7 @@ server <- function(input, output, session) {
     response
   })
 
- 
+
   output$permalink_summary <- renderDataTable({
     summarise_thread_stack(current_permalink()) %>%
       arrange(desc(engagement_ratio))
@@ -471,12 +469,11 @@ server <- function(input, output, session) {
 
     build_datatable(response)
   })
-  
+
   resp <- GET(url = glue("http://ndexr.com/api/get_summary"), query = list(table_name = "costs", host_variable = "XPS"))
-  get_costs <- fromJSON(fromJSON(content(resp, 'text'))$data)
+  get_costs <- fromJSON(fromJSON(content(resp, "text"))$data)
 
   output$costReportYear <- renderPlot({
-
     get_costs %>%
       mutate(start = as.Date(start)) %>%
       # filter(between(start, floor_date(Sys.Date(), 'month'), Sys.Date())) %>%
@@ -485,31 +482,31 @@ server <- function(input, output, session) {
       ggplot() +
       aes(x = as.Date(start), y = value) +
       geom_col() +
-      facet_wrap(name ~ ., scales = 'free') +
-      xlab(label = 'Month to Date') +
-      ylab('Amount') +
-      ggtitle('AWS Checkup')
+      facet_wrap(name ~ ., scales = "free") +
+      xlab(label = "Month to Date") +
+      ylab("Amount") +
+      ggtitle("AWS Checkup")
   })
 
   output$costReportPrior <- renderPlot({
     get_costs %>%
       mutate(start = as.Date(start)) %>%
-      filter(between(start, floor_date(floor_date(Sys.Date(), 'month')-3, 'month'), Sys.Date())) %>%
+      filter(between(start, floor_date(floor_date(Sys.Date(), "month") - 3, "month"), Sys.Date())) %>%
       mutate(total_cost = cumsum(unblended_cost)) %>%
       pivot_longer(cols = c(unblended_cost, blended_cost, usage_quantity, total_cost)) %>%
       ggplot() +
       aes(x = as.Date(start), y = value) +
       geom_col() +
-      facet_wrap(name ~ ., scales = 'free') +
-      xlab(label = 'Month to Date') +
-      ylab('Amount') +
-      ggtitle('AWS Checkup')
+      facet_wrap(name ~ ., scales = "free") +
+      xlab(label = "Month to Date") +
+      ylab("Amount") +
+      ggtitle("AWS Checkup")
   })
 
   output$costReportMonth <- renderPlot({
     cost_df <- get_costs %>%
       mutate(start = as.Date(start)) %>%
-      filter(between(start, floor_date(Sys.Date(), 'month'), Sys.Date())) %>%
+      filter(between(start, floor_date(Sys.Date(), "month"), Sys.Date())) %>%
       mutate(total_cost = cumsum(unblended_cost))
 
     cost_df_sum <- sum(cost_df$unblended_cost, na.rm = TRUE)
@@ -519,13 +516,11 @@ server <- function(input, output, session) {
       ggplot() +
       aes(x = as.Date(start), y = value) +
       geom_col() +
-      facet_wrap(name ~ ., scales = 'free') +
-      xlab(label = 'Month to Date') +
-      ylab('Amount') +
-      ggtitle(glue('AWS Checkup: Month to Date Cost {cost_df_sum}'))
+      facet_wrap(name ~ ., scales = "free") +
+      xlab(label = "Month to Date") +
+      ylab("Amount") +
+      ggtitle(glue("AWS Checkup: Month to Date Cost {cost_df_sum}"))
   })
-
-
 }
 
 shinyApp(ui, server)

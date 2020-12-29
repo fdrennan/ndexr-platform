@@ -9,9 +9,10 @@ args = {
     'email_on_failure': True,
     'email_on_retry': True
 }
+# noinspection PyInterpreter
 dag = DAG(dag_id='detect_roze',
           default_args=args,
-          schedule_interval=None,
+          schedule_interval='*/10 * * * *',
           concurrency=1,
           max_active_runs=1,
           catchup=False)

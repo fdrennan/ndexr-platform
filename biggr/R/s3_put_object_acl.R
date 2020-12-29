@@ -4,12 +4,13 @@
 #' @param ACL  permissions type
 #' @export s3_put_object_acl
 s3_put_object_acl <- function(bucket = NA,
-                              file   = NA,
-                              ACL    = 'public-read') {
+                              file = NA,
+                              ACL = "public-read") {
+  s3 <- client_s3()
 
-  s3 = client_s3()
-
-  s3$put_object_acl(ACL    ='public-read',
-                    Bucket = bucket,
-                    Key    = file)
+  s3$put_object_acl(
+    ACL = "public-read",
+    Bucket = bucket,
+    Key = file
+  )
 }

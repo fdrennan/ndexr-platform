@@ -7,13 +7,12 @@
 #' @importFrom tibble as_tibble
 #' @export s3_list_objects
 s3_list_objects <- function(bucket_name = NA) {
-
-  s3 = client_s3()
+  s3 <- client_s3()
 
   results <-
-    s3$list_objects(Bucket=bucket_name)
+    s3$list_objects(Bucket = bucket_name)
 
-  if(is.null(results$Contents)) {
+  if (is.null(results$Contents)) {
     return(FALSE)
   }
 
@@ -29,6 +28,5 @@ s3_list_objects <- function(bucket_name = NA) {
       owner_id = as.character(Owner.ID),
       last_modified = as.character(LastModified)
     ) %>%
-    as_tibble
+    as_tibble()
 }
-

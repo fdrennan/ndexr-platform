@@ -2,11 +2,11 @@
 library(redditor)
 con <- postgres_connector()
 
-secondary_db <- Sys.getenv('POSTGRES_DB')
-secondary_user <- Sys.getenv('POSTGRES_USER')
-secondary_password <- Sys.getenv('POSTGRES_PASSWORD')
-secondary_host <- Sys.getenv('POWEREDGE')
-secondary_port <- Sys.getenv('POSTGRES_PORT')
+secondary_db <- Sys.getenv("POSTGRES_DB")
+secondary_user <- Sys.getenv("POSTGRES_USER")
+secondary_password <- Sys.getenv("POSTGRES_PASSWORD")
+secondary_host <- Sys.getenv("POWEREDGE")
+secondary_port <- Sys.getenv("POSTGRES_PORT")
 
 sql_query <-
   list(

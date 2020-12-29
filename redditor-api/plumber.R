@@ -101,14 +101,14 @@ function(table_name = "meta_statistics") {
   )
 
   get_summary_temp <- function(table_name = "meta_statistics") {
-    message('Before Connection')
+    message("Before Connection")
     if (table_name == "meta_statistics") {
-      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+      con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv("POWEREDGE"))
     } else {
       con <- postgres_connector()
     }
 
-    message('After Connection')
+    message("After Connection")
     print(dbListTables(con))
     on.exit(dbDisconnect(conn = con))
 
@@ -246,7 +246,7 @@ comment_plot <- function(limit = 600,
 #* @get /get_costs
 function(days_ago = 300) {
   message(glue("Within get_summary {Sys.time()}"))
-  days_ago = as.numeric(days_ago)
+  days_ago <- as.numeric(days_ago)
   # Build the response object (list will be serialized as JSON)
   response <- list(
     statusCode = 200,
@@ -282,14 +282,14 @@ function(days_ago = 300) {
 #* @get /construction_rmd
 function(res,
          stocks = 2019,
-         data = 'file2.csv',
+         data = "file2.csv",
          html_page = TRUE) {
   tmp <- tempfile()
 
 
   rmarkdown::render(
     "notebooks/summary.Rmd",
-    output_format = 'html_document',
+    output_format = "html_document",
     params = list(
       stocks = stocks,
       data = data,
@@ -298,6 +298,6 @@ function(res,
     output_file = tmp
   )
 
-  include_html(glue('{tmp}.html'), res)
+  include_html(glue("{tmp}.html"), res)
   # readBin(glue('{tmp}.html'), "raw", n=file.info(glue('{tmp}.html'))$size)
 }

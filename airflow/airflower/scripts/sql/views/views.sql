@@ -175,3 +175,10 @@ create view view public.stream_authors as (
     order by subreddit, author
 
 );
+
+drop view if exists public.submissions_roze;
+create view submissions_roze as (
+    select distinct author, subreddit
+    from submissions
+    where author='lifedream11'
+);

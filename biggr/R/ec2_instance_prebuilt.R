@@ -12,41 +12,43 @@
 #' @param DeviceName  "/dev/sda1"
 #' @export ec2_instance_prebuilt
 ec2_instance_prebuilt <- function(ImageId = NA,
-                                  InstanceType='t2.nano',
+                                  InstanceType = "t2.nano",
                                   min = 1,
                                   max = 1,
                                   KeyName = NA,
                                   SecurityGroupId = NA,
                                   InstanceStorage = 50,
-                                  postgres_password = 'password',
+                                  postgres_password = "password",
                                   phone_number = NA,
                                   DeviceName = "/dev/sda1",
                                   user_data = NA) {
-  if(is.na(KeyName)) {
+  if (is.na(KeyName)) {
     stop("Please input a KeyName or create one using the AWS UI.")
   }
 
-  if(is.na(SecurityGroupId)) {
+  if (is.na(SecurityGroupId)) {
     SecurityGroupId <- security_group_create()
     message(SecurityGroupId)
   }
 
-  if(is.na(user_data)) {
-    user_data <- ec2_instance_script(postgres_password = postgres_password,
-                                     phone_number      = phone_number)
+  if (is.na(user_data)) {
+    user_data <- ec2_instance_script(
+      postgres_password = postgres_password,
+      phone_number = phone_number
+    )
   } else {
     message(user_data)
   }
 
   ec2_instance_create(
     ImageId = ImageId,
-    InstanceType=InstanceType,
+    InstanceType = InstanceType,
     min = min,
     max = max,
     KeyName = KeyName,
     SecurityGroupId = SecurityGroupId,
     InstanceStorage = InstanceStorage,
     DeviceName = DeviceName,
-    user_data  = user_data
+    user_data = user_data
   )
 }

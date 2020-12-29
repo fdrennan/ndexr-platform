@@ -1,12 +1,13 @@
 #' @export query_plot
 query_plot <- function(search_query,
                        POSTGRES_PORT = 5432,
-                       POSTGRES_HOST=Sys.getenv('POWEREDGE')) {
+                       POSTGRES_HOST = Sys.getenv("POWEREDGE")) {
+  connection <- postgres_connector(
+    POSTGRES_PORT = POSTGRES_PORT,
+    POSTGRES_HOST = POSTGRES_HOST
+  )
 
-  connection <-postgres_connector(POSTGRES_PORT = POSTGRES_PORT,
-                                  POSTGRES_HOST = POSTGRES_HOST)
-
-  submissions <- tbl(connection, in_schema('public', 'submissions'))
+  submissions <- tbl(connection, in_schema("public", "submissions"))
 
   times <-
     submissions %>%
@@ -17,17 +18,17 @@ query_plot <- function(search_query,
       created_utc = sql("date_trunc('day', created_utc::timestamptz)")
     ) %>%
     group_by(created_utc) %>%
-    count(name='n_obs') %>%
+    count(name = "n_obs") %>%
     mutate_if(is.numeric, as.numeric) %>%
-    collect
+    collect()
 
 
   ggplot(times) +
     aes(x = created_utc, y = n_obs) +
     geom_col() +
-    ylab('Number of Submissions') +
-    xlab('Day (UTC)') +
-    ggtitle(glue('Number of submissions mentioning {search_query}'))
+    ylab("Number of Submissions") +
+    xlab("Day (UTC)") +
+    ggtitle(glue("Number of submissions mentioning {search_query}"))
 }
 
 #' @export plot_submissions

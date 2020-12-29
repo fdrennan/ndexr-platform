@@ -9,7 +9,7 @@ dwh_verification_table <- "submissions_to_elastic_success"
 dwh_failed_verification_table <- "submissions_to_elastic_failed"
 elastic_search_table <- "submissions"
 
-con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv('POWEREDGE'))
+con <- postgres_connector(POSTGRES_PORT = 5432, POSTGRES_HOST = Sys.getenv("POWEREDGE"))
 response_table <- tbl(con, in_schema("public", dwh_table))
 counts <-
   response_table %>%
@@ -63,11 +63,11 @@ for (hour_count in counts) {
   print(response)
   tryCatch(
     {
-      send_message('Uploading to Elastic')
-      elastic(paste0("http://", Sys.getenv("XPS"), ':9200'), elastic_search_table, "data") %index% as.data.frame(response)
-      send_message('Writing to table')
+      send_message("Uploading to Elastic")
+      elastic(paste0("http://", Sys.getenv("XPS"), ":9200"), elastic_search_table, "data") %index% as.data.frame(response)
+      send_message("Writing to table")
       dbWriteTable(conn = con, name = dwh_verification_table, value = hour_count, append = TRUE)
-      send_message('Complete')
+      send_message("Complete")
     },
     error = function(e) {
       send_message(e)

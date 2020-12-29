@@ -11,8 +11,10 @@ security_group_list <- function() {
 
   security_group_list <-
     map_df(response, function(x) {
-      tibble(group_name = x$GroupName,
-             group_id = x$GroupId)
+      tibble(
+        group_name = x$GroupName,
+        group_id = x$GroupId
+      )
     })
 
   security_group_list
@@ -37,32 +39,30 @@ security_group_data <- function() {
           sg$IpPermissions %>%
           map(
             function(sg_id) {
-              if(is.null(unlist(sg_id$IpRanges))) {
-                return('')
+              if (is.null(unlist(sg_id$IpRanges))) {
+                return("")
               } else {
+                sg_tibble <- tibble(ip_ranges = unlist(sg_id$IpRanges))
 
-                sg_tibble <- tibble(ip_ranges =  unlist(sg_id$IpRanges))
-
-                if(is.null(sg_id$FromPort) & is.null(sg_id$ToPort)) {
-                  sg_tibble$from_port = 'Anywhere'
-                  sg_tibble$to_port = 'Anywhere'
+                if (is.null(sg_id$FromPort) & is.null(sg_id$ToPort)) {
+                  sg_tibble$from_port <- "Anywhere"
+                  sg_tibble$to_port <- "Anywhere"
                 } else {
-                  sg_tibble$from_port = sg_id$FromPort
-                  sg_tibble$to_port = sg_id$ToPort
+                  sg_tibble$from_port <- sg_id$FromPort
+                  sg_tibble$to_port <- sg_id$ToPort
                 }
 
                 sg_tibble %>%
                   mutate_all(as.character)
-
               }
             }
           ) %>%
           keep(is.data.frame)
 
-        if(length(dfs) > 0) {
+        if (length(dfs) > 0) {
           dfs <- bind_rows(dfs)
-          dfs$group_name =  sg$GroupName
-          dfs$group_id =  sg$GroupId
+          dfs$group_name <- sg$GroupName
+          dfs$group_id <- sg$GroupId
         }
 
         dfs
@@ -74,8 +74,7 @@ security_group_data <- function() {
     keep(
       ~ length(.) > 0
     ) %>%
-    bind_rows
+    bind_rows()
 
   response
 }
-

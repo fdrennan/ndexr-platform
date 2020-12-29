@@ -8,6 +8,3 @@ test_that("s3 bucket creation/deletion works", {
     TRUE
   )
 })
-
-
-

@@ -3,16 +3,16 @@
 #' @param attribute  'instanceType',
 #' @param value  't2.small'
 #' @export ec2_instance_modify
-ec2_instance_modify = function(instance_id = NA,
-                               attribute = 'instanceType',
-                               value     = 't2.small') {
-
+ec2_instance_modify <- function(instance_id = NA,
+                                attribute = "instanceType",
+                                value = "t2.small") {
   client <- client_ec2()
-  resp <- client$modify_instance_attribute(InstanceId = instance_id,
-                                           Attribute  = attribute,
-                                           Value      = value)
-  if(resp$ResponseMetadata$HTTPStatusCode == 200) {
+  resp <- client$modify_instance_attribute(
+    InstanceId = instance_id,
+    Attribute = attribute,
+    Value = value
+  )
+  if (resp$ResponseMetadata$HTTPStatusCode == 200) {
     return(TRUE)
   }
 }
-

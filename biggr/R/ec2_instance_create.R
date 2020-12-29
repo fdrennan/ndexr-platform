@@ -10,36 +10,34 @@
 #' @param DeviceName  "/dev/sda1"
 #' @export ec2_instance_create
 ec2_instance_create <- function(ImageId = NA,
-                                InstanceType='t2.nano',
+                                InstanceType = "t2.nano",
                                 min = 1,
                                 max = 1,
                                 KeyName = NA,
                                 SecurityGroupId = NA,
                                 InstanceStorage = 50,
                                 DeviceName = "/dev/sda1",
-                                user_data  = NA) {
-
-  if(is.na(user_data)) {
+                                user_data = NA) {
+  if (is.na(user_data)) {
     user_data <- ec2_instance_script(null_user = TRUE)
   }
 
-  resource = resource_ec2()
-  resource$create_instances(ImageId      = ImageId,
-                            InstanceType = InstanceType,
-                            MinCount     = as.integer(min),
-                            MaxCount     = as.integer(max),
-                            UserData     = user_data,
-                            KeyName      = KeyName,
-                            SecurityGroupIds = list(SecurityGroupId),
-                            BlockDeviceMappings = list(
-                              list(
-                                Ebs = list(
-                                  VolumeSize = as.integer(InstanceStorage)
-                                ),
-                                DeviceName = DeviceName
-                              )
-                            )
+  resource <- resource_ec2()
+  resource$create_instances(
+    ImageId = ImageId,
+    InstanceType = InstanceType,
+    MinCount = as.integer(min),
+    MaxCount = as.integer(max),
+    UserData = user_data,
+    KeyName = KeyName,
+    SecurityGroupIds = list(SecurityGroupId),
+    BlockDeviceMappings = list(
+      list(
+        Ebs = list(
+          VolumeSize = as.integer(InstanceStorage)
+        ),
+        DeviceName = DeviceName
+      )
+    )
   )
-
 }
-

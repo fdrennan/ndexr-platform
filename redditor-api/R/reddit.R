@@ -272,12 +272,12 @@ get_url <- function(reddit,
       tbl(con, in_schema("public", "submissions")) %>%
       filter(str_detect(str_to_lower(permalink), local(str_to_lower(permalink)))) %>%
       my_collect()
-    
+
     comments <-
       tbl(con, in_schema("public", "comments")) %>%
       filter(str_detect(str_to_lower(permalink), local(str_to_lower(permalink)))) %>%
       my_collect()
-    
+
     message("Skipping, already hit once")
     return(list(meta_data, comments))
   }

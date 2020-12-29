@@ -32,7 +32,7 @@ tryCatch(
   },
   error = function(e) {
     message(e)
-    message('Oh, an error')
+    message("Oh, an error")
     # file_size <- as.character(fs::file_info(now_time_csv)$size)
     # sns_send_message(phone_number = Sys.getenv("MY_PHONE"), message = "Something went wrong")
   }

@@ -4,11 +4,12 @@
 #' @param to File path
 #' @export s3_download_file
 s3_download_file <- function(bucket, from, to) {
-
-  s3 = client_s3()
-  s3$download_file(Bucket = bucket,
-                   Filename = to,
-                   Key = from)
+  s3 <- client_s3()
+  s3$download_file(
+    Bucket = bucket,
+    Filename = to,
+    Key = from
+  )
 
   TRUE
 }

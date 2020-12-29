@@ -1,9 +1,9 @@
 library(biggr)
 
-bucket <- 'fdrennanunittest'
-random_file <-  rand_name()
+bucket <- "fdrennanunittest"
+random_file <- rand_name()
 file_dir <- tempdir()
-file_location <-  file.path(file_dir, random_file)
+file_location <- file.path(file_dir, random_file)
 write.csv(mtcars, file_location)
 file_location_aws <-
   paste0(
@@ -12,7 +12,6 @@ file_location_aws <-
   )
 
 test_that("s3 upload and delete return the correct values", {
-
   expect_equal(
     s3_upload_file(
       bucket = bucket,
@@ -21,8 +20,9 @@ test_that("s3 upload and delete return the correct values", {
     ),
     file_location_aws
   )
-
 })
 
-s3_delete_file(bucket = bucket,
-               file   = random_file)
+s3_delete_file(
+  bucket = bucket,
+  file = random_file
+)

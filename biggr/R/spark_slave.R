@@ -7,27 +7,28 @@
 #' @param master_ip = NULL
 #' @export spark_slave
 spark_slave <- function(
-  InstanceType='t2.medium',
-  KeyName = NA,
-  SecurityGroupId = NA,
-  InstanceStorage = 50,
-  n_instances = 2,
-  master_ip = NULL
-) {
-
+                        InstanceType = "t2.medium",
+                        KeyName = NA,
+                        SecurityGroupId = NA,
+                        InstanceStorage = 50,
+                        n_instances = 2,
+                        master_ip = NULL) {
   running_instances <- ec2_instance_info()
 
-  user_data_ami = paste("#!/bin/bash",
-                        paste0("/home/ubuntu/spark-2.1.0-bin-hadoop2.7/sbin/start-slave.sh ", master_ip, ":7077"),
-                        sep = "\n")
+  user_data_ami <- paste("#!/bin/bash",
+    paste0("/home/ubuntu/spark-2.1.0-bin-hadoop2.7/sbin/start-slave.sh ", master_ip, ":7077"),
+    sep = "\n"
+  )
 
-  for(instance in 1:n_instances) {
-    ec2_instance_create(ImageId = r_box(),
-                        KeyName = KeyName,
-                        InstanceStorage = InstanceStorage,
-                        SecurityGroupId = SecurityGroupId,
-                        user_data = user_data_ami,
-                        InstanceType = InstanceType)
+  for (instance in 1:n_instances) {
+    ec2_instance_create(
+      ImageId = r_box(),
+      KeyName = KeyName,
+      InstanceStorage = InstanceStorage,
+      SecurityGroupId = SecurityGroupId,
+      user_data = user_data_ami,
+      InstanceType = InstanceType
+    )
   }
 
   updated_running_instances <- ec2_instance_info()

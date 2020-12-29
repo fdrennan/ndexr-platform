@@ -9,7 +9,7 @@ if_is_null <- function(x) {
 #' @export rand_name
 rand_name <- function() {
   paste0(
-    'randfile',
+    "randfile",
     paste(sample(1:100, 5), collapse = "")
   )
 }

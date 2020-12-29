@@ -10,4 +10,3 @@ test_that("resource_s3 return the correct class", {
   )
   security_group_delete(sg_id)
 })
-

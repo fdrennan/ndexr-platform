@@ -8,16 +8,15 @@ sns_send_message <- function(phone_number = NA,
                              message = "Hello World!",
                              region = "us-east-1",
                              message_aws = FALSE) {
-  client <- client_sns(region=region)
+  client <- client_sns(region = region)
   phone_number <- paste0("+", phone_number)
   response <- client$publish(
     PhoneNumber = phone_number,
-    Message     = message
+    Message = message
   )
-  if(message_aws) {
+  if (message_aws) {
     return(response)
   } else {
     return(TRUE)
   }
 }
-
