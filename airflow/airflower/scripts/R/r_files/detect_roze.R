@@ -44,13 +44,7 @@ submissions <-
       sample_n(30) 
   }
 ) 
-# %>% 
-#   bind_rows(
-#       {
-#         submissions %>%
-#           filter(author == '')
-#       }
-#   )
+
 sub_split <-
   submissions %>%
   anti_join(remove_keys, by = 'submission_key') %>%
@@ -73,3 +67,4 @@ checking <-
     }
   )
  
+send_message(messages = 'hello')
