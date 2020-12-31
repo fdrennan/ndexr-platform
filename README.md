@@ -4,6 +4,9 @@
 
 Currently slimming down and repurposing for submission only analysis. 
 
+ docker-compose up -d --build postgres
+docker-compose up -d --build initdb
+
 ```
 docker ps -aq
 docker stop $(docker ps -aq)
