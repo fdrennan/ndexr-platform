@@ -1,5 +1,29 @@
 # NDEXR - Indexing the Reddit Platform
 
+## New Notes
+
+Currently slimming down and repurposing for submission only analysis. 
+
+```
+docker ps -aq
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+docker volume ls
+```
+
+# __Deprecated Notes Below__
+
+
+
+
+
+
+
+
+
+
+
 ## Visit the [Live Site](http://ndexr.com)
 
 ## About This Project

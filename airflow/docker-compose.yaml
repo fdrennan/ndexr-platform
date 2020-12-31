@@ -62,10 +62,10 @@ services:
     container_name: "redditor_postgres"
     restart: always
     ports:
-      - '5434:5432'
+      - '5432:5432'
     expose:
       # Opens port 5432 on the container
-      - '5434'
+      - '5432'
       # Where our data will be persisted
     volumes:
       - redditor_volume:/var/lib/postgresql/data
