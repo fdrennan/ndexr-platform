@@ -10,6 +10,9 @@ docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 docker rmi $(docker images -q)
 docker volume ls
+docker volume rm airflow_airflow-worker-logs
+docker volume rm airflow_postgres
+docker volume rm airflow_redditor_volume
 ```
 
 # __Deprecated Notes Below__
